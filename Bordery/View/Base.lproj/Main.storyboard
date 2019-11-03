@@ -99,11 +99,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sWf-n7-S7e" userLabel="Edited Image View">
-                                <rect key="frame" x="14" y="106" width="386" height="426"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </imageView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ar7-Am-3i9">
                                 <rect key="frame" x="14" y="782" width="386" height="80"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -120,7 +115,6 @@
                     </view>
                     <connections>
                         <outlet property="barView" destination="ar7-Am-3i9" id="bva-eL-xrE"/>
-                        <outlet property="editedImageView" destination="sWf-n7-S7e" id="DVD-Rs-uNn"/>
                         <outlet property="editorView" destination="CTX-d0-RFp" id="fAm-r5-Edj"/>
                         <outlet property="imageView" destination="iWo-89-Lc1" id="JEC-cD-3HW"/>
                         <outlet property="progressBarOutlet" destination="RH1-tk-GSp" id="qA3-vE-egn"/>

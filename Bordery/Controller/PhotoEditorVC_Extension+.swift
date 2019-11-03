@@ -34,7 +34,7 @@ extension PhotoEditorViewController {
         let gapBetweenButtons: CGFloat = 5
         
         var itemCount = 0
-        for i in 0..<2 {
+        for i in 0..<0 {
             itemCount = i
             // Button properties
             let adjustmentButton = UIButton(type: .custom)
@@ -89,6 +89,7 @@ extension PhotoEditorViewController {
             cancelButton.rightAnchor.constraint(equalTo: cancelButtonWrapper.rightAnchor, constant: -5)
         ])
         
+        
         let checkButton = UIButton(type: .custom)
         checkButton.setTitle("✓", for: .normal)
         checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
@@ -114,28 +115,70 @@ extension PhotoEditorViewController {
     }
     
     // MARK: - Hide elements function
-    // hide progress function
-    func hideProgress(bool: Bool) {
-        self.progressDownloadingLabel.isHidden = bool
-        self.progressPercentageLabel.isHidden = bool
-        self.progressBarOutlet.isHidden = bool
+    func hide(progress: Bool?, barItemOnEdit: Bool?, ui: Bool?) {
+        if let progress = progress {
+            self.progressDownloadingLabel.isHidden = progress
+            self.progressPercentageLabel.isHidden = progress
+            self.progressBarOutlet.isHidden = progress
+        }
+        if let barItemOnEdit = barItemOnEdit {
+            barItemOnEditStackView.isHidden = barItemOnEdit
+        }
+        if let ui = ui {
+            editorView.isHidden = ui
+            barView.isHidden = ui
+        }
     }
     
-    // hide slider attributes
-    func hideSlider(bool: Bool) {
-        adjustmentNameLabel.isHidden = bool
-        sliderValueLabel.isHidden = bool
-        sliderValueLabel.text = ""
+    // MARK: - Blend image function
+    func blendImages(_ backgroundImg: UIImage,_ foregroundImg: UIImage) -> Data? {
+        // size variable
+//        let topImageSize = 306 - (306*0.05)
+//        let contentSize = 306 - (306 * 0)
+        // this will be the background size. For this, set to the size of the foreground image since we want
+        // to achieve "film" like border.
+        let contentSizeH = foregroundImg.size.height
+        let contentSizeW = foregroundImg.size.width
+        
+        let imgSizeMultiplier: CGFloat = 0.10
+        let topImageH = foregroundImg.size.height - (foregroundImg.size.height * imgSizeMultiplier)
+        let topImageW = foregroundImg.size.width - (foregroundImg.size.width * imgSizeMultiplier)
+        
+        let bottomImage = backgroundImg
+        let topImage = foregroundImg
+
+        let imgView = UIImageView(frame: CGRect(x: 0, y: 0, width : contentSizeW, height: contentSizeH))
+        let imgView2 = UIImageView(frame: CGRect(x: 0, y: 0, width: topImageW, height: topImageH))
+        
+        // - Set Content mode to what you desire
+        imgView.contentMode = .scaleAspectFill
+        imgView2.contentMode = .scaleAspectFit
+
+        // - Set Images
+        imgView.image = bottomImage
+        imgView2.image = topImage
+        
+        imgView2.center = imgView.center
+
+        // - Create UIView
+        let contentView = UIView(frame: CGRect(x: 0, y: 0, width: contentSizeW, height: contentSizeH))
+        contentView.addSubview(imgView)
+        contentView.addSubview(imgView2)
+
+        // - Set Size
+        let size = CGSize(width: contentSizeW, height: contentSizeH)
+
+        // - Where the magic happens
+        UIGraphicsBeginImageContextWithOptions(size, true, 0)
+
+        contentView.drawHierarchy(in: contentView.bounds, afterScreenUpdates: true)
+
+        guard let i = UIGraphicsGetImageFromCurrentImageContext(),
+            let data = i.jpegData(compressionQuality: 1.0)
+            else {return nil}
+
+        UIGraphicsEndImageContext()
+
+        return data
     }
-    
-    // hide barItemOnEdit
-    func hideBarItemOnEdit(bool: Bool) {
-        barItemOnEditStackView.isHidden = bool
-    }
-    
-    func hideUI(bool: Bool) {
-        editorView.isHidden = bool
-        barView.isHidden = bool
-    }
-    
 }

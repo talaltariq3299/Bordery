@@ -29,7 +29,6 @@ class PhotoEditorViewController: UIViewController {
     lazy var barItemOnEditStackView = UIStackView()
     
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var editedImageView: UIImageView!
     @IBOutlet weak var editorView: UIView!
     @IBOutlet weak var barView: UIView!
     @IBOutlet weak var progressDownloadingLabel: UILabel!
@@ -43,15 +42,10 @@ class PhotoEditorViewController: UIViewController {
         super.viewDidLoad()
         
         // hide the progress bar on default
-        hideUI(bool: true)
-        hideProgress(bool: true)
-        hideSlider(bool: true)
-        hideBarItemOnEdit(bool: true)
-        editedImageView.isHidden = true
+        hide(progress: true, barItemOnEdit: true, ui: true)
 
         setupUI()
         setupConstraint()
-        
         // bar item on editing
         setupBarItemOnEdit()
         // Adjustment View
@@ -76,7 +70,7 @@ class PhotoEditorViewController: UIViewController {
     // MARK: - Main Functions
     // image downloading function
     fileprivate func updateImage() {
-        hideProgress(bool: false)
+        hide(progress: false, barItemOnEdit: nil, ui: nil)
         // reset the progressBar value
         progressBarOutlet.progress = 0.0
         
@@ -105,10 +99,13 @@ class PhotoEditorViewController: UIViewController {
             PHImageManager.default().requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options,
                                                   resultHandler: { image, _ in
                                                     guard let image = image else { return }
-                                                    self.imageView.image = image
+//                                                    self.imageView.image = image
+                                                    self.hide(progress: true, barItemOnEdit: nil, ui: false)
+                                                    let borderColor = UIColor.white.image()
+
+                                                    let image2: UIImage = UIImage(data: self.blendImages(borderColor, image)!)!
+                                                    self.imageView.image = image2
                                                     
-                                                    self.hideProgress(bool: true)
-                                                    self.hideUI(bool: false)
             })
         }
     }
@@ -138,7 +135,7 @@ class PhotoEditorViewController: UIViewController {
         navBar.barTintColor = UIColor(named: "backgroundColor")
         navBar.isTranslucent = false
         navBar.tintColor = UIColor.white
-        let navItem = UINavigationItem(title: "")
+        let navItem = UINavigationItem(title: "Bordery")
         
         let backButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: nil, action: #selector(cancelAction))
         navItem.leftBarButtonItem = backButton
@@ -147,7 +144,7 @@ class PhotoEditorViewController: UIViewController {
         self.view.addSubview(navBar)
     }
     
-    // create contstraint
+    // create constraint
     fileprivate func setupConstraint() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -156,15 +153,6 @@ class PhotoEditorViewController: UIViewController {
             imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 5),
             imageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -5),
             imageView.heightAnchor.constraint(equalToConstant: view.frame.height * 0.6)
-            ])
-        
-        editedImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            editedImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 45),
-            editedImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            editedImageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 5),
-            editedImageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -5),
-            editedImageView.heightAnchor.constraint(equalToConstant: view.frame.height * 0.6)
             ])
         
         progressStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -194,11 +182,9 @@ class PhotoEditorViewController: UIViewController {
     
     // for debugging
     fileprivate func setupDebug() {
-        editorView.backgroundColor = .red
-        barView.backgroundColor = .blue
-        imageView.backgroundColor = .brown
-        
-        
+        editorView.backgroundColor = .clear
+        barView.backgroundColor = .clear
+        imageView.backgroundColor = .clear
     }
 
     
@@ -209,17 +195,12 @@ class PhotoEditorViewController: UIViewController {
     
     // function for barItem on Edit
     @objc func cancelButtonTapped() {
-        hideSlider(bool: true)
-        hideBarItemOnEdit(bool: true)
+        hide(progress: nil, barItemOnEdit: true, ui: nil)
         adjustmentFiltersScrollView.isHidden = false
-        
-        editedImageView.image = imageView.image!
-        editedImageView.isHidden = true
     }
     
     @objc func checkButtonTapped() {
-        hideSlider(bool: true)
-        hideBarItemOnEdit(bool: true)
+        hide(progress: nil, barItemOnEdit: true, ui: nil)
         adjustmentFiltersScrollView.isHidden = false
         
     }
