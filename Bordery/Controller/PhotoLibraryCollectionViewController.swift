@@ -2,10 +2,9 @@
 //  PhotoLibraryCollectionViewController.swift
 //  Bordery
 //
-//  Created by Kevin Laminto on 1/11/19.
+//  Created by Kevin Laminto on 27/6/19.
 //  Copyright © 2019 Kevin Laminto. All rights reserved.
 //
-
 
 import UIKit
 import Photos
@@ -83,7 +82,6 @@ class PhotoLibraryCollectionViewController: UICollectionViewController {
         return fetchResult.count
     }
     
-    // written by Kevin @ Swift 4
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let asset = fetchResult.object(at: indexPath.item)
         // Dequeue a GridViewCell.
@@ -111,9 +109,10 @@ class PhotoLibraryCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let asset = fetchResult.object(at: indexPath.row)
         
-//        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "photoEditorView") as? PhotoEditorViewController
-//        vc?.asset = asset
-//        self.present(vc!, animated:true, completion:nil)
+        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "photoEditorView") as? PhotoEditorViewController
+        vc?.modalPresentationStyle = .fullScreen
+        vc?.asset = asset
+        self.present(vc!, animated:true, completion:nil)
     }
     
     // UIScrollView
@@ -180,7 +179,7 @@ extension PhotoLibraryCollectionViewController {
     fileprivate func resetCachedAssets() {
         if imageManager != nil {
            imageManager!.stopCachingImagesForAllAssets()
-        }
+        } 
         
         previousPreheatRect = .zero
     }
@@ -285,14 +284,14 @@ extension PhotoLibraryCollectionViewController {
     
     // MARK:- Customisation Functions
     private func setupUI() {
-        self.collectionView.backgroundColor = UIColor.secondarySystemBackground
+        self.collectionView.backgroundColor = UIColor(named: "backgroundColor")
         
         /* customise navgation bar colour */
         self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = UIColor.systemBackground
+        self.navigationController?.view.backgroundColor = UIColor(named: "backgroundColor")
         
         let nav = self.navigationController?.navigationBar
-        nav?.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.darkText]
+        nav?.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     }
     
     private func setupElement() {
