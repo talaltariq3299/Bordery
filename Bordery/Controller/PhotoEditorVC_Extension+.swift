@@ -30,22 +30,23 @@ extension PhotoEditorViewController {
         let yCoord: CGFloat = editorView.frame.height * 0.02
         let buttonWidth:CGFloat = editorView.frame.height * 0.4
         let buttonHeight: CGFloat = view.frame.height * VIEW_HEIGHTMULTIPLIER_CONSTANT * 0.85
+        let adjusmentName = AdjustmentEngine.adjusmentName
         
         let gapBetweenButtons: CGFloat = 5
         
         var itemCount = 0
-        for i in 0..<0 {
+        for i in 0..<adjusmentName.count {
             itemCount = i
             // Button properties
             let adjustmentButton = UIButton(type: .custom)
             adjustmentButton.frame = CGRect(x: xCoord, y: yCoord, width: buttonWidth, height: buttonHeight)
             adjustmentButton.backgroundColor = UIColor(named:"backgroundSecondColor")
             adjustmentButton.tag = itemCount
-            //            adjustmentButton.addTarget(self, action: #selector(adjustmentTapped), for: .touchUpInside)
+            adjustmentButton.addTarget(self, action: #selector(adjustmentTapped), for: .touchUpInside)
             adjustmentButton.layer.cornerRadius = 6
             adjustmentButton.clipsToBounds = true
             
-            adjustmentButton.setTitle(String(itemCount), for: .normal)
+            adjustmentButton.setTitle(adjusmentName[i], for: .normal)
             
             // Add Buttons in the Scroll View
             xCoord +=  buttonWidth + gapBetweenButtons
@@ -56,6 +57,16 @@ extension PhotoEditorViewController {
         adjustmentFiltersScrollView.contentSize = CGSize(width: buttonWidth * CGFloat(itemCount + 2), height: adjustmentFiltersScrollView.frame.height)
         
     }
+    
+    @objc func adjustmentTapped(sender: UIButton) {
+        adjustmentNameLabel.text = sender.title(for: .normal)
+        
+        adjustmentFiltersScrollView.isHidden = true
+        adjustmentSliderOutlet.tag = sender.tag
+        
+        hide(progress: nil, barItemOnEdit: false, ui: nil, slider: false)
+    }
+    
     
     // create bar items to present option to proceed or not on an edit
     func setupBarItemOnEdit() {
@@ -114,8 +125,19 @@ extension PhotoEditorViewController {
         
     }
     
+    // create a slider for adjusting the image
+    func setupAdjustmentSlider() {
+        adjustmentSliderOutlet.maximumValue = 0.4
+        adjustmentSliderOutlet.minimumValue = 0.0
+        adjustmentSliderOutlet.value = Float(adjustmentEngine.imgSizeMultiplier)
+        
+        adjustmentSliderOutlet.maximumTrackTintColor = UIColor(named: "backgroundSecondColor")
+        adjustmentSliderOutlet.minimumTrackTintColor = UIColor.gray
+        adjustmentSliderOutlet.thumbTintColor = UIColor.white
+    }
+    
     // MARK: - Hide elements function
-    func hide(progress: Bool?, barItemOnEdit: Bool?, ui: Bool?) {
+    func hide(progress: Bool?, barItemOnEdit: Bool?, ui: Bool?, slider: Bool?) {
         if let progress = progress {
             self.progressDownloadingLabel.isHidden = progress
             self.progressPercentageLabel.isHidden = progress
@@ -128,57 +150,55 @@ extension PhotoEditorViewController {
             editorView.isHidden = ui
             barView.isHidden = ui
         }
+        if let slider = slider {
+            adjustmentFiltersScrollView.isHidden = !slider
+            adjustmentSliderOutlet.isHidden = slider
+        }
     }
     
-    // MARK: - Blend image function
-    func blendImages(_ backgroundImg: UIImage,_ foregroundImg: UIImage) -> Data? {
-        // size variable
-//        let topImageSize = 306 - (306*0.05)
-//        let contentSize = 306 - (306 * 0)
-        // this will be the background size. For this, set to the size of the foreground image since we want
-        // to achieve "film" like border.
-        let contentSizeH = foregroundImg.size.height
-        let contentSizeW = foregroundImg.size.width
+    // MARK: - Constraints
+    // create constraint
+    func setupConstraint() {
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 45),
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 5),
+            imageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -5),
+            imageView.heightAnchor.constraint(equalToConstant: view.frame.height * 0.6)
+            ])
         
-        let imgSizeMultiplier: CGFloat = 0.10
-        let topImageH = foregroundImg.size.height - (foregroundImg.size.height * imgSizeMultiplier)
-        let topImageW = foregroundImg.size.width - (foregroundImg.size.width * imgSizeMultiplier)
+        progressStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            progressStackView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
+            progressStackView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
+            ])
         
-        let bottomImage = backgroundImg
-        let topImage = foregroundImg
+        editorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            editorView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 10),
+            editorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            editorView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            editorView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            editorView.heightAnchor.constraint(equalToConstant: view.frame.height * VIEW_HEIGHTMULTIPLIER_CONSTANT)
+            ])
 
-        let imgView = UIImageView(frame: CGRect(x: 0, y: 0, width : contentSizeW, height: contentSizeH))
-        let imgView2 = UIImageView(frame: CGRect(x: 0, y: 0, width: topImageW, height: topImageH))
+        barView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            barView.topAnchor.constraint(equalTo: editorView.bottomAnchor),
+            barView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            barView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            barView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            barView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            ])
         
-        // - Set Content mode to what you desire
-        imgView.contentMode = .scaleAspectFill
-        imgView2.contentMode = .scaleAspectFit
-
-        // - Set Images
-        imgView.image = bottomImage
-        imgView2.image = topImage
-        
-        imgView2.center = imgView.center
-
-        // - Create UIView
-        let contentView = UIView(frame: CGRect(x: 0, y: 0, width: contentSizeW, height: contentSizeH))
-        contentView.addSubview(imgView)
-        contentView.addSubview(imgView2)
-
-        // - Set Size
-        let size = CGSize(width: contentSizeW, height: contentSizeH)
-
-        // - Where the magic happens
-        UIGraphicsBeginImageContextWithOptions(size, true, 0)
-
-        contentView.drawHierarchy(in: contentView.bounds, afterScreenUpdates: true)
-
-        guard let i = UIGraphicsGetImageFromCurrentImageContext(),
-            let data = i.jpegData(compressionQuality: 1.0)
-            else {return nil}
-
-        UIGraphicsEndImageContext()
-
-        return data
+        adjustmentSliderOutlet.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            adjustmentSliderOutlet.centerXAnchor.constraint(equalTo: editorView.centerXAnchor),
+            adjustmentSliderOutlet.centerYAnchor.constraint(equalTo: editorView.centerYAnchor),
+            adjustmentSliderOutlet.widthAnchor.constraint(equalToConstant: editorView.frame.height * 1.5)
+        ])
     }
+    
+    
 }

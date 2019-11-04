@@ -20,6 +20,7 @@ class PhotoEditorViewController: UIViewController {
         let scale = UIScreen.main.scale
         return CGSize(width: imageView.bounds.width * scale, height: imageView.bounds.height * scale)
     }
+    let adjustmentEngine = AdjustmentEngine()
     
     // editorView properties
     lazy var adjustmentFiltersScrollView = UIScrollView()
@@ -34,6 +35,7 @@ class PhotoEditorViewController: UIViewController {
     @IBOutlet weak var progressDownloadingLabel: UILabel!
     @IBOutlet weak var progressBarOutlet: UIProgressView!
     @IBOutlet weak var progressPercentageLabel: UILabel!
+    @IBOutlet weak var adjustmentSliderOutlet: UISlider!
     
     @IBOutlet weak var progressStackView: UIStackView!
     
@@ -41,8 +43,8 @@ class PhotoEditorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // hide the progress bar on default
-        hide(progress: true, barItemOnEdit: true, ui: true)
+        // hide the elements on default
+        hide(progress: true, barItemOnEdit: true, ui: true, slider: true)
 
         setupUI()
         setupConstraint()
@@ -50,6 +52,7 @@ class PhotoEditorViewController: UIViewController {
         setupBarItemOnEdit()
         // Adjustment View
         setupAdjustmentView()
+        setupAdjustmentSlider()
 
         setupDebug()
     }
@@ -70,7 +73,7 @@ class PhotoEditorViewController: UIViewController {
     // MARK: - Main Functions
     // image downloading function
     fileprivate func updateImage() {
-        hide(progress: false, barItemOnEdit: nil, ui: nil)
+        hide(progress: false, barItemOnEdit: nil, ui: nil, slider: nil)
         // reset the progressBar value
         progressBarOutlet.progress = 0.0
         
@@ -98,13 +101,16 @@ class PhotoEditorViewController: UIViewController {
         if asset != nil {
             PHImageManager.default().requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options,
                                                   resultHandler: { image, _ in
+                                                    self.hide(progress: true, barItemOnEdit: nil, ui: false, slider: nil)
                                                     guard let image = image else { return }
-//                                                    self.imageView.image = image
-                                                    self.hide(progress: true, barItemOnEdit: nil, ui: false)
                                                     let borderColor = UIColor.white.image()
+                                                    
+                                                    self.adjustmentEngine.borderColor = borderColor
+                                                    self.adjustmentEngine.image = image
 
-                                                    let image2: UIImage = UIImage(data: self.blendImages(borderColor, image)!)!
-                                                    self.imageView.image = image2
+                                                    guard let combinedImageData: Data = self.adjustmentEngine.blendImages(backgroundImg: borderColor, foregroundImg: image) else {return}
+                                                    let combinedImage = UIImage(data: combinedImageData)
+                                                    self.imageView.image = combinedImage
                                                     
             })
         }
@@ -127,57 +133,20 @@ class PhotoEditorViewController: UIViewController {
     
     // create navigation bar
     fileprivate func setupNavBar() {
-//        let startingYPos = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
         let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
         let startingYPos = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
-        
-        let navBar = UINavigationBar(frame: CGRect(x: 0, y: startingYPos, width: self.view.bounds.width, height: 44))
+
+        let navItem = UINavigationItem(title: "Bordery")
+        navItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelAction))
+
+        let navBar = UINavigationBar(frame: CGRect(x: 0, y: startingYPos, width: view.bounds.width, height: 44))
         navBar.barTintColor = UIColor(named: "backgroundColor")
         navBar.isTranslucent = false
         navBar.tintColor = UIColor.white
-        let navItem = UINavigationItem(title: "Bordery")
-        
-        let backButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: nil, action: #selector(cancelAction))
-        navItem.leftBarButtonItem = backButton
+        navBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navBar.setItems([navItem], animated: true)
-        
-        self.view.addSubview(navBar)
-    }
-    
-    // create constraint
-    fileprivate func setupConstraint() {
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 45),
-            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 5),
-            imageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -5),
-            imageView.heightAnchor.constraint(equalToConstant: view.frame.height * 0.6)
-            ])
-        
-        progressStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            progressStackView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
-            progressStackView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
-            ])
-        
-        editorView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            editorView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 10),
-            editorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            editorView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            editorView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            editorView.heightAnchor.constraint(equalToConstant: view.frame.height * VIEW_HEIGHTMULTIPLIER_CONSTANT)
-            ])
 
-        barView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            barView.topAnchor.constraint(equalTo: editorView.bottomAnchor),
-            barView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            barView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            barView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            barView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-            ])
+        view.addSubview(navBar)
     }
     
     // for debugging
@@ -187,6 +156,17 @@ class PhotoEditorViewController: UIViewController {
         imageView.backgroundColor = .clear
     }
 
+    @IBAction func sliderDidChange(_ sender: UISlider) {
+        print(sender.value)
+        
+        let borderColor = adjustmentEngine.borderColor
+        let image = adjustmentEngine.image
+        adjustmentEngine.imgSizeMultiplier = CGFloat(sender.value)
+        
+        guard let combinedImageData: Data = self.adjustmentEngine.blendImages(backgroundImg: borderColor, foregroundImg: image) else {return}
+        let combinedImage = UIImage(data: combinedImageData)
+        self.imageView.image = combinedImage
+    }
     
     // MARK: - Selector functions
     @objc func cancelAction() {
@@ -195,12 +175,12 @@ class PhotoEditorViewController: UIViewController {
     
     // function for barItem on Edit
     @objc func cancelButtonTapped() {
-        hide(progress: nil, barItemOnEdit: true, ui: nil)
+        hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true)
         adjustmentFiltersScrollView.isHidden = false
     }
     
     @objc func checkButtonTapped() {
-        hide(progress: nil, barItemOnEdit: true, ui: nil)
+        hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true)
         adjustmentFiltersScrollView.isHidden = false
         
     }
