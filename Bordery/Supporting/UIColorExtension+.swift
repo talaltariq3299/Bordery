@@ -1,5 +1,5 @@
 //
-//  BorderColorExentesion.swift
+//  UIColorExtension+.swift
 //  Bordery
 //
 //  Created by Kevin Laminto on 3/11/19.

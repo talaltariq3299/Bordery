@@ -12,7 +12,7 @@ import UIKit
 class AdjustmentEngine {
     var borderColor: UIImage = UIImage()
     var image: UIImage = UIImage()
-    var imgSizeMultiplier: CGFloat = 0.0
+    var imgSizeMultiplier: CGFloat = 0.10
     
     static let adjusmentName:[String] = ["Size", "Colour"]
     

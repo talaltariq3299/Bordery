@@ -163,7 +163,7 @@ class PhotoEditorViewController: UIViewController {
         let image = adjustmentEngine.image
         adjustmentEngine.imgSizeMultiplier = CGFloat(sender.value)
         
-        guard let combinedImageData: Data = self.adjustmentEngine.blendImages(backgroundImg: borderColor, foregroundImg: image) else {return}
+        guard let combinedImageData: Data = adjustmentEngine.blendImages(backgroundImg: borderColor, foregroundImg: image) else {return}
         let combinedImage = UIImage(data: combinedImageData)
         self.imageView.image = combinedImage
     }
