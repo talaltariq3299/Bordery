@@ -127,9 +127,9 @@ extension PhotoEditorViewController {
     
     // create a slider for adjusting the image
     func setupAdjustmentSlider() {
-        adjustmentSliderOutlet.maximumValue = 0.4
-        adjustmentSliderOutlet.minimumValue = 0.0
-        adjustmentSliderOutlet.value = Float(adjustmentEngine.imgSizeMultiplier)
+        adjustmentSliderOutlet.maximumValue = 1.0
+        adjustmentSliderOutlet.minimumValue = 0.5
+        adjustmentSliderOutlet.value = 0.5
         
         adjustmentSliderOutlet.maximumTrackTintColor = UIColor(named: "backgroundSecondColor")
         adjustmentSliderOutlet.minimumTrackTintColor = UIColor.gray
@@ -168,6 +168,15 @@ extension PhotoEditorViewController {
             imageView.heightAnchor.constraint(equalToConstant: view.frame.height * 0.6)
             ])
         
+        imageViewTop.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            imageViewTop.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 45),
+            imageViewTop.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageViewTop.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 5),
+            imageViewTop.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -5),
+            imageViewTop.heightAnchor.constraint(equalToConstant: view.frame.height * 0.6)
+            ])
+        
         progressStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             progressStackView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
@@ -199,6 +208,5 @@ extension PhotoEditorViewController {
             adjustmentSliderOutlet.widthAnchor.constraint(equalToConstant: editorView.frame.height * 1.5)
         ])
     }
-    
     
 }

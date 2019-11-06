@@ -12,7 +12,7 @@ import Photos
 import CoreImage
 
 class PhotoEditorViewController: UIViewController {
-
+    
     // Global Variables
     let VIEW_HEIGHTMULTIPLIER_CONSTANT: CGFloat = 0.19
     var asset: PHAsset!
@@ -30,6 +30,7 @@ class PhotoEditorViewController: UIViewController {
     lazy var barItemOnEditStackView = UIStackView()
     
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var imageViewTop: UIImageView!
     @IBOutlet weak var editorView: UIView!
     @IBOutlet weak var barView: UIView!
     @IBOutlet weak var progressDownloadingLabel: UILabel!
@@ -45,7 +46,7 @@ class PhotoEditorViewController: UIViewController {
         
         // hide the elements on default
         hide(progress: true, barItemOnEdit: true, ui: true, slider: true)
-
+        
         setupUI()
         setupConstraint()
         // bar item on editing
@@ -53,7 +54,7 @@ class PhotoEditorViewController: UIViewController {
         // Adjustment View
         setupAdjustmentView()
         setupAdjustmentSlider()
-
+        
         setupDebug()
     }
     
@@ -105,12 +106,19 @@ class PhotoEditorViewController: UIViewController {
                                                     guard let image = image else { return }
                                                     let borderColor = UIColor.white.image()
                                                     
-                                                    self.adjustmentEngine.borderColor = borderColor
-                                                    self.adjustmentEngine.image = image
-
-                                                    guard let combinedImageData: Data = self.adjustmentEngine.blendImages(backgroundImg: borderColor, foregroundImg: image) else {return}
-                                                    let combinedImage = UIImage(data: combinedImageData)
-                                                    self.imageView.image = combinedImage
+                                                    
+                                                    let border = self.adjustmentEngine.createBorderColor(borderColor: borderColor, foregroundImage: image)
+                                                    self.imageView.image = border
+                                                    
+                                                    
+                                                    let renderImage = self.adjustmentEngine.createRenderImage(foregroundImage: image, imgSizeMultiplier: 0.0)
+                                                    self.imageViewTop.image = renderImage
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
                                                     
             })
         }
@@ -128,24 +136,24 @@ class PhotoEditorViewController: UIViewController {
         progressPercentageLabel.text = "0%"
         
         setupNavBar()
-
+        
     }
     
     // create navigation bar
     fileprivate func setupNavBar() {
         let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
         let startingYPos = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
-
+        
         let navItem = UINavigationItem(title: "Bordery")
         navItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelAction))
-
+        
         let navBar = UINavigationBar(frame: CGRect(x: 0, y: startingYPos, width: view.bounds.width, height: 44))
         navBar.barTintColor = UIColor(named: "backgroundColor")
         navBar.isTranslucent = false
         navBar.tintColor = UIColor.white
         navBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navBar.setItems([navItem], animated: true)
-
+        
         view.addSubview(navBar)
     }
     
@@ -155,17 +163,14 @@ class PhotoEditorViewController: UIViewController {
         barView.backgroundColor = .clear
         imageView.backgroundColor = .clear
     }
-
+    
     @IBAction func sliderDidChange(_ sender: UISlider) {
         print(sender.value)
+        let y:Float = (sender.minimumValue + sender.maximumValue) - sender.value
         
-        let borderColor = adjustmentEngine.borderColor
-        let image = adjustmentEngine.image
-        adjustmentEngine.imgSizeMultiplier = CGFloat(sender.value)
+        let imgSizeMultiplier: CGFloat = CGFloat(y)
         
-        guard let combinedImageData: Data = adjustmentEngine.blendImages(backgroundImg: borderColor, foregroundImg: image) else {return}
-        let combinedImage = UIImage(data: combinedImageData)
-        self.imageView.image = combinedImage
+        imageViewTop.transform = CGAffineTransform(scaleX: imgSizeMultiplier, y: imgSizeMultiplier)
     }
     
     // MARK: - Selector functions
