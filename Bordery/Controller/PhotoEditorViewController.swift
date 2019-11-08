@@ -48,12 +48,12 @@ class PhotoEditorViewController: UIViewController {
         hide(progress: true, barItemOnEdit: true, ui: true, slider: true)
         
         setupUI()
-        setupConstraint()
         // bar item on editing
         setupBarItemOnEdit()
         // Adjustment View
         setupAdjustmentView()
         setupAdjustmentSlider()
+        setupConstraint()
         
         setupDebug()
     }
@@ -144,14 +144,14 @@ class PhotoEditorViewController: UIViewController {
         let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
         let startingYPos = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
         
-        let navItem = UINavigationItem(title: "Bordery")
+        let navItem = UINavigationItem(title: "Bordery.")
         navItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelAction))
         
         let navBar = UINavigationBar(frame: CGRect(x: 0, y: startingYPos, width: view.bounds.width, height: 44))
         navBar.barTintColor = UIColor(named: "backgroundColor")
         navBar.isTranslucent = false
         navBar.tintColor = UIColor.white
-        navBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navBar.titleTextAttributes = [.foregroundColor: UIColor.white, .font: UIFont(font: .SFUIDisplay, weight: .heavy, size: 22)!]
         navBar.setItems([navItem], animated: true)
         
         view.addSubview(navBar)
@@ -165,9 +165,19 @@ class PhotoEditorViewController: UIViewController {
     }
     
     @IBAction func sliderDidChange(_ sender: UISlider) {
-        print(sender.value)
-        let y:Float = (sender.minimumValue + sender.maximumValue) - sender.value
+        // converting the ratio and to 0 - 10
+        let oldRange:Float = sender.maximumValue - sender.minimumValue
+        let newRange:Float = 10 - 0
+        let a:Float = sender.value - sender.minimumValue
+        let b:Float = a * newRange
+        let c:Float = b / oldRange
+        let newValue:Float = c + 0
+
+        DispatchQueue.main.async {
+            self.sliderValueLabel.text = String(format: "%.01f", newValue)
+        }
         
+        let y:Float = (sender.minimumValue + sender.maximumValue) - sender.value
         let imgSizeMultiplier: CGFloat = CGFloat(y)
         
         imageViewTop.transform = CGAffineTransform(scaleX: imgSizeMultiplier, y: imgSizeMultiplier)

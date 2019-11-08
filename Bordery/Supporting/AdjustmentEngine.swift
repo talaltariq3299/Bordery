@@ -11,7 +11,7 @@ import UIKit
 
 class AdjustmentEngine {
     var imgSizeMultiplier: CGFloat = 0.0
-    static let adjusmentName:[String] = ["Size", "Colour"]
+    static let adjusmentName:[String] = ["Thickness", "Colour"]
     
     
     // MARK: - Blend image function

@@ -10,7 +10,7 @@
 		9E40EEF7236E9CD5000436C5 /* PhotoEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E40EEF5236E9CD5000436C5 /* PhotoEditorViewController.swift */; };
 		9E40EEFB236E9D30000436C5 /* PhotoEditorVC_Extension+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E40EEF9236E9D30000436C5 /* PhotoEditorVC_Extension+.swift */; };
 		9E40EEFC236E9D30000436C5 /* PhotoLibraryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E40EEFA236E9D30000436C5 /* PhotoLibraryCollectionViewController.swift */; };
-		9E40EEFE236EB40F000436C5 /* UIColorExtension+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E40EEFD236EB40F000436C5 /* UIColorExtension+.swift */; };
+		9E40EEFE236EB40F000436C5 /* ClassExtension+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E40EEFD236EB40F000436C5 /* ClassExtension+.swift */; };
 		9EB21E852370043200D764A0 /* AdjustmentEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB21E842370043200D764A0 /* AdjustmentEngine.swift */; };
 		9EF0DB23236C0F6E00969F9F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF0DB22236C0F6E00969F9F /* AppDelegate.swift */; };
 		9EF0DB25236C0F6E00969F9F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF0DB24236C0F6E00969F9F /* SceneDelegate.swift */; };
@@ -25,7 +25,7 @@
 		9E40EEF5236E9CD5000436C5 /* PhotoEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoEditorViewController.swift; sourceTree = "<group>"; };
 		9E40EEF9236E9D30000436C5 /* PhotoEditorVC_Extension+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PhotoEditorVC_Extension+.swift"; sourceTree = "<group>"; };
 		9E40EEFA236E9D30000436C5 /* PhotoLibraryCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCollectionViewController.swift; sourceTree = "<group>"; };
-		9E40EEFD236EB40F000436C5 /* UIColorExtension+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColorExtension+.swift"; sourceTree = "<group>"; };
+		9E40EEFD236EB40F000436C5 /* ClassExtension+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClassExtension+.swift"; sourceTree = "<group>"; };
 		9EB21E842370043200D764A0 /* AdjustmentEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustmentEngine.swift; sourceTree = "<group>"; };
 		9EF0DB1F236C0F6E00969F9F /* Bordery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bordery.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EF0DB22236C0F6E00969F9F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -103,7 +103,7 @@
 				9EF0DB22236C0F6E00969F9F /* AppDelegate.swift */,
 				9EF0DB24236C0F6E00969F9F /* SceneDelegate.swift */,
 				9EF0DB3E236C10E300969F9F /* PhotoLibraryCollectionViewCell.swift */,
-				9E40EEFD236EB40F000436C5 /* UIColorExtension+.swift */,
+				9E40EEFD236EB40F000436C5 /* ClassExtension+.swift */,
 				9EB21E842370043200D764A0 /* AdjustmentEngine.swift */,
 			);
 			path = Supporting;
@@ -194,7 +194,7 @@
 				9EF0DB25236C0F6E00969F9F /* SceneDelegate.swift in Sources */,
 				9EB21E852370043200D764A0 /* AdjustmentEngine.swift in Sources */,
 				9E40EEFC236E9D30000436C5 /* PhotoLibraryCollectionViewController.swift in Sources */,
-				9E40EEFE236EB40F000436C5 /* UIColorExtension+.swift in Sources */,
+				9E40EEFE236EB40F000436C5 /* ClassExtension+.swift in Sources */,
 				9E40EEFB236E9D30000436C5 /* PhotoEditorVC_Extension+.swift in Sources */,
 				9EF0DB43236C148B00969F9F /* AlertService.swift in Sources */,
 			);

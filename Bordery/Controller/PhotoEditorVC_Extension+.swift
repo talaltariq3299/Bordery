@@ -67,7 +67,6 @@ extension PhotoEditorViewController {
         hide(progress: nil, barItemOnEdit: false, ui: nil, slider: false)
     }
     
-    
     // create bar items to present option to proceed or not on an edit
     func setupBarItemOnEdit() {
         barItemOnEditStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -127,6 +126,9 @@ extension PhotoEditorViewController {
     
     // create a slider for adjusting the image
     func setupAdjustmentSlider() {
+        editorView.addSubview(sliderValueLabel)
+        editorView.addSubview(adjustmentNameLabel)
+        
         adjustmentSliderOutlet.maximumValue = 1.0
         adjustmentSliderOutlet.minimumValue = 0.5
         adjustmentSliderOutlet.value = 0.5
@@ -134,6 +136,18 @@ extension PhotoEditorViewController {
         adjustmentSliderOutlet.maximumTrackTintColor = UIColor(named: "backgroundSecondColor")
         adjustmentSliderOutlet.minimumTrackTintColor = UIColor.gray
         adjustmentSliderOutlet.thumbTintColor = UIColor.white
+        
+        // setup labels
+        sliderValueLabel.font = UIFont.preferredFont(forTextStyle: .caption2)
+        sliderValueLabel.text = String(0.0)
+        sliderValueLabel.textColor = UIColor.white
+        sliderValueLabel.textAlignment = .center
+        sliderValueLabel.numberOfLines = 0
+        
+        adjustmentNameLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        adjustmentNameLabel.textColor = UIColor.white
+        adjustmentNameLabel.textAlignment = .center
+        adjustmentNameLabel.numberOfLines = 0
     }
     
     // MARK: - Hide elements function
@@ -153,6 +167,8 @@ extension PhotoEditorViewController {
         if let slider = slider {
             adjustmentFiltersScrollView.isHidden = !slider
             adjustmentSliderOutlet.isHidden = slider
+            sliderValueLabel.isHidden = slider
+            adjustmentNameLabel.isHidden = slider
         }
     }
     
@@ -201,12 +217,26 @@ extension PhotoEditorViewController {
             barView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
             ])
         
+        // setup the constraints for the labels and slider.
         adjustmentSliderOutlet.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
+            adjustmentSliderOutlet.topAnchor.constraint(equalTo: editorView.topAnchor, constant: 40),
             adjustmentSliderOutlet.centerXAnchor.constraint(equalTo: editorView.centerXAnchor),
-            adjustmentSliderOutlet.centerYAnchor.constraint(equalTo: editorView.centerYAnchor),
-            adjustmentSliderOutlet.widthAnchor.constraint(equalToConstant: editorView.frame.height * 1.5)
-        ])
+            adjustmentSliderOutlet.widthAnchor.constraint(equalToConstant: editorView.frame.height * 1.6),
+            adjustmentSliderOutlet.heightAnchor.constraint(equalToConstant: editorView.frame.height * 0.2)
+            ])
+        
+        sliderValueLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            sliderValueLabel.topAnchor.constraint(equalTo: adjustmentSliderOutlet.bottomAnchor, constant: 10),
+            sliderValueLabel.centerXAnchor.constraint(equalTo: adjustmentSliderOutlet.centerXAnchor)
+            ])
+        
+        adjustmentNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            adjustmentNameLabel.topAnchor.constraint(equalToSystemSpacingBelow: editorView.topAnchor, multiplier: -10),
+            adjustmentNameLabel.centerXAnchor.constraint(equalTo: editorView.centerXAnchor)
+            ])
     }
     
 }
