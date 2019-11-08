@@ -151,9 +151,12 @@ class PhotoEditorViewController: UIViewController {
         navBar.barTintColor = UIColor(named: "backgroundColor")
         navBar.isTranslucent = false
         navBar.tintColor = UIColor.white
-        navBar.titleTextAttributes = [.foregroundColor: UIColor.white, .font: UIFont(font: .SFUIDisplay, weight: .heavy, size: 22)!]
+        guard let customFont = UIFont(name: "NewYorkMedium-Semibold", size: 20) else {
+            fatalError("Failed to load the font")
+        }
+        navBar.titleTextAttributes = [.foregroundColor: UIColor.white, .font: customFont]
         navBar.setItems([navItem], animated: true)
-        
+
         view.addSubview(navBar)
     }
     

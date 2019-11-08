@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E39E007237594C600C15513 /* NewYorkMedium-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E39E005237594C600C15513 /* NewYorkMedium-Regular.otf */; };
+		9E39E008237594C600C15513 /* NewYorkMedium-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E39E006237594C600C15513 /* NewYorkMedium-Semibold.otf */; };
 		9E40EEF7236E9CD5000436C5 /* PhotoEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E40EEF5236E9CD5000436C5 /* PhotoEditorViewController.swift */; };
 		9E40EEFB236E9D30000436C5 /* PhotoEditorVC_Extension+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E40EEF9236E9D30000436C5 /* PhotoEditorVC_Extension+.swift */; };
 		9E40EEFC236E9D30000436C5 /* PhotoLibraryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E40EEFA236E9D30000436C5 /* PhotoLibraryCollectionViewController.swift */; };
@@ -22,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9E39E005237594C600C15513 /* NewYorkMedium-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NewYorkMedium-Regular.otf"; sourceTree = "<group>"; };
+		9E39E006237594C600C15513 /* NewYorkMedium-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NewYorkMedium-Semibold.otf"; sourceTree = "<group>"; };
 		9E40EEF5236E9CD5000436C5 /* PhotoEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoEditorViewController.swift; sourceTree = "<group>"; };
 		9E40EEF9236E9D30000436C5 /* PhotoEditorVC_Extension+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PhotoEditorVC_Extension+.swift"; sourceTree = "<group>"; };
 		9E40EEFA236E9D30000436C5 /* PhotoLibraryCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCollectionViewController.swift; sourceTree = "<group>"; };
@@ -49,6 +53,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9E39E009237594F800C15513 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				9E39E005237594C600C15513 /* NewYorkMedium-Regular.otf */,
+				9E39E006237594C600C15513 /* NewYorkMedium-Semibold.otf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		9EF0DB16236C0F6E00969F9F = {
 			isa = PBXGroup;
 			children = (
@@ -68,6 +81,7 @@
 		9EF0DB21236C0F6E00969F9F /* Bordery */ = {
 			isa = PBXGroup;
 			children = (
+				9E39E009237594F800C15513 /* Fonts */,
 				9EF0DB39236C0FCF00969F9F /* Service */,
 				9EF0DB38236C0FBA00969F9F /* Supporting */,
 				9EF0DB37236C0FB000969F9F /* View */,
@@ -178,6 +192,8 @@
 				9EF0DB2F236C0F6F00969F9F /* LaunchScreen.storyboard in Resources */,
 				9EF0DB2C236C0F6F00969F9F /* Assets.xcassets in Resources */,
 				9EF0DB2A236C0F6E00969F9F /* Main.storyboard in Resources */,
+				9E39E008237594C600C15513 /* NewYorkMedium-Semibold.otf in Resources */,
+				9E39E007237594C600C15513 /* NewYorkMedium-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
