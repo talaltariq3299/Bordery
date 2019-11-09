@@ -277,6 +277,10 @@ extension PhotoEditorViewController {
         }
     }
     
+    func mainButtonHide(size: Bool?, colour: Bool?, ratio: Bool?) {
+        
+    }
+    
     // MARK: - Constraints
     func setupConstraint() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
