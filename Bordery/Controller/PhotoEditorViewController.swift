@@ -23,7 +23,10 @@ class PhotoEditorViewController: UIViewController {
     let adjustmentEngine = AdjustmentEngine()
     
     // editorView properties
-    lazy var adjustmentFiltersScrollView = UIScrollView()
+//    lazy var adjustmentFiltersScrollView = UIScrollView()
+    lazy var sizeButton = UIButton()
+    lazy var colourButton = UIButton()
+    lazy var ratioButton = UIButton()
     lazy var sliderValueLabel = UILabel()
     lazy var adjustmentNameLabel = UILabel()
     // barView Properties
@@ -48,10 +51,11 @@ class PhotoEditorViewController: UIViewController {
         hide(progress: true, barItemOnEdit: true, ui: true, slider: true)
         
         setupUI()
-        // bar item on editing
+        // bar item on editing (x or checkmark)
         setupBarItemOnEdit()
         // Adjustment View
-        setupAdjustmentView()
+//        setupAdjustmentView()
+        setupMainButtons()
         setupAdjustmentSlider()
         setupConstraint()
         
@@ -194,12 +198,12 @@ class PhotoEditorViewController: UIViewController {
     // function for barItem on Edit
     @objc func cancelButtonTapped() {
         hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true)
-        adjustmentFiltersScrollView.isHidden = false
+//        adjustmentFiltersScrollView.isHidden = false
     }
     
     @objc func checkButtonTapped() {
         hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true)
-        adjustmentFiltersScrollView.isHidden = false
+//        adjustmentFiltersScrollView.isHidden = false
         
     }
     
