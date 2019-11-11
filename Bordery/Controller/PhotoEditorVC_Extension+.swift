@@ -79,6 +79,7 @@ extension PhotoEditorViewController {
         let labelSize = 40
         let textSize: CGFloat = 13
         
+        // --------
         sizeButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
         sizeButton.backgroundColor = .clear
         sizeButton.addTarget(self, action: #selector(sizeButtonTapped), for: .touchUpInside)
@@ -104,6 +105,7 @@ extension PhotoEditorViewController {
             sizeLabel.centerYAnchor.constraint(equalTo: sizeButton.centerYAnchor, constant: 30)
         ])
 
+        // --------
         colourButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
         colourButton.backgroundColor = .clear
         colourButton.addTarget(self, action: #selector(colourButtonTapped), for: .touchUpInside)
@@ -129,6 +131,7 @@ extension PhotoEditorViewController {
             colourLabel.centerYAnchor.constraint(equalTo: colourButton.centerYAnchor, constant: 30)
         ])
         
+        // --------
         ratioButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
         ratioButton.backgroundColor = .clear
         ratioButton.addTarget(self, action: #selector(ratioButtonTapped), for: .touchUpInside)
@@ -161,7 +164,10 @@ extension PhotoEditorViewController {
     }
     
     @objc func sizeButtonTapped(sender: UIButton!) {
-      print("size button tapped")
+        adjustmentNameLabel.text = adjustmentEngine.adjustmentName[0]
+        mainButtonHide(true)
+        hide(progress: nil, barItemOnEdit: false, ui: nil, slider: false)
+        
     }
     
     @objc func colourButtonTapped(sender: UIButton!) {
@@ -191,7 +197,6 @@ extension PhotoEditorViewController {
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         cancelButton.backgroundColor = UIColor(named: "backgroundColor")
         cancelButton.contentEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        cancelButton.layer.cornerRadius = 20
         
         let cancelButtonWrapper = UIView()
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
@@ -210,7 +215,6 @@ extension PhotoEditorViewController {
         checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         checkButton.backgroundColor = UIColor(named: "backgroundColor")
         checkButton.contentEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        checkButton.layer.cornerRadius = 20
         
         let checkButtonWrapper = UIView()
         checkButton.translatesAutoresizingMaskIntoConstraints = false
@@ -270,16 +274,20 @@ extension PhotoEditorViewController {
             barView.isHidden = ui
         }
         if let slider = slider {
-//            adjustmentFiltersScrollView.isHidden = !slider
             adjustmentSliderOutlet.isHidden = slider
             sliderValueLabel.isHidden = slider
             adjustmentNameLabel.isHidden = slider
         }
     }
     
-    func mainButtonHide(size: Bool?, colour: Bool?, ratio: Bool?) {
-        
-    }
+    
+    // this function is to hide the main buttons for showing detailed panel.
+    func mainButtonHide(_ bool: Bool) {
+        colourButton.isHidden = bool
+        sizeButton.isHidden = bool
+        ratioButton.isHidden = bool
+}
+
     
     // MARK: - Constraints
     func setupConstraint() {

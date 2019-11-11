@@ -110,10 +110,8 @@ class PhotoEditorViewController: UIViewController {
                                                     guard let image = image else { return }
                                                     let borderColor = UIColor.white.image()
                                                     
-                                                    
                                                     let border = self.adjustmentEngine.createBorderColor(borderColor: borderColor, foregroundImage: image)
                                                     self.imageView.image = border
-                                                    
                                                     
                                                     let renderImage = self.adjustmentEngine.createRenderImage(foregroundImage: image, imgSizeMultiplier: 0.0)
                                                     self.imageViewTop.image = renderImage
@@ -198,12 +196,25 @@ class PhotoEditorViewController: UIViewController {
     // function for barItem on Edit
     @objc func cancelButtonTapped() {
         hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true)
-//        adjustmentFiltersScrollView.isHidden = false
+        mainButtonHide(false)
     }
     
     @objc func checkButtonTapped() {
         hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true)
-//        adjustmentFiltersScrollView.isHidden = false
+        mainButtonHide(false)
+        
+        if adjustmentNameLabel.text == adjustmentEngine.adjustmentName[0] {
+            print("size executed")
+        }
+        else if adjustmentNameLabel.text == adjustmentEngine.adjustmentName[1] {
+            print("colour executed")
+        }
+        else if adjustmentNameLabel.text == adjustmentEngine.adjustmentName[2] {
+            print("ratio executed")
+        }
+        else {
+            fatalError("No execution detected! PhotoEditorVC checkButtonTapped function")
+        }
         
     }
     
