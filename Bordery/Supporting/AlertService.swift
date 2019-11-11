@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-class AlertService {
+struct AlertService {
     /**
      * Display the invalid alert to the users.
      * - viewController: The view controller that will display the alert.

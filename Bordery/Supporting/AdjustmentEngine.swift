@@ -15,6 +15,9 @@ import UIKit
 struct AdjustmentEngine {
     var imgSizeMultiplier: CGFloat = 0.0
     let adjustmentName:[String] = ["Size", "Colour", "Ratio"]
+    var sliderCurrentValue: Float = 0.0
+    var sliderCurrentValueRatio: String = "0.0"
+    var imgSizeMultiplierCurrent: CGFloat = 1.0
     
     
         // MARK: - Blend image function

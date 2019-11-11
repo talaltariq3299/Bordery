@@ -15,24 +15,42 @@ struct ColourSelector {
     let buttonWidth: CGFloat
     let buttonHeight: CGFloat
     
-    let gapBetweenButtons: CGFloat = 5
+    let gapBetweenButtons: CGFloat = 10
+//    let colourName = [
+//        ["white", "#FFFFFF"],
+//        ["White Bone", "#E0D8C3"],
+//        ["black", "#000000"],
+//        ["Forest Green", "#065125"],
+//        ["Gold", "#DDA033"],
+//        ["Red Flame", "#E2532F"],
+//        ["Blue munsell", "#0D97AC"],
+//    ]
+//
     let colourName = [
         ["white", "#FFFFFF"],
-        ["black", "#000000"],
         ["White Bone", "#E0D8C3"],
-        ["Forest Green", "#065125"],
-        ["Gold", "#DDA033"],
-        ["Red Flame", "#E2532F"],
-        ["Blue munsell", "#0D97AC"],
+        ["black", "#000000"],
+        ["Uspdell Red", "#AD242C"], //R
+        ["Orange Flame", "#E2532F"], //O
+        ["Gold", "#DDA033"], // Y
+        ["Forest Green", "#065125"], // G
+        ["Blue munsell", "#0D97AC"], // B
+        ["Rhino Blue", "#354065"], // I
+        ["Violet Purple", "#272961"] // V
+        
     ]
     
     init(editorViewW: CGFloat, editorViewH: CGFloat, viewFrameH: CGFloat, heightMultConst: CGFloat) {
         self.xCoord = editorViewW * 0.02
-        self.yCoord = editorViewH * 0.15
+        self.yCoord = editorViewH * 0.17
         self.buttonWidth = editorViewH * 0.4
-        self.buttonHeight = viewFrameH * heightMultConst * 0.7
+        self.buttonHeight = viewFrameH * heightMultConst * 0.68
     }
     
+    /**
+     Creates an array of buttons of colour picker.
+     - Returns: An array of buttons complete with its properties.
+     */
     mutating func createButtonArray() -> [UIButton] {
         var itemCount = 0
         var colourButtons: [UIButton] = [UIButton()]
@@ -48,16 +66,35 @@ struct ColourSelector {
             colourButton.layer.borderColor = .none
             colourButton.tag = itemCount
             colourButton.clipsToBounds = true
-            colourButton.setTitle(colourName[i][0], for: .normal)
+            
+            let xOffset: CGFloat = 0.025
+            let yOffset: CGFloat = 0.55
+            
+            // create labels
+            let colourLabel = UILabel(frame: CGRect(x: colourButton.frame.width * xOffset, y: colourButton.frame.height * yOffset, width: 85, height: 20))
+            colourLabel.textAlignment = .left
+            colourLabel.text = colourName[i][0]
+            colourLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.bold)
+            colourLabel.sizeToFit()
 
-            // change the text colour for contrast
+            // --------
+            let hexLabel = UILabel(frame: CGRect(x: colourButton.frame.width * xOffset, y: colourButton.frame.height * (yOffset + 0.15), width: 80, height: 20))
+            hexLabel.textAlignment = .left
+            hexLabel.text = colourName[i][1]
+            hexLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
+            
+            // colour for better usability
             switch colourName[i][1] {
                 case "#FFFFFF", "#E0D8C3":
-                    colourButton.setTitleColor(.black, for: .normal)
-                    
+                    colourLabel.textColor = UIColor.black
+                    hexLabel.textColor = UIColor.black
                 default:
-                    colourButton.setTitleColor(.white, for: .normal)
+                    colourLabel.textColor = UIColor.white
+                    hexLabel.textColor = UIColor.white
             }
+            
+            colourButton.addSubview(colourLabel)
+            colourButton.addSubview(hexLabel)
             
             xCoord += buttonWidth + gapBetweenButtons
             colourButtons.append(colourButton)
@@ -66,7 +103,12 @@ struct ColourSelector {
         return colourButtons
     }
     
-    
+    /**
+     Convert hexadecimal value to UIColor.
+     - Parameters:
+        - hex: a hex string. ie: "#ffffff"
+     - Returns: the UIColor variable.
+     */
     fileprivate func hexStringToUIColor (hex:String) -> UIColor {
         var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
 

@@ -225,11 +225,11 @@ extension PhotoEditorViewController {
         }
         
         // rearrange to fit the content
-        colourSelectorScrollView.contentSize = CGSize(width: colourSelector.buttonWidth * CGFloat(Double(colourSelector.colourName.count) + 0.5), height: colourSelectorScrollView.frame.height)
+        colourSelectorScrollView.contentSize = CGSize(width: colourSelector.buttonWidth * CGFloat(Double(colourSelector.colourName.count) + 1.2), height: colourSelectorScrollView.frame.height)
     }
     
     @objc func colourTapped(sender: UIButton) {
-        print(sender.titleLabel!)
+        print(sender.tag)
     }
     
     // MARK: - Hide elements function

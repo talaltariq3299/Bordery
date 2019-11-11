@@ -22,11 +22,6 @@ class PhotoEditorViewController: UIViewController {
     }
     var adjustmentEngine = AdjustmentEngine()
     
-    // storing to enable undo button
-    private var sliderCurrentValue: Float = 0.0
-    private var sliderCurrentValueRatio: String = "0.0"
-    private var imgSizeMultiplierCurrent: CGFloat = 1.0
-    
     // editorView properties
     lazy var sizeButton = UIButton()
     lazy var colourButton = UIButton()
@@ -125,7 +120,7 @@ class PhotoEditorViewController: UIViewController {
                                                     self.imageViewTop.image = renderImage
                                                     
                                                     self.adjustmentEngine.imgSizeMultiplier = 0.0
-                                                    self.sliderCurrentValue = 0.0
+                                                    self.adjustmentEngine.sliderCurrentValue = 0.0
             })
         }
     }
@@ -168,7 +163,7 @@ class PhotoEditorViewController: UIViewController {
     
     // for debugging
     fileprivate func setupDebug() {
-        editorView.backgroundColor = .purple
+        editorView.backgroundColor = .clear
         barView.backgroundColor = .clear
         imageView.backgroundColor = .clear
     }
@@ -200,12 +195,10 @@ class PhotoEditorViewController: UIViewController {
                 hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true, colourSelector: nil)
                 
                 // reset the configuration back to its previous state
-                adjustmentSliderOutlet.value = sliderCurrentValue
-                sliderValueLabel.text = "\(sliderCurrentValueRatio) pts"
-                imageViewTop.transform = CGAffineTransform(scaleX: imgSizeMultiplierCurrent, y: imgSizeMultiplierCurrent)
-                
-                
-                
+                adjustmentSliderOutlet.value = adjustmentEngine.sliderCurrentValue
+                sliderValueLabel.text = "\(adjustmentEngine.sliderCurrentValueRatio) pts"
+                imageViewTop.transform = CGAffineTransform(scaleX: adjustmentEngine.imgSizeMultiplierCurrent, y: adjustmentEngine.imgSizeMultiplierCurrent)
+
             case adjustmentEngine.adjustmentName[1]:
                 hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: true)
                 print("colour executed")
@@ -228,12 +221,12 @@ class PhotoEditorViewController: UIViewController {
                 // convert to 0 - 0.5 range for blending
                 var ratioConverter = RangeConverter(oldMax: adjustmentSliderOutlet.maximumValue, oldMin: adjustmentSliderOutlet.minimumValue, newMax: 0.5, newMin: 0, oldValue: adjustmentSliderOutlet.value)
                 adjustmentEngine.imgSizeMultiplier = CGFloat(ratioConverter.getNewValueFloat())
-                sliderCurrentValue = adjustmentSliderOutlet.value
+                adjustmentEngine.sliderCurrentValue = adjustmentSliderOutlet.value
                 
                 // convert to 0 - 10 range and store current value for future undo.
                 var ratioConverter2 = RangeConverter(oldMax: adjustmentSliderOutlet.maximumValue, oldMin: adjustmentSliderOutlet.minimumValue, newMax: 10, newMin: 0, oldValue: adjustmentSliderOutlet.value)
-                sliderCurrentValueRatio = ratioConverter2.getNewValueStr(decimalPlace: 1)
-                imgSizeMultiplierCurrent = imageViewTop.transform.a
+                adjustmentEngine.sliderCurrentValueRatio = ratioConverter2.getNewValueStr(decimalPlace: 1)
+                adjustmentEngine.imgSizeMultiplierCurrent = imageViewTop.transform.a
                 
             case adjustmentEngine.adjustmentName[1]:
                 print("colour executed")
