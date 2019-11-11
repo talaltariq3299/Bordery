@@ -20,7 +20,12 @@ class PhotoEditorViewController: UIViewController {
         let scale = UIScreen.main.scale
         return CGSize(width: imageView.bounds.width * scale, height: imageView.bounds.height * scale)
     }
-    let adjustmentEngine = AdjustmentEngine()
+    var adjustmentEngine = AdjustmentEngine()
+    
+    // storing to enable undo button
+    private var sliderCurrentValue: Float = 0.0
+    private var sliderCurrentValueRatio: String = "0.0"
+    private var imgSizeMultiplierCurrent: CGFloat = 1.0
     
     // editorView properties
 //    lazy var adjustmentFiltersScrollView = UIScrollView()
@@ -113,15 +118,11 @@ class PhotoEditorViewController: UIViewController {
                                                     let border = self.adjustmentEngine.createBorderColor(borderColor: borderColor, foregroundImage: image)
                                                     self.imageView.image = border
                                                     
-                                                    let renderImage = self.adjustmentEngine.createRenderImage(foregroundImage: image, imgSizeMultiplier: 0.0)
+                                                    let renderImage = self.adjustmentEngine.createRenderImage(foregroundImage: image)
                                                     self.imageViewTop.image = renderImage
                                                     
-                                                    
-                                                    
-                                                    
-                                                    
-                                                    
-                                                    
+                                                    self.adjustmentEngine.imgSizeMultiplier = 0.0
+                                                    self.sliderCurrentValue = 0.0
             })
         }
     }
@@ -170,16 +171,10 @@ class PhotoEditorViewController: UIViewController {
     }
     
     @IBAction func sliderDidChange(_ sender: UISlider) {
-        // converting the ratio and to 0 - 10
-        let oldRange:Float = sender.maximumValue - sender.minimumValue
-        let newRange:Float = 10 - 0
-        let a:Float = sender.value - sender.minimumValue
-        let b:Float = a * newRange
-        let c:Float = b / oldRange
-        let newValue:Float = c + 0
-
+        // convert the range
+        var ratioConverter = RangeConverter(oldMax: sender.maximumValue, oldMin: sender.minimumValue, newMax: 10, newMin: 0, oldValue: sender.value)
         DispatchQueue.main.async {
-            self.sliderValueLabel.text = String(format: "%.01f", newValue)
+            self.sliderValueLabel.text = "\(ratioConverter.getNewValueStr(decimalPlace: 1)) pts"
         }
         
         let y:Float = (sender.minimumValue + sender.maximumValue) - sender.value
@@ -197,22 +192,52 @@ class PhotoEditorViewController: UIViewController {
     @objc func cancelButtonTapped() {
         hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true)
         mainButtonHide(false)
+        
+        switch adjustmentNameLabel.text {
+        case adjustmentEngine.adjustmentName[0]:
+            
+            // reset the configuration back to its previous state
+            adjustmentSliderOutlet.value = sliderCurrentValue
+            sliderValueLabel.text = "\(sliderCurrentValueRatio) pts"
+            imageViewTop.transform = CGAffineTransform(scaleX: imgSizeMultiplierCurrent, y: imgSizeMultiplierCurrent)
+            
+            
+            
+        case adjustmentEngine.adjustmentName[1]:
+            print("colour executed")
+            
+        case adjustmentEngine.adjustmentName[2]:
+            print("ratio executed")
+            
+        default:
+            fatalError("No execution detected! PhotoEditorVC checkButtonTapped function")
+        }
     }
     
     @objc func checkButtonTapped() {
         hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true)
         mainButtonHide(false)
         
-        if adjustmentNameLabel.text == adjustmentEngine.adjustmentName[0] {
-            print("size executed")
-        }
-        else if adjustmentNameLabel.text == adjustmentEngine.adjustmentName[1] {
+        switch adjustmentNameLabel.text {
+        case adjustmentEngine.adjustmentName[0]:
+            
+            // convert to 0 - 0.5 range for blending
+            var ratioConverter = RangeConverter(oldMax: adjustmentSliderOutlet.maximumValue, oldMin: adjustmentSliderOutlet.minimumValue, newMax: 0.5, newMin: 0, oldValue: adjustmentSliderOutlet.value)
+            adjustmentEngine.imgSizeMultiplier = CGFloat(ratioConverter.getNewValueFloat())
+            sliderCurrentValue = adjustmentSliderOutlet.value
+            
+            // convert to 0 - 10 range and store current value for future undo.
+            var ratioConverter2 = RangeConverter(oldMax: adjustmentSliderOutlet.maximumValue, oldMin: adjustmentSliderOutlet.minimumValue, newMax: 10, newMin: 0, oldValue: adjustmentSliderOutlet.value)
+            sliderCurrentValueRatio = ratioConverter2.getNewValueStr(decimalPlace: 1)
+            imgSizeMultiplierCurrent = imageViewTop.transform.a
+            
+        case adjustmentEngine.adjustmentName[1]:
             print("colour executed")
-        }
-        else if adjustmentNameLabel.text == adjustmentEngine.adjustmentName[2] {
+            
+        case adjustmentEngine.adjustmentName[2]:
             print("ratio executed")
-        }
-        else {
+            
+        default:
             fatalError("No execution detected! PhotoEditorVC checkButtonTapped function")
         }
         

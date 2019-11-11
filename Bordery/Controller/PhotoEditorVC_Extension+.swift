@@ -248,7 +248,7 @@ extension PhotoEditorViewController {
         
         // setup labels
         sliderValueLabel.font = UIFont.preferredFont(forTextStyle: .caption2)
-        sliderValueLabel.text = String(0.0)
+        sliderValueLabel.text = "0.0 pts"
         sliderValueLabel.textColor = UIColor.white
         sliderValueLabel.textAlignment = .center
         sliderValueLabel.numberOfLines = 0
