@@ -28,12 +28,15 @@ class PhotoEditorViewController: UIViewController {
     private var imgSizeMultiplierCurrent: CGFloat = 1.0
     
     // editorView properties
-//    lazy var adjustmentFiltersScrollView = UIScrollView()
     lazy var sizeButton = UIButton()
     lazy var colourButton = UIButton()
     lazy var ratioButton = UIButton()
+    // size
     lazy var sliderValueLabel = UILabel()
     lazy var adjustmentNameLabel = UILabel()
+    // colour
+    lazy var colourSelectorScrollView = UIScrollView()
+    
     // barView Properties
     lazy var barItemOnEditStackView = UIStackView()
     
@@ -53,17 +56,17 @@ class PhotoEditorViewController: UIViewController {
         super.viewDidLoad()
         
         // hide the elements on default
-        hide(progress: true, barItemOnEdit: true, ui: true, slider: true)
+        hide(progress: true, barItemOnEdit: true, ui: true, slider: true, colourSelector: true)
         
         setupUI()
-        // bar item on editing (x or checkmark)
-        setupBarItemOnEdit()
-        // Adjustment View
-//        setupAdjustmentView()
+        setupBarItemOnEdit() // bar item on editing (x or checkmark)
+        
+        //editorView
         setupMainButtons()
         setupAdjustmentSlider()
-        setupConstraint()
+        setupColourSelector()
         
+        setupConstraint()
         setupDebug()
     }
     
@@ -83,7 +86,7 @@ class PhotoEditorViewController: UIViewController {
     // MARK: - Main Functions
     // image downloading function
     fileprivate func updateImage() {
-        hide(progress: false, barItemOnEdit: nil, ui: nil, slider: nil)
+        hide(progress: false, barItemOnEdit: nil, ui: nil, slider: nil, colourSelector: nil)
         // reset the progressBar value
         progressBarOutlet.progress = 0.0
         
@@ -111,7 +114,7 @@ class PhotoEditorViewController: UIViewController {
         if asset != nil {
             PHImageManager.default().requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options,
                                                   resultHandler: { image, _ in
-                                                    self.hide(progress: true, barItemOnEdit: nil, ui: false, slider: nil)
+                                                    self.hide(progress: true, barItemOnEdit: nil, ui: false, slider: nil, colourSelector: nil)
                                                     guard let image = image else { return }
                                                     let borderColor = UIColor.white.image()
                                                     
@@ -165,7 +168,7 @@ class PhotoEditorViewController: UIViewController {
     
     // for debugging
     fileprivate func setupDebug() {
-        editorView.backgroundColor = .clear
+        editorView.backgroundColor = .purple
         barView.backgroundColor = .clear
         imageView.backgroundColor = .clear
     }
@@ -190,55 +193,57 @@ class PhotoEditorViewController: UIViewController {
     
     // function for barItem on Edit
     @objc func cancelButtonTapped() {
-        hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true)
         mainButtonHide(false)
         
         switch adjustmentNameLabel.text {
-        case adjustmentEngine.adjustmentName[0]:
-            
-            // reset the configuration back to its previous state
-            adjustmentSliderOutlet.value = sliderCurrentValue
-            sliderValueLabel.text = "\(sliderCurrentValueRatio) pts"
-            imageViewTop.transform = CGAffineTransform(scaleX: imgSizeMultiplierCurrent, y: imgSizeMultiplierCurrent)
-            
-            
-            
-        case adjustmentEngine.adjustmentName[1]:
-            print("colour executed")
-            
-        case adjustmentEngine.adjustmentName[2]:
-            print("ratio executed")
-            
-        default:
-            fatalError("No execution detected! PhotoEditorVC checkButtonTapped function")
+            case adjustmentEngine.adjustmentName[0]:
+                hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true, colourSelector: nil)
+                
+                // reset the configuration back to its previous state
+                adjustmentSliderOutlet.value = sliderCurrentValue
+                sliderValueLabel.text = "\(sliderCurrentValueRatio) pts"
+                imageViewTop.transform = CGAffineTransform(scaleX: imgSizeMultiplierCurrent, y: imgSizeMultiplierCurrent)
+                
+                
+                
+            case adjustmentEngine.adjustmentName[1]:
+                hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: true)
+                print("colour executed")
+                
+            case adjustmentEngine.adjustmentName[2]:
+                print("ratio executed")
+                
+            default:
+                fatalError("No execution detected! PhotoEditorVC checkButtonTapped function")
         }
     }
     
     @objc func checkButtonTapped() {
-        hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true)
         mainButtonHide(false)
         
         switch adjustmentNameLabel.text {
-        case adjustmentEngine.adjustmentName[0]:
-            
-            // convert to 0 - 0.5 range for blending
-            var ratioConverter = RangeConverter(oldMax: adjustmentSliderOutlet.maximumValue, oldMin: adjustmentSliderOutlet.minimumValue, newMax: 0.5, newMin: 0, oldValue: adjustmentSliderOutlet.value)
-            adjustmentEngine.imgSizeMultiplier = CGFloat(ratioConverter.getNewValueFloat())
-            sliderCurrentValue = adjustmentSliderOutlet.value
-            
-            // convert to 0 - 10 range and store current value for future undo.
-            var ratioConverter2 = RangeConverter(oldMax: adjustmentSliderOutlet.maximumValue, oldMin: adjustmentSliderOutlet.minimumValue, newMax: 10, newMin: 0, oldValue: adjustmentSliderOutlet.value)
-            sliderCurrentValueRatio = ratioConverter2.getNewValueStr(decimalPlace: 1)
-            imgSizeMultiplierCurrent = imageViewTop.transform.a
-            
-        case adjustmentEngine.adjustmentName[1]:
-            print("colour executed")
-            
-        case adjustmentEngine.adjustmentName[2]:
-            print("ratio executed")
-            
-        default:
-            fatalError("No execution detected! PhotoEditorVC checkButtonTapped function")
+            case adjustmentEngine.adjustmentName[0]:
+                hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true, colourSelector: nil)
+                
+                // convert to 0 - 0.5 range for blending
+                var ratioConverter = RangeConverter(oldMax: adjustmentSliderOutlet.maximumValue, oldMin: adjustmentSliderOutlet.minimumValue, newMax: 0.5, newMin: 0, oldValue: adjustmentSliderOutlet.value)
+                adjustmentEngine.imgSizeMultiplier = CGFloat(ratioConverter.getNewValueFloat())
+                sliderCurrentValue = adjustmentSliderOutlet.value
+                
+                // convert to 0 - 10 range and store current value for future undo.
+                var ratioConverter2 = RangeConverter(oldMax: adjustmentSliderOutlet.maximumValue, oldMin: adjustmentSliderOutlet.minimumValue, newMax: 10, newMin: 0, oldValue: adjustmentSliderOutlet.value)
+                sliderCurrentValueRatio = ratioConverter2.getNewValueStr(decimalPlace: 1)
+                imgSizeMultiplierCurrent = imageViewTop.transform.a
+                
+            case adjustmentEngine.adjustmentName[1]:
+                print("colour executed")
+                hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: true)
+                
+            case adjustmentEngine.adjustmentName[2]:
+                print("ratio executed")
+                
+            default:
+                fatalError("No execution detected! PhotoEditorVC checkButtonTapped function")
         }
         
     }

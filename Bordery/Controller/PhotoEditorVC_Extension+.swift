@@ -11,62 +11,6 @@ import UIKit
 
 extension PhotoEditorViewController {
     
-    // MARK: - Adjustment View
-    // create adjustment filters scrollview
-//    func setupAdjustmentView() {
-//        editorView.addSubview(adjustmentFiltersScrollView)
-//        adjustmentFiltersScrollView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            adjustmentFiltersScrollView.topAnchor.constraint(equalTo: editorView.topAnchor),
-//            adjustmentFiltersScrollView.leftAnchor.constraint(equalTo: editorView.leftAnchor),
-//            adjustmentFiltersScrollView.rightAnchor.constraint(equalTo: editorView.rightAnchor),
-//            adjustmentFiltersScrollView.bottomAnchor.constraint(equalTo: editorView.bottomAnchor)
-//        ])
-//
-//        adjustmentFiltersScrollView.showsHorizontalScrollIndicator = false
-//
-//        // adjustments button
-//        var xCoord: CGFloat = editorView.frame.width * 0.02
-//        let yCoord: CGFloat = editorView.frame.height * 0.02
-//        let buttonWidth:CGFloat = editorView.frame.height * 0.4
-//        let buttonHeight: CGFloat = view.frame.height * VIEW_HEIGHTMULTIPLIER_CONSTANT * 0.85
-//        let adjusmentName = AdjustmentEngine.adjusmentName
-//
-//        let gapBetweenButtons: CGFloat = 5
-//
-//        var itemCount = 0
-//        for i in 0..<adjusmentName.count {
-//            itemCount = i
-//            // Button properties
-//            let adjustmentButton = UIButton(type: .custom)
-//            adjustmentButton.frame = CGRect(x: xCoord, y: yCoord, width: buttonWidth, height: buttonHeight)
-//            adjustmentButton.backgroundColor = UIColor(named:"backgroundSecondColor")
-//            adjustmentButton.tag = itemCount
-//            adjustmentButton.addTarget(self, action: #selector(adjustmentTapped), for: .touchUpInside)
-//            adjustmentButton.layer.cornerRadius = 6
-//            adjustmentButton.clipsToBounds = true
-//
-//            adjustmentButton.setTitle(adjusmentName[i], for: .normal)
-//
-//            // Add Buttons in the Scroll View
-//            xCoord +=  buttonWidth + gapBetweenButtons
-//            adjustmentFiltersScrollView.addSubview(adjustmentButton)
-//        }
-//
-//        // resize the scrollView to match the content.
-//        adjustmentFiltersScrollView.contentSize = CGSize(width: buttonWidth * CGFloat(itemCount + 2), height: adjustmentFiltersScrollView.frame.height)
-//
-//    }
-//
-//    @objc func adjustmentTapped(sender: UIButton) {
-//        adjustmentNameLabel.text = sender.title(for: .normal)
-//
-//        adjustmentFiltersScrollView.isHidden = true
-//        adjustmentSliderOutlet.tag = sender.tag
-//
-//        hide(progress: nil, barItemOnEdit: false, ui: nil, slider: false)
-//    }
-    
     // main buttons for the app
     func setupMainButtons() {
         // variables
@@ -166,12 +110,15 @@ extension PhotoEditorViewController {
     @objc func sizeButtonTapped(sender: UIButton!) {
         adjustmentNameLabel.text = adjustmentEngine.adjustmentName[0]
         mainButtonHide(true)
-        hide(progress: nil, barItemOnEdit: false, ui: nil, slider: false)
+        hide(progress: nil, barItemOnEdit: false, ui: nil, slider: false, colourSelector: nil)
         
     }
     
     @objc func colourButtonTapped(sender: UIButton!) {
-      print("colour button tapped")
+        print("colour button tapped")
+        mainButtonHide(true)
+        adjustmentNameLabel.text = adjustmentEngine.adjustmentName[1]
+        hide(progress: nil, barItemOnEdit: false, ui: nil, slider: nil, colourSelector: false)
     }
     
     @objc func ratioButtonTapped(sender: UIButton!) {
@@ -233,6 +180,7 @@ extension PhotoEditorViewController {
         
     }
     
+    // MARK: - Functions to create the Editor UI
     // create a slider for adjusting the image
     func setupAdjustmentSlider() {
         editorView.addSubview(sliderValueLabel)
@@ -259,8 +207,33 @@ extension PhotoEditorViewController {
         adjustmentNameLabel.numberOfLines = 0
     }
     
+    // create colour selectors
+    func setupColourSelector() {
+        var colourSelector = ColourSelector(editorViewW: editorView.frame.width, editorViewH: editorView.frame.height, viewFrameH: view.frame.height, heightMultConst: VIEW_HEIGHTMULTIPLIER_CONSTANT)
+        
+        // add to subview
+        editorView.addSubview(adjustmentNameLabel)
+        editorView.addSubview(colourSelectorScrollView)
+        colourSelectorScrollView.showsHorizontalScrollIndicator = false
+        
+        // instantiate
+        let colourButtons: [UIButton] = colourSelector.createButtonArray()
+        
+        for colourButton in colourButtons {
+            colourButton.addTarget(self, action: #selector(colourTapped), for: .touchUpInside)
+            colourSelectorScrollView.addSubview(colourButton)
+        }
+        
+        // rearrange to fit the content
+        colourSelectorScrollView.contentSize = CGSize(width: colourSelector.buttonWidth * CGFloat(Double(colourSelector.colourName.count) + 0.5), height: colourSelectorScrollView.frame.height)
+    }
+    
+    @objc func colourTapped(sender: UIButton) {
+        print(sender.titleLabel!)
+    }
+    
     // MARK: - Hide elements function
-    func hide(progress: Bool?, barItemOnEdit: Bool?, ui: Bool?, slider: Bool?) {
+    func hide(progress: Bool?, barItemOnEdit: Bool?, ui: Bool?, slider: Bool?, colourSelector: Bool?) {
         if let progress = progress {
             self.progressDownloadingLabel.isHidden = progress
             self.progressPercentageLabel.isHidden = progress
@@ -277,6 +250,10 @@ extension PhotoEditorViewController {
             adjustmentSliderOutlet.isHidden = slider
             sliderValueLabel.isHidden = slider
             adjustmentNameLabel.isHidden = slider
+        }
+        if let colourSelector = colourSelector {
+            adjustmentNameLabel.isHidden = colourSelector
+            colourSelectorScrollView.isHidden = colourSelector
         }
     }
     
@@ -377,6 +354,14 @@ extension PhotoEditorViewController {
             adjustmentNameLabel.bottomAnchor.constraint(equalTo: adjustmentSliderOutlet.topAnchor, constant: -15),
             adjustmentNameLabel.centerXAnchor.constraint(equalTo: editorView.centerXAnchor)
             ])
+        
+        colourSelectorScrollView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            colourSelectorScrollView.topAnchor.constraint(equalTo: editorView.topAnchor),
+            colourSelectorScrollView.leftAnchor.constraint(equalTo: editorView.leftAnchor),
+            colourSelectorScrollView.rightAnchor.constraint(equalTo: editorView.rightAnchor),
+            colourSelectorScrollView.bottomAnchor.constraint(equalTo: editorView.bottomAnchor)
+        ])
     }
     
 }
