@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 
 struct ColourSelector {
+    var currentColour: UIColor
+    
     var xCoord: CGFloat
     let yCoord: CGFloat
     let buttonWidth: CGFloat
@@ -40,11 +42,12 @@ struct ColourSelector {
         
     ]
     
-    init(editorViewW: CGFloat, editorViewH: CGFloat, viewFrameH: CGFloat, heightMultConst: CGFloat) {
+    init(editorViewW: CGFloat, editorViewH: CGFloat, viewFrameH: CGFloat, heightMultConst: CGFloat, currentColor: UIColor = .white) {
         self.xCoord = editorViewW * 0.02
         self.yCoord = editorViewH * 0.17
         self.buttonWidth = editorViewH * 0.4
         self.buttonHeight = viewFrameH * heightMultConst * 0.68
+        self.currentColour = currentColor
     }
     
     /**

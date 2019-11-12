@@ -111,13 +111,11 @@ extension PhotoEditorViewController {
         adjustmentNameLabel.text = adjustmentEngine.adjustmentName[0]
         mainButtonHide(true)
         hide(progress: nil, barItemOnEdit: false, ui: nil, slider: false, colourSelector: nil)
-        
     }
     
     @objc func colourButtonTapped(sender: UIButton!) {
-        print("colour button tapped")
-        mainButtonHide(true)
         adjustmentNameLabel.text = adjustmentEngine.adjustmentName[1]
+        mainButtonHide(true)
         hide(progress: nil, barItemOnEdit: false, ui: nil, slider: nil, colourSelector: false)
     }
     
@@ -225,11 +223,13 @@ extension PhotoEditorViewController {
         }
         
         // rearrange to fit the content
-        colourSelectorScrollView.contentSize = CGSize(width: colourSelector.buttonWidth * CGFloat(Double(colourSelector.colourName.count) + 1.2), height: colourSelectorScrollView.frame.height)
+        colourSelectorScrollView.contentSize = CGSize(width: colourSelector.buttonWidth * CGFloat(Double(colourSelector.colourName.count) + 1.3), height: colourSelectorScrollView.frame.height)
     }
     
+    // function when a colour is tapped
     @objc func colourTapped(sender: UIButton) {
-        print(sender.tag)
+        let borderColor = sender.backgroundColor!
+        borderView.backgroundColor = borderColor
     }
     
     // MARK: - Hide elements function

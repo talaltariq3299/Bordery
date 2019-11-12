@@ -31,6 +31,7 @@ class PhotoEditorViewController: UIViewController {
     lazy var adjustmentNameLabel = UILabel()
     // colour
     lazy var colourSelectorScrollView = UIScrollView()
+    lazy var borderView = UIView()
     
     // barView Properties
     lazy var barItemOnEditStackView = UIStackView()
@@ -96,7 +97,7 @@ class PhotoEditorViewController: UIViewController {
                     self.progressDownloadingLabel.text = "Please check your internet connection and try again."
                 }
                 AlertService.alert(self, title: "No internet Connection!", message: "We cannot download your photos from iCloud. Check your internet Connection and try again.")
-                print("Internet Error. at PhotoEditor VC line 105")
+                print("Internet Error. at PhotoEditor updateImage function.")
             }
             
             // update the UI
@@ -111,16 +112,21 @@ class PhotoEditorViewController: UIViewController {
                                                   resultHandler: { image, _ in
                                                     self.hide(progress: true, barItemOnEdit: nil, ui: false, slider: nil, colourSelector: nil)
                                                     guard let image = image else { return }
-                                                    let borderColor = UIColor.white.image()
                                                     
-                                                    let border = self.adjustmentEngine.createBorderColor(borderColor: borderColor, foregroundImage: image)
-                                                    self.imageView.image = border
-                                                    
+                                                    // the top image that will be resized.
                                                     let renderImage = self.adjustmentEngine.createRenderImage(foregroundImage: image)
                                                     self.imageViewTop.image = renderImage
                                                     
+                                                    // the borderView or the border color view.
+                                                    self.borderView.frame = self.imageViewTop.contentClippingRect
+                                                    self.borderView.backgroundColor = .white
+                                                    
+                                                    self.imageView.addSubview(self.borderView)
+                                                    
                                                     self.adjustmentEngine.imgSizeMultiplier = 0.0
                                                     self.adjustmentEngine.sliderCurrentValue = 0.0
+
+                                                    
             })
         }
     }
@@ -201,13 +207,12 @@ class PhotoEditorViewController: UIViewController {
 
             case adjustmentEngine.adjustmentName[1]:
                 hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: true)
-                print("colour executed")
                 
             case adjustmentEngine.adjustmentName[2]:
                 print("ratio executed")
                 
             default:
-                fatalError("No execution detected! PhotoEditorVC checkButtonTapped function")
+                print("No execution detected! PhotoEditorVC checkButtonTapped function")
         }
     }
     
@@ -229,7 +234,6 @@ class PhotoEditorViewController: UIViewController {
                 adjustmentEngine.imgSizeMultiplierCurrent = imageViewTop.transform.a
                 
             case adjustmentEngine.adjustmentName[1]:
-                print("colour executed")
                 hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: true)
                 
             case adjustmentEngine.adjustmentName[2]:
