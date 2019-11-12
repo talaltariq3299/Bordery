@@ -20,7 +20,7 @@ class PhotoEditorViewController: UIViewController {
         let scale = UIScreen.main.scale
         return CGSize(width: imageView.bounds.width * scale, height: imageView.bounds.height * scale)
     }
-    var adjustmentEngine = AdjustmentEngine()
+    var adjustmentEngine = borderEngine()
     var colourSelector: ColourEngine!
     
     // editorView properties
