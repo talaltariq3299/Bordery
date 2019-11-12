@@ -13,7 +13,7 @@ import PhotosUI
 private let reuseIdentifier = "photoCell"
 
 // this class is heavily inspired by apple's. (reference: PhotoKit Example Project)
-class PhotoLibraryCollectionViewController: UICollectionViewController {
+class PhotoLibraryCollectionViewController: UICollectionViewController, UIGestureRecognizerDelegate {
     
     var fetchResult: PHFetchResult<PHAsset>!
     var assetCollection: PHAssetCollection!
@@ -45,6 +45,12 @@ class PhotoLibraryCollectionViewController: UICollectionViewController {
             allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
             fetchResult = PHAsset.fetchAssets(with: .image, options: allPhotosOptions)
         }
+        
+        // long press gesture
+        let longPressGR = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(longPressGR:)))
+        longPressGR.minimumPressDuration = 0.3
+        longPressGR.delaysTouchesBegan = true
+        self.collectionView.addGestureRecognizer(longPressGR)
     }
     
     deinit {
@@ -170,6 +176,27 @@ class PhotoLibraryCollectionViewController: UICollectionViewController {
             AlertService.alert(self, title: "Permission Error", message: "Please allow photo library access through setting.")
             print("Permission Denied. Line 170 at PhotoLibraryVC")
         }
+    }
+    
+    // long press gesture function
+    @objc fileprivate func handleLongPress(longPressGR: UILongPressGestureRecognizer) {
+        if longPressGR.state != .ended {
+            TapticEngine.lightTaptic()
+            let point = longPressGR.location(in: self.collectionView)
+            let indexPath = self.collectionView.indexPathForItem(at: point)
+
+            if let indexPath = indexPath {
+                var cell = self.collectionView.cellForItem(at: indexPath)
+                print(indexPath.row)
+                longPressGR.state = .ended
+            }
+            else {
+                print("Could not find index path")
+            }
+            return
+        }
+
+
     }
     
 } // end of class

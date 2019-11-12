@@ -9,8 +9,8 @@
 import Foundation
 import UIKit
 
-struct ColourSelector {
-    var currentColour: UIColor
+struct ColourEngine {
+    var currentColour: UIColor = .white
     
     var xCoord: CGFloat
     let yCoord: CGFloat
@@ -18,16 +18,6 @@ struct ColourSelector {
     let buttonHeight: CGFloat
     
     let gapBetweenButtons: CGFloat = 10
-//    let colourName = [
-//        ["white", "#FFFFFF"],
-//        ["White Bone", "#E0D8C3"],
-//        ["black", "#000000"],
-//        ["Forest Green", "#065125"],
-//        ["Gold", "#DDA033"],
-//        ["Red Flame", "#E2532F"],
-//        ["Blue munsell", "#0D97AC"],
-//    ]
-//
     let colourName = [
         ["white", "#FFFFFF"],
         ["White Bone", "#E0D8C3"],
@@ -42,13 +32,13 @@ struct ColourSelector {
         
     ]
     
-    init(editorViewW: CGFloat, editorViewH: CGFloat, viewFrameH: CGFloat, heightMultConst: CGFloat, currentColor: UIColor = .white) {
+    init(editorViewW: CGFloat, editorViewH: CGFloat, viewFrameH: CGFloat, heightMultConst: CGFloat) {
         self.xCoord = editorViewW * 0.02
         self.yCoord = editorViewH * 0.17
         self.buttonWidth = editorViewH * 0.4
         self.buttonHeight = viewFrameH * heightMultConst * 0.68
-        self.currentColour = currentColor
     }
+    
     
     /**
      Creates an array of buttons of colour picker.

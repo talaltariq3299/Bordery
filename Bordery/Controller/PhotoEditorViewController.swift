@@ -21,6 +21,7 @@ class PhotoEditorViewController: UIViewController {
         return CGSize(width: imageView.bounds.width * scale, height: imageView.bounds.height * scale)
     }
     var adjustmentEngine = AdjustmentEngine()
+    var colourSelector: ColourEngine!
     
     // editorView properties
     lazy var sizeButton = UIButton()
@@ -119,14 +120,12 @@ class PhotoEditorViewController: UIViewController {
                                                     
                                                     // the borderView or the border color view.
                                                     self.borderView.frame = self.imageViewTop.contentClippingRect
-                                                    self.borderView.backgroundColor = .white
+                                                    self.borderView.backgroundColor = self.colourSelector.currentColour
                                                     
                                                     self.imageView.addSubview(self.borderView)
                                                     
                                                     self.adjustmentEngine.imgSizeMultiplier = 0.0
                                                     self.adjustmentEngine.sliderCurrentValue = 0.0
-
-                                                    
             })
         }
     }
@@ -194,6 +193,7 @@ class PhotoEditorViewController: UIViewController {
     
     // function for barItem on Edit
     @objc func cancelButtonTapped() {
+        TapticEngine.lightTaptic()
         mainButtonHide(false)
         
         switch adjustmentNameLabel.text {
@@ -207,6 +207,9 @@ class PhotoEditorViewController: UIViewController {
 
             case adjustmentEngine.adjustmentName[1]:
                 hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: true)
+            
+                // reset the configuration back to it previous state
+                borderView.backgroundColor = colourSelector.currentColour
                 
             case adjustmentEngine.adjustmentName[2]:
                 print("ratio executed")
@@ -217,6 +220,7 @@ class PhotoEditorViewController: UIViewController {
     }
     
     @objc func checkButtonTapped() {
+        TapticEngine.lightTaptic()
         mainButtonHide(false)
         
         switch adjustmentNameLabel.text {
@@ -235,6 +239,8 @@ class PhotoEditorViewController: UIViewController {
                 
             case adjustmentEngine.adjustmentName[1]:
                 hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: true)
+                colourSelector.currentColour = borderView.backgroundColor!
+            
                 
             case adjustmentEngine.adjustmentName[2]:
                 print("ratio executed")

@@ -108,12 +108,14 @@ extension PhotoEditorViewController {
     }
     
     @objc func sizeButtonTapped(sender: UIButton!) {
+        TapticEngine.lightTaptic()
         adjustmentNameLabel.text = adjustmentEngine.adjustmentName[0]
         mainButtonHide(true)
         hide(progress: nil, barItemOnEdit: false, ui: nil, slider: false, colourSelector: nil)
     }
     
     @objc func colourButtonTapped(sender: UIButton!) {
+        TapticEngine.lightTaptic()
         adjustmentNameLabel.text = adjustmentEngine.adjustmentName[1]
         mainButtonHide(true)
         hide(progress: nil, barItemOnEdit: false, ui: nil, slider: nil, colourSelector: false)
@@ -207,7 +209,7 @@ extension PhotoEditorViewController {
     
     // create colour selectors
     func setupColourSelector() {
-        var colourSelector = ColourSelector(editorViewW: editorView.frame.width, editorViewH: editorView.frame.height, viewFrameH: view.frame.height, heightMultConst: VIEW_HEIGHTMULTIPLIER_CONSTANT)
+        colourSelector = ColourEngine(editorViewW: editorView.frame.width, editorViewH: editorView.frame.height, viewFrameH: view.frame.height, heightMultConst: VIEW_HEIGHTMULTIPLIER_CONSTANT)
         
         // add to subview
         editorView.addSubview(adjustmentNameLabel)
@@ -228,6 +230,8 @@ extension PhotoEditorViewController {
     
     // function when a colour is tapped
     @objc func colourTapped(sender: UIButton) {
+        TapticEngine.lightTaptic()
+        
         let borderColor = sender.backgroundColor!
         borderView.backgroundColor = borderColor
     }
