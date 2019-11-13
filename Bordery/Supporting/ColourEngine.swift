@@ -28,7 +28,7 @@ struct ColourEngine {
         ["Forest Green", "#065125"], // G
         ["Blue munsell", "#0D97AC"], // B
         ["Rhino Blue", "#354065"], // I
-        ["Violet Purple", "#272961"] // V
+        ["Violet Purple", "#272961"], // V
         
     ]
     
@@ -122,6 +122,98 @@ struct ColourEngine {
             blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
             alpha: CGFloat(1.0)
         )
+    }
+    
+    
+    /**
+     Creates a colour based on the image
+     - Parameters:
+        - image: The user's picked image
+     - Returns: A button (array)
+     */
+    mutating func colorFromImage(image: UIImage) -> [UIButton] {
+        var masterButton: [UIButton] = [UIButton]()
+        
+        let border = UIButton(type: .custom)
+        border.autoresizingMask = [.flexibleHeight, .flexibleLeftMargin]
+        border.frame = CGRect(x: xCoord, y: yCoord, width: 1, height: buttonHeight)
+        border.backgroundColor = UIColor(named: "backgroundSecondColor")
+        border.clipsToBounds = true
+        
+        xCoord += gapBetweenButtons
+        masterButton.append(border)
+        
+        // button property
+        let borderButton = UIButton(type: .custom)
+        borderButton.autoresizingMask = [.flexibleHeight, .flexibleLeftMargin]
+        borderButton.frame = CGRect(x: xCoord, y: yCoord, width: buttonWidth, height: buttonHeight)
+        borderButton.backgroundColor = .clear
+        borderButton.layer.borderColor = .none
+        borderButton.clipsToBounds = true
+        
+        let xOffset: CGFloat = 0.025
+        let yOffset: CGFloat = 0.55
+        
+        // create labels
+        let borderLabel = UILabel(frame: CGRect(x: borderButton.frame.width * xOffset, y: borderButton.frame.height * yOffset, width: 85, height: 20))
+        borderLabel.textAlignment = .left
+        borderLabel.text = "Colour from\nthe image."
+        borderLabel.numberOfLines = 0
+        borderLabel.textColor = UIColor.white
+        borderLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
+        borderLabel.sizeToFit()
+    
+
+        // --------
+        let borderLabel2 = UILabel(frame: CGRect(x: borderButton.frame.width * xOffset, y: borderButton.frame.height * (yOffset + 0.15), width: 80, height: 20))
+        borderLabel2.textAlignment = .left
+        borderLabel2.text = ""
+        borderLabel2.textColor = UIColor.white
+        borderLabel2.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
+        
+
+        borderButton.addSubview(borderLabel)
+        borderButton.addSubview(borderLabel2)
+        
+        xCoord += buttonWidth + gapBetweenButtons
+        masterButton.append(borderButton)
+        
+        
+        // --------
+        let color = image.averageColor
+        
+        // button property
+        let colourButton = UIButton(type: .custom)
+        colourButton.frame = CGRect(x: xCoord, y: yCoord, width: buttonWidth, height: buttonHeight)
+        colourButton.backgroundColor = color
+        colourButton.layer.borderColor = .none
+        colourButton.clipsToBounds = true
+        
+        // create labels
+        let colourLabel = UILabel(frame: CGRect(x: colourButton.frame.width * xOffset, y: colourButton.frame.height * yOffset, width: 85, height: 20))
+        colourLabel.textAlignment = .left
+        colourLabel.text = "Colour 1"
+        colourLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.bold)
+        colourLabel.sizeToFit()
+
+        // --------
+        let hexLabel = UILabel(frame: CGRect(x: colourButton.frame.width * xOffset, y: colourButton.frame.height * (yOffset + 0.15), width: 80, height: 20))
+        hexLabel.textAlignment = .left
+        hexLabel.text = color?.hexString
+        hexLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
+        
+        // colour for better usability
+        let textColour = colourButton.backgroundColor?.isDarkColor == true ? UIColor.white : UIColor.black
+        colourLabel.textColor = textColour
+        hexLabel.textColor = textColour
+
+        colourButton.addSubview(colourLabel)
+        colourButton.addSubview(hexLabel)
+        
+        xCoord += buttonWidth + gapBetweenButtons
+        masterButton.append(colourButton)
+
+        return masterButton
     }
     
 }

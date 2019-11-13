@@ -114,24 +114,42 @@ class PhotoEditorViewController: UIViewController {
         }
         // request the image and displaying it.
         if asset != nil {
-            PHImageManager.default().requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options,
-                                                  resultHandler: { image, _ in
-                                                    self.hide(progress: true, barItemOnEdit: nil, ui: false, slider: nil, colourSelector: nil, ratioSelector: nil)
-                                                    guard let image = image else { return }
-                                                    
-                                                    // the top image that will be resized.
-                                                    let renderImage = self.borderEngine.createRenderImage(foregroundImage: image)
-                                                    self.imageViewTop.image = renderImage
-                                                    self.oriImage = renderImage
-                                                    
-                                                    // the borderView or the border color view.
-                                                    self.borderView.frame = self.imageViewTop.contentClippingRect
-                                                    self.borderView.backgroundColor = self.colourSelector.currentColour
-                                                    
-                                                    self.imageView.addSubview(self.borderView)
-                                                    
-                                                    self.borderEngine.imgSizeMultiplier = 0.0
-                                                    self.borderEngine.sliderCurrentValue = 0.0
+            PHImageManager.default().requestImage(
+                for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options,
+                  resultHandler: { image, _ in
+                    self.hide(progress: true, barItemOnEdit: nil, ui: false, slider: nil, colourSelector: nil, ratioSelector: nil)
+                    guard let image = image else { return }
+                    
+                    // the top image that will be resized.
+                    let renderImage = self.borderEngine.createRenderImage(foregroundImage: image)
+                    self.imageViewTop.image = renderImage
+                    self.oriImage = renderImage
+                    
+                    // the borderView or the border color view.
+                    self.borderView.frame = self.imageViewTop.contentClippingRect
+                    self.borderView.backgroundColor = self.colourSelector.currentColour
+                    
+                    self.imageView.addSubview(self.borderView)
+                    
+                    self.borderEngine.imgSizeMultiplier = 0.0
+                    self.borderEngine.sliderCurrentValue = 0.0
+                    
+                    // create a custom colour and append to the colour selector screen
+                    DispatchQueue.main.async {
+                        
+                        // add the border
+
+                        let customColorButton: [UIButton] = self.colourSelector.colorFromImage(image: self.oriImage)
+                        
+                        customColorButton.last!.addTarget(self, action: #selector(self.colourTapped), for: .touchUpInside)
+                        for button in customColorButton {
+                            self.colourSelectorScrollView.addSubview(button)
+                        }
+
+                        // rearrange to fit the content
+                        self.colourSelectorScrollView.contentSize = CGSize(width: self.colourSelector.buttonWidth * CGFloat(Double(self.colourSelector.colourName.count + customColorButton.count) + 1.3), height: self.colourSelectorScrollView.frame.height)
+                        
+                    }
             })
         }
     }
@@ -149,7 +167,7 @@ class PhotoEditorViewController: UIViewController {
         
         setupNavBar()
         
-        editorView.addSubview(addTopBorder(with: UIColor(displayP3Red: 40/255, green: 40/255, blue: 40/255, alpha: 1), andWidth: 1, to: editorView))
+        editorView.addSubview(addTopBorder(with: UIColor(named: "backgroundSecondColor"), andWidth: 1, to: editorView))
         
     }
     

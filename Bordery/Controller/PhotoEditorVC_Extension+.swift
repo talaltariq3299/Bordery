@@ -226,9 +226,6 @@ extension PhotoEditorViewController {
             colourButton.addTarget(self, action: #selector(colourTapped), for: .touchUpInside)
             colourSelectorScrollView.addSubview(colourButton)
         }
-        
-        // rearrange to fit the content
-        colourSelectorScrollView.contentSize = CGSize(width: colourSelector.buttonWidth * CGFloat(Double(colourSelector.colourName.count) + 1.3), height: colourSelectorScrollView.frame.height)
     }
     
     // function when a colour is tapped
