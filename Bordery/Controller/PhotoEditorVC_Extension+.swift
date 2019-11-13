@@ -36,7 +36,7 @@ extension PhotoEditorViewController {
         
         let sizeLabel = UILabel(frame: CGRect(x: 0, y: 0, width: labelSize, height: labelSize))
         sizeLabel.textAlignment = .center
-        sizeLabel.text = adjustmentEngine.adjustmentName[0]
+        sizeLabel.text = borderEngine.adjustmentName[0]
         sizeLabel.textColor = UIColor.white
         sizeLabel.font = UIFont.systemFont(ofSize: textSize, weight: UIFont.Weight.regular)
         
@@ -62,7 +62,7 @@ extension PhotoEditorViewController {
         
         let colourLabel = UILabel(frame: CGRect(x: 0, y: 0, width: labelSize, height: labelSize))
         colourLabel.textAlignment = .center
-        colourLabel.text = adjustmentEngine.adjustmentName[1]
+        colourLabel.text = borderEngine.adjustmentName[1]
         colourLabel.textColor = UIColor.white
         colourLabel.font = UIFont.systemFont(ofSize: textSize, weight: UIFont.Weight.regular)
         
@@ -88,7 +88,7 @@ extension PhotoEditorViewController {
         
         let ratioLabel = UILabel(frame: CGRect(x: 0, y: 0, width: labelSize, height: labelSize))
         ratioLabel.textAlignment = .center
-        ratioLabel.text = adjustmentEngine.adjustmentName[2]
+        ratioLabel.text = borderEngine.adjustmentName[2]
         ratioLabel.textColor = UIColor.white
         ratioLabel.font = UIFont.systemFont(ofSize: textSize, weight: UIFont.Weight.regular)
         
@@ -109,20 +109,23 @@ extension PhotoEditorViewController {
     
     @objc func sizeButtonTapped(sender: UIButton!) {
         TapticEngine.lightTaptic()
-        adjustmentNameLabel.text = adjustmentEngine.adjustmentName[0]
+        adjustmentNameLabel.text = borderEngine.adjustmentName[0]
         mainButtonHide(true)
-        hide(progress: nil, barItemOnEdit: false, ui: nil, slider: false, colourSelector: nil)
+        hide(progress: nil, barItemOnEdit: false, ui: nil, slider: false, colourSelector: nil, ratioSelector: nil)
     }
     
     @objc func colourButtonTapped(sender: UIButton!) {
         TapticEngine.lightTaptic()
-        adjustmentNameLabel.text = adjustmentEngine.adjustmentName[1]
+        adjustmentNameLabel.text = borderEngine.adjustmentName[1]
         mainButtonHide(true)
-        hide(progress: nil, barItemOnEdit: false, ui: nil, slider: nil, colourSelector: false)
+        hide(progress: nil, barItemOnEdit: false, ui: nil, slider: nil, colourSelector: false, ratioSelector: nil)
     }
     
     @objc func ratioButtonTapped(sender: UIButton!) {
-      print("ratio button tapped")
+      TapticEngine.lightTaptic()
+      adjustmentNameLabel.text = borderEngine.adjustmentName[2]
+      mainButtonHide(true)
+        hide(progress: nil, barItemOnEdit: nil, ui: nil, slider: nil, colourSelector: nil, ratioSelector: false)
     }
     
     // create bar items to present option to proceed or not on an edit
@@ -236,8 +239,81 @@ extension PhotoEditorViewController {
         borderView.backgroundColor = borderColor
     }
     
+    // create ratio selectors
+    func setupRatioSelector() {
+        ratioSelector = RatioEngine(editorViewW: editorView.frame.width, editorViewH: editorView.frame.height, viewFrameH: view.frame.height, heightMultConst: VIEW_HEIGHTMULTIPLIER_CONSTANT)
+        
+        // add to subview
+        editorView.addSubview(adjustmentNameLabel)
+        editorView.addSubview(ratioSelectorScrollView)
+        ratioSelectorScrollView.showsHorizontalScrollIndicator = false
+        
+        // instantiate
+        let ratioButtons: [UIButton] = ratioSelector.createButtonArray()
+        
+        for ratioButton in ratioButtons {
+            ratioButton.addTarget(self, action: #selector(ratioTapped), for: .touchUpInside)
+            ratioSelectorScrollView.addSubview(ratioButton)
+        }
+        
+        // rearrange to fit the content
+        ratioSelectorScrollView.contentSize = CGSize(width: ratioSelector.buttonWidth * CGFloat(Double(ratioSelector.ratioName.count) + 1.3), height: colourSelectorScrollView.frame.height)
+    }
+    
+    @objc func ratioTapped(sender: UIButton) {
+        TapticEngine.lightTaptic()
+        
+        switch sender.tag {
+            case 0:
+                imageViewTop.image = oriImage
+                borderView.frame = imageViewTop.contentClippingRect
+            
+            case 1:
+                // from the original size's perspective
+                borderView.frame = imageViewTop.contentClippingRect
+                // get the difference to make the border square
+                let heightDiff = borderView.frame.size.width - borderView.frame.size.height
+                // move the y point the same amount the height added.
+                let reducedYPt = borderView.frame.minY - heightDiff / 2
+                borderView.frame.size.height = borderView.frame.size.width
+                // transform.
+                borderView.frame = CGRect(x: 0, y: reducedYPt, width: imageView.frame.width, height: imageView.frame.width)
+                borderView.center = CGPoint(x: imageView.frame.size.width  / 2, y: imageView.frame.size.height / 2)
+                
+                // scale accordingly.
+                // square portrait
+                if oriImage.size.width < oriImage.size.height {
+                    let renderImage = borderEngine.createRenderImageSquare(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
+                    imageViewTop.image = renderImage
+                }
+                
+            case 2:
+                fatalError("No value found!")
+//                // preserve ratio
+//                let newW = 9 * imageView.frame.height / 16
+//                borderView.frame = CGRect(x: 0, y: 0, width: newW, height: imageView.frame.height)
+//                borderView.center = CGPoint(x: imageView.frame.width  / 2, y: imageView.frame.height / 2)
+//
+//                if oriImage.size.width > oriImage.size.height {
+//                    let renderImage = borderEngine.createRenderImagePortrait(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
+//                    imageViewTop.image = renderImage
+//                }
+//                // portrait portrait
+//                else {
+//                    let renderImage = borderEngine.createRenderImagePortrait(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
+//                    imageViewTop.image = renderImage
+//                }
+            
+            default:
+                print("No tag matches! ratioTapped function on PhotoEditorVC Extension+")
+        }
+        
+        hide(progress: nil, barItemOnEdit: nil, ui: nil, slider: nil, colourSelector: nil, ratioSelector: true)
+        mainButtonHide(false)
+    }
+    
     // MARK: - Hide elements function
-    func hide(progress: Bool?, barItemOnEdit: Bool?, ui: Bool?, slider: Bool?, colourSelector: Bool?) {
+    func hide(progress: Bool?, barItemOnEdit: Bool?, ui: Bool?, slider: Bool?, colourSelector: Bool?, ratioSelector: Bool?) {
         if let progress = progress {
             self.progressDownloadingLabel.isHidden = progress
             self.progressPercentageLabel.isHidden = progress
@@ -258,6 +334,10 @@ extension PhotoEditorViewController {
         if let colourSelector = colourSelector {
             adjustmentNameLabel.isHidden = colourSelector
             colourSelectorScrollView.isHidden = colourSelector
+        }
+        if let ratioSelector = ratioSelector {
+            adjustmentNameLabel.isHidden = ratioSelector
+            ratioSelectorScrollView.isHidden = ratioSelector
         }
     }
     
@@ -366,6 +446,23 @@ extension PhotoEditorViewController {
             colourSelectorScrollView.rightAnchor.constraint(equalTo: editorView.rightAnchor),
             colourSelectorScrollView.bottomAnchor.constraint(equalTo: editorView.bottomAnchor)
         ])
+        
+        ratioSelectorScrollView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            ratioSelectorScrollView.topAnchor.constraint(equalTo: editorView.topAnchor),
+            ratioSelectorScrollView.leftAnchor.constraint(equalTo: editorView.leftAnchor),
+            ratioSelectorScrollView.rightAnchor.constraint(equalTo: editorView.rightAnchor),
+            ratioSelectorScrollView.bottomAnchor.constraint(equalTo: editorView.bottomAnchor)
+        ])
     }
     
+    // from https://stackoverflow.com/questions/17355280/how-to-add-a-border-just-on-the-top-side-of-a-uiview
+    func addTopBorder(with color: UIColor?, andWidth borderWidth: CGFloat, to: UIView) -> UIView {
+        let border = UIView()
+        border.backgroundColor = color
+        border.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
+        border.frame = CGRect(x: 0, y: 0, width: to.frame.size.width, height: borderWidth)
+        
+        return border
+    }
 }
