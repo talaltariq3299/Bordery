@@ -20,6 +20,7 @@ struct RatioEngine {
     let gapBetweenButtons: CGFloat = 10
     
     let ratioName = ["Original", "Square"]
+    let ratioIcon = ["original-icon", "square-icon"]
     
     init(editorViewW: CGFloat, editorViewH: CGFloat, viewFrameH: CGFloat, heightMultConst: CGFloat) {
         self.xCoord = editorViewW * 0.02
@@ -43,23 +44,34 @@ struct RatioEngine {
             // button property
             let ratioButton = UIButton(type: .custom)
             ratioButton.frame = CGRect(x: xCoord, y: yCoord, width: buttonWidth, height: buttonHeight)
-            ratioButton.backgroundColor = UIColor.black
+            ratioButton.backgroundColor = .clear
             ratioButton.layer.borderColor = .none
             ratioButton.tag = itemCount
             ratioButton.clipsToBounds = true
             
-            let xOffset: CGFloat = 0.025
-            let yOffset: CGFloat = 0.55
+            let buttonImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
+            buttonImage.image = UIImage(named: ratioIcon[i])?.withRenderingMode(.alwaysTemplate)
+            buttonImage.tintColor = .white
+            buttonImage.contentMode = .scaleAspectFit
+            buttonImage.center = CGPoint(x: ratioButton.frame.size.width / 2, y: ratioButton.frame.size.height * 0.35)
+            
+
+            ratioButton.addSubview(buttonImage)
+            
+            let xOffset: CGFloat = 0.5
+            let yOffset: CGFloat = 0.65
             
             // create labels
             let ratioLabel = UILabel(frame: CGRect(x: ratioButton.frame.width * xOffset, y: ratioButton.frame.height * yOffset, width: 85, height: 20))
-            ratioLabel.textAlignment = .left
+            ratioLabel.textAlignment = .center
             ratioLabel.text = ratioName[i]
             ratioLabel.textColor = UIColor.white
             ratioLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.bold)
             ratioLabel.sizeToFit()
+            ratioLabel.center = CGPoint(x: ratioButton.frame.size.width / 2, y: ratioButton.frame.size.height * 0.8)
             
             ratioButton.addSubview(ratioLabel)
+            
             
             xCoord += buttonWidth + gapBetweenButtons
             ratioButtons.append(ratioButton)
