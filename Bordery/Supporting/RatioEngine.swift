@@ -23,9 +23,9 @@ struct RatioEngine {
     
     init(editorViewW: CGFloat, editorViewH: CGFloat, viewFrameH: CGFloat, heightMultConst: CGFloat) {
         self.xCoord = editorViewW * 0.02
-        self.yCoord = editorViewH * 0.17
+        self.yCoord = editorViewH * 0.23
         self.buttonWidth = editorViewH * 0.4
-        self.buttonHeight = viewFrameH * heightMultConst * 0.68
+        self.buttonHeight = viewFrameH * heightMultConst * 0.60
     }
     
     

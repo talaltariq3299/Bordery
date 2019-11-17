@@ -14,7 +14,7 @@ import CoreImage
 class PhotoEditorViewController: UIViewController {
     
     // Global Variables
-    let VIEW_HEIGHTMULTIPLIER_CONSTANT: CGFloat = 0.19
+    let VIEW_HEIGHTMULTIPLIER_CONSTANT: CGFloat = 0.18
     var asset: PHAsset!
     var targetSize: CGSize {
         let scale = UIScreen.main.scale
@@ -24,6 +24,7 @@ class PhotoEditorViewController: UIViewController {
     var colourSelector: ColourEngine!
     var ratioSelector: RatioEngine!
     var oriImage: UIImage!
+    var exportSelector: ExportEngine!
     
     // editorView properties
     lazy var sizeButton = UIButton()
@@ -37,9 +38,15 @@ class PhotoEditorViewController: UIViewController {
     lazy var borderView = UIView()
     //Ratio
     lazy var ratioSelectorScrollView = UIScrollView()
+    lazy var noticeLabel = UILabel()
     
     // barView Properties
     lazy var barItemOnEditStackView = UIStackView()
+    lazy var borderButton = UIButton()
+    lazy var saveButton = UIButton()
+    
+    // export
+    lazy var exportSelectorScrollView = UIScrollView()
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var imageViewTop: UIImageView!
@@ -58,15 +65,18 @@ class PhotoEditorViewController: UIViewController {
         
         // hide the elements on default
         hide(progress: true, barItemOnEdit: true, ui: true, slider: true, colourSelector: true, ratioSelector: true)
+        exportButtonHide(true)
         
         setupUI()
         setupBarItemOnEdit() // bar item on editing (x or checkmark)
+        setupMenuBar()
         
         //editorView
         setupMainButtons()
         setupAdjustmentSlider()
         setupColourSelector()
         setupRatioSelector()
+        setupExportSelector()
         
         setupConstraint()
         setupDebug()
@@ -156,6 +166,21 @@ class PhotoEditorViewController: UIViewController {
     
     // MARK: - Supporting Functions
     fileprivate func setupUI() {
+        adjustmentNameLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        adjustmentNameLabel.textColor = UIColor.white
+        adjustmentNameLabel.textAlignment = .center
+        adjustmentNameLabel.numberOfLines = 0
+        
+        noticeLabel.frame = CGRect(x: 0, y: 0, width: 100, height: 21)
+        noticeLabel.textAlignment = .center
+        noticeLabel.text = "The app will automatically adjust the ratio and return to the previous screen."
+        noticeLabel.textColor = .gray
+        noticeLabel.font = UIFont.systemFont(ofSize: 11)
+        noticeLabel.numberOfLines = 0
+        noticeLabel.sizeToFit()
+        
+        noticeLabel.isHidden = true
+        
         view.backgroundColor = UIColor(named: "backgroundColor")
         // progress colour
         progressPercentageLabel.textColor = UIColor.white
@@ -221,6 +246,7 @@ class PhotoEditorViewController: UIViewController {
     @objc func cancelButtonTapped() {
         TapticEngine.lightTaptic()
         mainButtonHide(false)
+        menuBarHide(false)
         
         switch adjustmentNameLabel.text {
             case borderEngine.adjustmentName[0]:
@@ -248,6 +274,7 @@ class PhotoEditorViewController: UIViewController {
     @objc func checkButtonTapped() {
         TapticEngine.lightTaptic()
         mainButtonHide(false)
+        menuBarHide(false)
         
         switch adjustmentNameLabel.text {
             case borderEngine.adjustmentName[0]:
