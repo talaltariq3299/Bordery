@@ -141,7 +141,7 @@ class PhotoEditorViewController: UIViewController {
                     self.imageView.addSubview(self.borderView)
                     
                     // final rendering
-                    self.imageViewTop.image = self.borderEngine.createRenderImage(foregroundImage: self.oriImage, backgroundImageFrame: self.borderView.frame)
+                    self.imageViewTop.image = self.borderEngine.createRenderImage(foregroundImage: self.imageViewTop.image!, backgroundImageFrame: self.borderView.frame)
                     
                     self.borderEngine.imgSizeMultiplier = 0.0
                     self.borderEngine.sliderCurrentValue = 0.0
