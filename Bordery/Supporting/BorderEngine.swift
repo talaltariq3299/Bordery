@@ -20,51 +20,58 @@ struct BorderEngine {
     var imgSizeMultiplierCurrent: CGFloat = 1.0
     
     
-        // MARK: - Blend image function
-    //    func blendImages(backgroundImg: UIImage,foregroundImg: UIImage) -> Data? {
-    //        // size variable
-    //        let contentSizeH = foregroundImg.size.height
-    //        let contentSizeW = foregroundImg.size.width
-    //
-    //        // the magic. how the image will scale in the view.
-    //        let topImageH = foregroundImg.size.height - (foregroundImg.size.height * imgSizeMultiplier)
-    //        let topImageW = foregroundImg.size.width - (foregroundImg.size.width * imgSizeMultiplier)
-    //
-    //        let bottomImage = backgroundImg
-    //        let topImage = foregroundImg
-    //
-    //        let imgView = UIImageView(frame: CGRect(x: 0, y: 0, width : contentSizeW, height: contentSizeH))
-    //        let imgView2 = UIImageView(frame: CGRect(x: 0, y: 0, width: topImageW, height: topImageH))
-    //
-    //        // - Set Content mode to what you desire
-    //        imgView.contentMode = .scaleAspectFill
-    //        imgView2.contentMode = .scaleAspectFit
-    //
-    //        // - Set Images
-    //        imgView.image = bottomImage
-    //        imgView2.image = topImage
-    //
-    //        imgView2.center = imgView.center
-    //
-    //        // - Create UIView
-    //        let contentView = UIView(frame: CGRect(x: 0, y: 0, width: contentSizeW, height: contentSizeH))
-    //        contentView.addSubview(imgView)
-    //        contentView.addSubview(imgView2)
-    //
-    //        // - Set Size
-    //        let size = CGSize(width: contentSizeW, height: contentSizeH)
-    //
-    //        UIGraphicsBeginImageContextWithOptions(size, true, 0)
-    //        contentView.drawHierarchy(in: contentView.bounds, afterScreenUpdates: true)
-    //
-    //        guard let i = UIGraphicsGetImageFromCurrentImageContext(),
-    //            let data = i.jpegData(compressionQuality: 1.0)
-    //            else {return nil}
-    //
-    //        UIGraphicsEndImageContext()
-    //
-    //        return data
-    //    }
+    // MARK: - Blend image function
+    /**
+     Creates the final image blended
+     - Parameter:
+        - backgroundImg: the border
+        - foregroundImg: the image
+     - Returns: JPEG data.
+     */
+    func blendImages(backgroundImg: UIImage,foregroundImg: UIImage) -> Data? {
+        // size variable
+        let contentSizeH = backgroundImg.size.height
+        let contentSizeW = backgroundImg.size.width
+        
+        // the magic. how the image will scale in the view.
+        let topImageH = foregroundImg.size.height - (foregroundImg.size.height * imgSizeMultiplier)
+        let topImageW = foregroundImg.size.width - (foregroundImg.size.width * imgSizeMultiplier)
+        
+        let bottomImage = backgroundImg
+        let topImage = foregroundImg
+        
+        let imgView = UIImageView(frame: CGRect(x: 0, y: 0, width : contentSizeW, height: contentSizeH))
+        let imgView2 = UIImageView(frame: CGRect(x: 0, y: 0, width: topImageW, height: topImageH))
+        
+        // - Set Content mode to what you desire
+        imgView.contentMode = .scaleAspectFill
+        imgView2.contentMode = .scaleAspectFit
+        
+        // - Set Images
+        imgView.image = bottomImage
+        imgView2.image = topImage
+        
+        imgView2.center = imgView.center
+        
+        // - Create UIView
+        let contentView = UIView(frame: CGRect(x: 0, y: 0, width: contentSizeW, height: contentSizeH))
+        contentView.addSubview(imgView)
+        contentView.addSubview(imgView2)
+        
+        // - Set Size
+        let size = CGSize(width: contentSizeW, height: contentSizeH)
+        
+        UIGraphicsBeginImageContextWithOptions(size, true, 0)
+        contentView.drawHierarchy(in: contentView.bounds, afterScreenUpdates: true)
+        
+        guard let i = UIGraphicsGetImageFromCurrentImageContext(),
+            let data = i.jpegData(compressionQuality: 1.0)
+            else {return nil}
+        
+        UIGraphicsEndImageContext()
+        
+        return data
+    }
     
     /**
      Creates the border of the image.
@@ -99,9 +106,9 @@ struct BorderEngine {
         - foregroundImage: The image that will be resized
      - Returns: The rendered image.
      */
-    func createRenderImage(foregroundImage: UIImage) -> UIImage {
-        let imageSizeH = foregroundImage.size.height
-        let imageSizeW = foregroundImage.size.width
+    func createRenderImage(foregroundImage: UIImage, backgroundImageFrame: CGRect) -> UIImage {
+        let imageSizeH = backgroundImageFrame.size.height
+        let imageSizeW = backgroundImageFrame.size.width
         
         let imgView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageSizeW, height: imageSizeH))
         
@@ -110,35 +117,13 @@ struct BorderEngine {
         
         let size = CGSize(width: imageSizeW, height: imageSizeH)
         
-        UIGraphicsBeginImageContextWithOptions(size, true, 0)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
         imgView.drawHierarchy(in: imgView.bounds, afterScreenUpdates: true)
         
         guard let i = UIGraphicsGetImageFromCurrentImageContext() else {return UIImage()}
         
         return i
     }
-    
-    
-    
-    
-//    func createBorderColorSquare(borderColor: UIImage) -> UIImage {
-//        let contentSize: CGFloat = 306
-//
-//        let imgView = UIImageView(frame: CGRect(x: 0, y: 0, width: contentSize, height: contentSize))
-//
-//        imgView.contentMode = .scaleAspectFill
-//        imgView.image = borderColor
-//
-//        let size = CGSize(width: contentSize, height: contentSize)
-//
-//        UIGraphicsBeginImageContextWithOptions(size, true, 0)
-//        imgView.drawHierarchy(in: imgView.bounds, afterScreenUpdates: true)
-//
-//        guard let i = UIGraphicsGetImageFromCurrentImageContext() else { return UIImage()}
-//
-//        return i
-//
-//    }
     
     /**
      Creates the foreground image in square format.
@@ -166,31 +151,31 @@ struct BorderEngine {
         return i
     }
     
-    /**
-     Creates the foreground image in portrait format.
-     - Parameter:
-        - foregroundImage: The image that will be resized
-        - backgroundImageFrame: The frame of the background imagea
-     - Returns: The rendered image.
-     */
-    func createRenderImagePortrait(foregroundImage: UIImage, backgroundImageFrame: CGRect) -> UIImage {
-        let imageSizeH = foregroundImage.size.height * 9
-        let imageSizeW = backgroundImageFrame.size.width
-        
-        let imgView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageSizeW, height: imageSizeH))
-        
-        imgView.contentMode = .scaleAspectFit
-        imgView.image = foregroundImage
-        
-        let size = CGSize(width: imageSizeW, height: imageSizeH)
-        
-        UIGraphicsBeginImageContextWithOptions(size, false, 0)
-        imgView.drawHierarchy(in: imgView.bounds, afterScreenUpdates: true)
-        
-        guard let i = UIGraphicsGetImageFromCurrentImageContext() else {return UIImage()}
-        
-        return i
-    }
+//    /**
+//     Creates the foreground image in portrait format.
+//     - Parameter:
+//        - foregroundImage: The image that will be resized
+//        - backgroundImageFrame: The frame of the background imagea
+//     - Returns: The rendered image.
+//     */
+//    func createRenderImagePortrait(foregroundImage: UIImage, backgroundImageFrame: CGRect) -> UIImage {
+//        let imageSizeH = foregroundImage.size.height * 9
+//        let imageSizeW = backgroundImageFrame.size.width
+//
+//        let imgView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageSizeW, height: imageSizeH))
+//
+//        imgView.contentMode = .scaleAspectFit
+//        imgView.image = foregroundImage
+//
+//        let size = CGSize(width: imageSizeW, height: imageSizeH)
+//
+//        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+//        imgView.drawHierarchy(in: imgView.bounds, afterScreenUpdates: true)
+//
+//        guard let i = UIGraphicsGetImageFromCurrentImageContext() else {return UIImage()}
+//
+//        return i
+//    }
     
     
     
