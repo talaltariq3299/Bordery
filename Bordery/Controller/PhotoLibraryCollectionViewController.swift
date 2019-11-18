@@ -181,17 +181,18 @@ class PhotoLibraryCollectionViewController: UICollectionViewController, UIGestur
     // long press gesture function
     @objc fileprivate func handleLongPress(longPressGR: UILongPressGestureRecognizer) {
         if longPressGR.state != .ended {
-            TapticEngine.lightTaptic()
             let point = longPressGR.location(in: self.collectionView)
             let indexPath = self.collectionView.indexPathForItem(at: point)
 
             if let indexPath = indexPath {
+                TapticEngine.lightTaptic()
                 var cell = self.collectionView.cellForItem(at: indexPath)
                 print(indexPath.row)
                 longPressGR.state = .ended
             }
             else {
-                print("Could not find index path. handleLongPress on PhotoLibraryVC.")
+                longPressGR.state = .ended
+//                print("Could not find index path. handleLongPress on PhotoLibraryVC.")
             }
             return
         }

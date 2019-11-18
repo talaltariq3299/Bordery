@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-struct RatioEngine {
+class RatioEngine {
     var xCoord: CGFloat
     let yCoord: CGFloat
     let buttonWidth: CGFloat
@@ -32,7 +32,7 @@ struct RatioEngine {
      Creates an array of buttons of colour picker.
      - Returns: An array of buttons complete with its properties.
      */
-    mutating func createButtonArray() -> [UIButton] {
+    func createButtonArray() -> [UIButton] {
         var itemCount = 0
         var ratioButtons: [UIButton] = [UIButton()]
         
@@ -41,15 +41,17 @@ struct RatioEngine {
             
             // button property
             let ratioButton = UIButton(type: .custom)
+            ratioButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
+            ratioButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
             ratioButton.frame = CGRect(x: xCoord, y: yCoord, width: buttonWidth, height: buttonHeight)
             ratioButton.backgroundColor = .clear
             ratioButton.layer.borderColor = .none
             ratioButton.tag = itemCount
             ratioButton.clipsToBounds = true
+            ratioButton.tintColor = .white
             
             let buttonImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
             buttonImage.image = UIImage(named: ratioIcon[i])?.withRenderingMode(.alwaysTemplate)
-            buttonImage.tintColor = .white
             buttonImage.contentMode = .scaleAspectFit
             buttonImage.center = CGPoint(x: ratioButton.frame.size.width / 2, y: ratioButton.frame.size.height * 0.35)
             
@@ -76,6 +78,14 @@ struct RatioEngine {
         }
         
         return ratioButtons
+    }
+    
+    @objc func buttonHighlighted(sender: UIButton!) {
+        sender.tintColor = .lightGray
+    }
+    
+    @objc func buttonNormal(sender: UIButton!) {
+        sender.tintColor = .white
     }
     
 }

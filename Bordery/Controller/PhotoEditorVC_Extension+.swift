@@ -27,12 +27,14 @@ extension PhotoEditorViewController {
         sizeButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
         sizeButton.backgroundColor = .clear
         sizeButton.addTarget(self, action: #selector(sizeButtonTapped), for: .touchUpInside)
+        sizeButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
+        sizeButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
         
         let sizeImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageViewSize, height: imageViewSize))
         sizeImageView.image = sizeIcon
-        sizeImageView.tintColor = UIColor.white
         sizeImageView.contentMode = .scaleAspectFit
         sizeImageView.center = sizeButton.convert(sizeButton.center, to: sizeImageView.superview)
+        sizeButton.tintColor = .white
         
         let sizeLabel = UILabel(frame: CGRect(x: 0, y: 0, width: labelSize, height: labelSize))
         sizeLabel.textAlignment = .center
@@ -53,12 +55,14 @@ extension PhotoEditorViewController {
         colourButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
         colourButton.backgroundColor = .clear
         colourButton.addTarget(self, action: #selector(colourButtonTapped), for: .touchUpInside)
+        colourButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
+        colourButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
         
         let colourImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageViewSize, height: imageViewSize))
         colourImageView.image = colourIcon
-        colourImageView.tintColor = UIColor.white
         colourImageView.contentMode = .scaleAspectFit
         colourImageView.center = colourButton.convert(colourButton.center, to: colourImageView.superview)
+        colourButton.tintColor = .white
         
         let colourLabel = UILabel(frame: CGRect(x: 0, y: 0, width: labelSize, height: labelSize))
         colourLabel.textAlignment = .center
@@ -79,12 +83,14 @@ extension PhotoEditorViewController {
         ratioButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
         ratioButton.backgroundColor = .clear
         ratioButton.addTarget(self, action: #selector(ratioButtonTapped), for: .touchUpInside)
+        ratioButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
+        ratioButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
         
         let ratioImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageViewSize, height: imageViewSize))
         ratioImageView.image = ratioIcon
-        ratioImageView.tintColor = UIColor.white
         ratioImageView.contentMode = .scaleAspectFit
         ratioImageView.center = ratioButton.convert(ratioButton.center, to: colourImageView.superview)
+        ratioButton.tintColor = .white
         
         let ratioLabel = UILabel(frame: CGRect(x: 0, y: 0, width: labelSize, height: labelSize))
         ratioLabel.textAlignment = .center
@@ -109,6 +115,7 @@ extension PhotoEditorViewController {
     
     @objc func sizeButtonTapped(sender: UIButton!) {
         TapticEngine.lightTaptic()
+        sender.tintColor = .white
         adjustmentNameLabel.text = borderEngine.adjustmentName[0]
         mainButtonHide(true)
         menuBarHide(true)
@@ -117,6 +124,7 @@ extension PhotoEditorViewController {
     
     @objc func colourButtonTapped(sender: UIButton!) {
         TapticEngine.lightTaptic()
+        sender.tintColor = .white
         adjustmentNameLabel.text = borderEngine.adjustmentName[1]
         mainButtonHide(true)
         menuBarHide(true)
@@ -125,11 +133,22 @@ extension PhotoEditorViewController {
     
     @objc func ratioButtonTapped(sender: UIButton!) {
         TapticEngine.lightTaptic()
+        sender.tintColor = .white
         adjustmentNameLabel.text = borderEngine.adjustmentName[2]
         mainButtonHide(true)
         menuBarHide(true)
         noticeLabel.isHidden = false
         hide(progress: nil, barItemOnEdit: nil, ui: nil, slider: nil, colourSelector: nil, ratioSelector: false)
+    }
+    
+    // when user select a button but didnt press it.
+    @objc func buttonHighlighted(sender: UIButton!) {
+        sender.tintColor = .lightGray
+    }
+    
+    // when user drag their finger outside the button
+    @objc func buttonNormal(sender: UIButton!) {
+        sender.tintColor = .white
     }
     
     // create bar items to present option to proceed or not on an edit
@@ -241,10 +260,31 @@ extension PhotoEditorViewController {
         
         for exportButton in exportButtons {
             exportSelectorScrollView.addSubview(exportButton)
+            exportButton.addTarget(self, action: #selector(exportTapped), for: .touchUpInside)
         }
         
         // rearrange to fit the content
         exportSelectorScrollView.contentSize = CGSize(width: exportSelector.buttonWidth * CGFloat(Double(exportSelector.exportName.count) + 0.6), height: exportSelectorScrollView.frame.height)
+    }
+    
+    @objc func exportTapped(sender: UIButton) {
+        switch sender.tag {
+        case 0:
+            print("camera roll")
+            
+            
+        case 1:
+            print("instagramm®")
+        case 2:
+            print("twitter")
+        case 3:
+            print("Facebook")
+        case 4:
+            print("share")
+        default:
+            print("Default")
+            
+        }
     }
     
     // create main menu bar (border or save)
@@ -349,6 +389,7 @@ extension PhotoEditorViewController {
     }
     
     @objc func ratioTapped(sender: UIButton) {
+        sender.tintColor = .white
         TapticEngine.lightTaptic()
         noticeLabel.isHidden = true
         

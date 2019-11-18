@@ -43,16 +43,17 @@ class ExportEngine {
             
             // button property
             let exportButton = UIButton(type: .custom)
+            exportButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
+            exportButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
             exportButton.frame = CGRect(x: xCoord, y: yCoord, width: buttonWidth, height: buttonHeight)
-            exportButton.addTarget(self, action: #selector(exportTapped), for: .touchUpInside)
             exportButton.backgroundColor = .clear
             exportButton.layer.borderColor = .none
             exportButton.tag = itemCount
             exportButton.clipsToBounds = true
+            exportButton.tintColor = .white
             
             let buttonImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
             buttonImage.image = UIImage(named: exportIcon[i])?.withRenderingMode(.alwaysTemplate)
-            buttonImage.tintColor = .white
             buttonImage.contentMode = .scaleAspectFit
             buttonImage.center = CGPoint(x: exportButton.frame.size.width / 2, y: exportButton.frame.size.height * 0.35)
             
@@ -80,22 +81,12 @@ class ExportEngine {
         return exportButtons
     }
     
-    @objc func exportTapped(sender: UIButton) {
-        switch sender.tag {
-        case 0:
-            print("camera roll")
-        case 1:
-            print("instagramm®")
-        case 2:
-            print("twitter")
-        case 3:
-            print("Facebook")
-        case 4:
-            print("share")
-        default:
-            print("Default")
-            
-        }
+    @objc func buttonHighlighted(sender: UIButton!) {
+        sender.tintColor = .lightGray
+    }
+    
+    @objc func buttonNormal(sender: UIButton!) {
+        sender.tintColor = .white
     }
     
 }
