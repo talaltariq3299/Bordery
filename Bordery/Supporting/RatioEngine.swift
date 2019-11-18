@@ -10,8 +10,6 @@ import Foundation
 import UIKit
 
 struct RatioEngine {
-//    var currentRatio: UIColor = .white
-    
     var xCoord: CGFloat
     let yCoord: CGFloat
     let buttonWidth: CGFloat
@@ -66,7 +64,7 @@ struct RatioEngine {
             ratioLabel.textAlignment = .center
             ratioLabel.text = ratioName[i]
             ratioLabel.textColor = UIColor.white
-            ratioLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.bold)
+            ratioLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
             ratioLabel.sizeToFit()
             ratioLabel.center = CGPoint(x: ratioButton.frame.size.width / 2, y: ratioButton.frame.size.height * 0.8)
             

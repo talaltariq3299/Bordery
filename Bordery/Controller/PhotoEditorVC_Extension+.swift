@@ -242,6 +242,9 @@ extension PhotoEditorViewController {
         for exportButton in exportButtons {
             exportSelectorScrollView.addSubview(exportButton)
         }
+        
+        // rearrange to fit the content
+        exportSelectorScrollView.contentSize = CGSize(width: exportSelector.buttonWidth * CGFloat(Double(exportSelector.exportName.count) + 0.6), height: exportSelectorScrollView.frame.height)
     }
     
     // create main menu bar (border or save)

@@ -191,7 +191,7 @@ class PhotoLibraryCollectionViewController: UICollectionViewController, UIGestur
                 longPressGR.state = .ended
             }
             else {
-                print("Could not find index path")
+                print("Could not find index path. handleLongPress on PhotoLibraryVC.")
             }
             return
         }

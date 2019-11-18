@@ -19,8 +19,8 @@ class ExportEngine {
     
     let gapBetweenButtons: CGFloat = 10
     
-    let exportName = ["Camera Roll", "Instagram", "Twitter", "Facebook"]
-    let exportIcon = ["cameraRoll-icon","instagram-icon" , "twitter-icon", "facebook-icon"]
+    let exportName = ["Camera Roll", "Instagram", "Twitter", "Facebook", "More"]
+    let exportIcon = ["cameraRoll-icon","instagram-icon" , "twitter-icon", "facebook-icon", "share-icon"]
     
     init(editorViewW: CGFloat, editorViewH: CGFloat, viewFrameH: CGFloat, heightMultConst: CGFloat) {
         self.xCoord = editorViewW * 0.02
@@ -67,7 +67,7 @@ class ExportEngine {
             ExportLabel.textAlignment = .left
             ExportLabel.text = exportName[i]
             ExportLabel.textColor = UIColor.white
-            ExportLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.bold)
+            ExportLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
             ExportLabel.sizeToFit()
             ExportLabel.center = CGPoint(x: exportButton.frame.size.width / 2, y: exportButton.frame.size.height * 0.8)
             
@@ -90,6 +90,8 @@ class ExportEngine {
             print("twitter")
         case 3:
             print("Facebook")
+        case 4:
+            print("share")
         default:
             print("Default")
             
