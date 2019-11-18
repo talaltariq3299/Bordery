@@ -17,7 +17,7 @@ extension PhotoEditorViewController {
         let sizeIcon = UIImage(named: "size-icon")!.withRenderingMode(.alwaysTemplate)
         let colourIcon = UIImage(named: "colour-icon")!.withRenderingMode(.alwaysTemplate)
         let ratioIcon = UIImage(named: "ratio-icon")!.withRenderingMode(.alwaysTemplate)
-
+        
         let buttonSize = 100
         let imageViewSize = 30
         let labelSize = 40
@@ -50,7 +50,7 @@ extension PhotoEditorViewController {
             sizeLabel.centerXAnchor.constraint(equalTo: sizeButton.centerXAnchor),
             sizeLabel.centerYAnchor.constraint(equalTo: sizeButton.centerYAnchor, constant: 30)
         ])
-
+        
         // --------
         colourButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
         colourButton.backgroundColor = .clear
@@ -107,7 +107,7 @@ extension PhotoEditorViewController {
             ratioLabel.centerYAnchor.constraint(equalTo: ratioButton.centerYAnchor, constant: 30)
         ])
         
-
+        
         self.editorView.addSubview(sizeButton)
         self.editorView.addSubview(colourButton)
         self.editorView.addSubview(ratioButton)
@@ -277,7 +277,7 @@ extension PhotoEditorViewController {
             saveImageView.heightAnchor.constraint(equalToConstant: 20),
             saveImageView.widthAnchor.constraint(equalToConstant: 20)
         ])
-
+        
         self.barView.addSubview(borderButton)
         self.barView.addSubview(saveButton)
     }
@@ -344,14 +344,14 @@ extension PhotoEditorViewController {
         colourButton.isHidden = bool
         sizeButton.isHidden = bool
         ratioButton.isHidden = bool
-}
+    }
     
     // this function is to hid the menu bar buttons.
     func menuBarHide(_ bool: Bool) {
         borderButton.isHidden = bool
         saveButton.isHidden = bool
     }
-
+    
     
     // MARK: - Constraints
     func setupConstraint() {
@@ -362,7 +362,7 @@ extension PhotoEditorViewController {
             imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 5),
             imageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -5),
             imageView.heightAnchor.constraint(equalToConstant: view.frame.height * 0.6)
-            ])
+        ])
         
         imageViewTop.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -371,13 +371,13 @@ extension PhotoEditorViewController {
             imageViewTop.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 5),
             imageViewTop.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -5),
             imageViewTop.heightAnchor.constraint(equalToConstant: view.frame.height * 0.6)
-            ])
+        ])
         
         progressStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             progressStackView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
             progressStackView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
-            ])
+        ])
         
         editorView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -386,7 +386,7 @@ extension PhotoEditorViewController {
             editorView.leftAnchor.constraint(equalTo: view.leftAnchor),
             editorView.rightAnchor.constraint(equalTo: view.rightAnchor),
             editorView.heightAnchor.constraint(equalToConstant: view.frame.height * VIEW_HEIGHTMULTIPLIER_CONSTANT)
-            ])
+        ])
         
         sizeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -411,7 +411,7 @@ extension PhotoEditorViewController {
             ratioButton.heightAnchor.constraint(equalToConstant: 130),
             ratioButton.widthAnchor.constraint(equalToConstant: 100)
         ])
-
+        
         barView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             barView.topAnchor.constraint(equalTo: editorView.bottomAnchor),
@@ -419,7 +419,7 @@ extension PhotoEditorViewController {
             barView.leftAnchor.constraint(equalTo: view.leftAnchor),
             barView.rightAnchor.constraint(equalTo: view.rightAnchor),
             barView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-            ])
+        ])
         
         // setup the constraints for the labels and slider.
         adjustmentSliderOutlet.translatesAutoresizingMaskIntoConstraints = false
@@ -428,19 +428,19 @@ extension PhotoEditorViewController {
             adjustmentSliderOutlet.centerXAnchor.constraint(equalTo: editorView.centerXAnchor),
             adjustmentSliderOutlet.widthAnchor.constraint(equalToConstant: editorView.frame.height * 1.6),
             adjustmentSliderOutlet.heightAnchor.constraint(equalToConstant: editorView.frame.height * 0.2)
-            ])
+        ])
         
         sliderValueLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             sliderValueLabel.topAnchor.constraint(equalTo: adjustmentSliderOutlet.bottomAnchor, constant: 8),
             sliderValueLabel.centerXAnchor.constraint(equalTo: adjustmentSliderOutlet.centerXAnchor)
-            ])
+        ])
         
         adjustmentNameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             adjustmentNameLabel.topAnchor.constraint(equalTo: editorView.topAnchor, constant: 15),
             adjustmentNameLabel.centerXAnchor.constraint(equalTo: editorView.centerXAnchor)
-            ])
+        ])
         
         colourSelectorScrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -472,7 +472,7 @@ extension PhotoEditorViewController {
             borderButton.leftAnchor.constraint(equalTo: barView.leftAnchor, constant: 0),
             borderButton.heightAnchor.constraint(equalTo: barView.heightAnchor)
         ])
-
+        
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             saveButton.widthAnchor.constraint(equalTo: barView.widthAnchor, multiplier: 0.5),
@@ -498,6 +498,7 @@ extension PhotoEditorViewController {
         
         return border
     }
+    
     
     // MARK: - Objc Functions
     @objc func sizeButtonTapped(sender: UIButton!) {
@@ -540,22 +541,46 @@ extension PhotoEditorViewController {
     
     @objc func exportTapped(sender: UIButton) {
         sender.tintColor = .white
-        let finalImage = borderEngine.blendImages(backgroundImg: borderView.asImage(), foregroundImg: imageViewTop.image!)!
-        
+        let finalImageData = borderEngine.blendImages(backgroundImg: borderView.asImage(), foregroundImg: imageViewTop.image!)!
+        guard let finalImage = UIImage(data: finalImageData) else {
+            AlertService.alert(self, title: "oof!", message: "It appears that the export engine is not working. Try again later or submit a feedback!")
+            return
+        }
         
         switch sender.tag {
         case 0:
-//            UIImageWriteToSavedPhotosAlbum(UIImage(data: finalImage)!, nil, nil, nil)
-            UIImageWriteToSavedPhotosAlbum(UIImage(data: finalImage)!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+            CustomPhotoAlbum.shared.save(image: finalImage) { (success) in
+                if success {
+                    TapticEngine.successTaptic()
+                    DispatchQueue.main.async {
+                        AlertService.alert(self, title: "Hooray!", message: "Your photo has been successfully saved!")
+                    }
+                    
+                }
+                else {
+                    DispatchQueue.main.async {
+                        TapticEngine.errorTaptic()
+                        AlertService.alert(self, title: "Oops!", message: "Something went wrong while we tried to save your photo!")
+                    }
+                }
+            }
             
         case 1:
-            print("instagramm®")
-        case 2:
-            print("twitter")
-        case 3:
-            print("Facebook")
-        case 4:
-            print("share")
+            // image to share
+            let image = finalImage
+            
+            // set up activity view controller
+            let imageToShare = [ image ]
+            let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
+            
+            // exclude some activity types from the list (optional)
+            activityViewController.excludedActivityTypes = [UIActivity.ActivityType.postToFacebook, UIActivity.ActivityType.postToTwitter, UIActivity.ActivityType.postToTencentWeibo, UIActivity.ActivityType.postToTencentWeibo]
+            
+            // present the view controller
+            self.present(activityViewController, animated: true, completion: nil)
+            
+            
         default:
             print("Default")
             
@@ -589,68 +614,59 @@ extension PhotoEditorViewController {
     }
     
     @objc func ratioTapped(sender: UIButton) {
-            sender.tintColor = .white
-            TapticEngine.lightTaptic()
-            noticeLabel.isHidden = true
+        sender.tintColor = .white
+        TapticEngine.lightTaptic()
+        noticeLabel.isHidden = true
+        
+        switch sender.tag {
+        case 0:
+            imageViewTop.image = oriImage
+            borderView.frame = imageViewTop.contentClippingRect
+            let renderImage = borderEngine.createRenderImage(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
+            imageViewTop.image = renderImage
             
-            switch sender.tag {
-                case 0:
-                    imageViewTop.image = oriImage
-                    borderView.frame = imageViewTop.contentClippingRect
-                    let renderImage = borderEngine.createRenderImage(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
-                    imageViewTop.image = renderImage
-                
-                case 1:
-                    // from the original size's perspective
-                    borderView.frame = imageViewTop.contentClippingRect
-                    // get the difference to make the border square
-                    let heightDiff = borderView.frame.size.width - borderView.frame.size.height
-                    // move the y point the same amount the height added.
-                    let reducedYPt = borderView.frame.minY - heightDiff / 2
-                    borderView.frame.size.height = borderView.frame.size.width
-                    // transform.
-                    borderView.frame = CGRect(x: 0, y: reducedYPt, width: imageView.frame.width, height: imageView.frame.width)
-                    borderView.center = CGPoint(x: imageView.frame.size.width  / 2, y: imageView.frame.size.height / 2)
-                    
-                    // scale accordingly.
-                    // square portrait
-                    if oriImage.size.width < oriImage.size.height {
-                        let renderImage = borderEngine.createRenderImageSquare(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
-                        imageViewTop.image = renderImage
-                    }
-                    
-                case 2:
-                    print("No value found!")
-    //                // preserve ratio
-    //                let newW = 9 * imageView.frame.height / 16
-    //                borderView.frame = CGRect(x: 0, y: 0, width: newW, height: imageView.frame.height)
-    //                borderView.center = CGPoint(x: imageView.frame.width  / 2, y: imageView.frame.height / 2)
-    //
-    //                if oriImage.size.width > oriImage.size.height {
-    //                    let renderImage = borderEngine.createRenderImagePortrait(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
-    //                    imageViewTop.image = renderImage
-    //                }
-    //                // portrait portrait
-    //                else {
-    //                    let renderImage = borderEngine.createRenderImagePortrait(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
-    //                    imageViewTop.image = renderImage
-    //                }
-                
-                default:
-                    print("No tag matches! ratioTapped function on PhotoEditorVC Extension+")
+        case 1:
+            // from the original size's perspective
+            borderView.frame = imageViewTop.contentClippingRect
+            // get the difference to make the border square
+            let heightDiff = borderView.frame.size.width - borderView.frame.size.height
+            // move the y point the same amount the height added.
+            let reducedYPt = borderView.frame.minY - heightDiff / 2
+            borderView.frame.size.height = borderView.frame.size.width
+            // transform.
+            borderView.frame = CGRect(x: 0, y: reducedYPt, width: imageView.frame.width, height: imageView.frame.width)
+            borderView.center = CGPoint(x: imageView.frame.size.width  / 2, y: imageView.frame.size.height / 2)
+            
+            // scale accordingly.
+            // square portrait
+            if oriImage.size.width < oriImage.size.height {
+                let renderImage = borderEngine.createRenderImageSquare(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
+                imageViewTop.image = renderImage
             }
             
-            hide(progress: nil, barItemOnEdit: nil, ui: nil, slider: nil, colourSelector: nil, ratioSelector: true)
-            mainButtonHide(false)
-            menuBarHide(false)
+        case 2:
+            print("No value found!")
+            //                // preserve ratio
+            //                let newW = 9 * imageView.frame.height / 16
+            //                borderView.frame = CGRect(x: 0, y: 0, width: newW, height: imageView.frame.height)
+            //                borderView.center = CGPoint(x: imageView.frame.width  / 2, y: imageView.frame.height / 2)
+            //
+            //                if oriImage.size.width > oriImage.size.height {
+            //                    let renderImage = borderEngine.createRenderImagePortrait(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
+            //                    imageViewTop.image = renderImage
+            //                }
+            //                // portrait portrait
+            //                else {
+            //                    let renderImage = borderEngine.createRenderImagePortrait(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
+            //                    imageViewTop.image = renderImage
+            //                }
+            
+        default:
+            print("No tag matches! ratioTapped function on PhotoEditorVC Extension+")
         }
-    
-    @objc func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
-        if let error = error {
-            // we got back an error!
-            AlertService.alert(self, title: "Oops! There was an error saving the image.", message: error.localizedDescription)
-        } else {
-            AlertService.alert(self, title: "Image has been saved!", message: nil)
-        }
+        
+        hide(progress: nil, barItemOnEdit: nil, ui: nil, slider: nil, colourSelector: nil, ratioSelector: true)
+        mainButtonHide(false)
+        menuBarHide(false)
     }
 }

@@ -19,8 +19,8 @@ class ExportEngine {
     
     let gapBetweenButtons: CGFloat = 10
     
-    let exportName = ["Camera Roll", "Instagram", "Twitter", "Facebook", "More"]
-    let exportIcon = ["cameraRoll-icon","instagram-icon" , "twitter-icon", "facebook-icon", "share-icon"]
+    let exportName = ["Camera Roll", "More"]
+    let exportIcon = ["cameraRoll-icon", "share-icon"]
     
     init(editorViewW: CGFloat, editorViewH: CGFloat, viewFrameH: CGFloat, heightMultConst: CGFloat) {
         self.xCoord = editorViewW * 0.02
