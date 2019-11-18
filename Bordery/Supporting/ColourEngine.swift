@@ -81,10 +81,13 @@ struct ColourEngine {
                 case "#FFFFFF", "#E0D8C3":
                     colourLabel.textColor = UIColor.black
                     hexLabel.textColor = UIColor.black
+                    colourButton.titleLabel?.textColor = .black
                 default:
                     colourLabel.textColor = UIColor.white
                     hexLabel.textColor = UIColor.white
+                colourButton.titleLabel?.textColor = .white
             }
+            
             
             colourButton.addSubview(colourLabel)
             colourButton.addSubview(hexLabel)

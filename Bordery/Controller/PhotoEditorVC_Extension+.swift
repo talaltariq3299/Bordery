@@ -113,44 +113,6 @@ extension PhotoEditorViewController {
         self.editorView.addSubview(ratioButton)
     }
     
-    @objc func sizeButtonTapped(sender: UIButton!) {
-        TapticEngine.lightTaptic()
-        sender.tintColor = .white
-        adjustmentNameLabel.text = borderEngine.adjustmentName[0]
-        mainButtonHide(true)
-        menuBarHide(true)
-        hide(progress: nil, barItemOnEdit: false, ui: nil, slider: false, colourSelector: nil, ratioSelector: nil)
-    }
-    
-    @objc func colourButtonTapped(sender: UIButton!) {
-        TapticEngine.lightTaptic()
-        sender.tintColor = .white
-        adjustmentNameLabel.text = borderEngine.adjustmentName[1]
-        mainButtonHide(true)
-        menuBarHide(true)
-        hide(progress: nil, barItemOnEdit: false, ui: nil, slider: nil, colourSelector: false, ratioSelector: nil)
-    }
-    
-    @objc func ratioButtonTapped(sender: UIButton!) {
-        TapticEngine.lightTaptic()
-        sender.tintColor = .white
-        adjustmentNameLabel.text = borderEngine.adjustmentName[2]
-        mainButtonHide(true)
-        menuBarHide(true)
-        noticeLabel.isHidden = false
-        hide(progress: nil, barItemOnEdit: nil, ui: nil, slider: nil, colourSelector: nil, ratioSelector: false)
-    }
-    
-    // when user select a button but didnt press it.
-    @objc func buttonHighlighted(sender: UIButton!) {
-        sender.tintColor = .lightGray
-    }
-    
-    // when user drag their finger outside the button
-    @objc func buttonNormal(sender: UIButton!) {
-        sender.tintColor = .white
-    }
-    
     // create bar items to present option to proceed or not on an edit
     func setupBarItemOnEdit() {
         barItemOnEditStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -267,26 +229,6 @@ extension PhotoEditorViewController {
         exportSelectorScrollView.contentSize = CGSize(width: exportSelector.buttonWidth * CGFloat(Double(exportSelector.exportName.count) + 0.6), height: exportSelectorScrollView.frame.height)
     }
     
-    @objc func exportTapped(sender: UIButton) {
-        switch sender.tag {
-        case 0:
-            print("camera roll")
-            
-            
-        case 1:
-            print("instagramm®")
-        case 2:
-            print("twitter")
-        case 3:
-            print("Facebook")
-        case 4:
-            print("share")
-        default:
-            print("Default")
-            
-        }
-    }
-    
     // create main menu bar (border or save)
     func setupMenuBar() {
         let saveIcon = UIImage(named: "save-icon")!.withRenderingMode(.alwaysTemplate)
@@ -340,32 +282,6 @@ extension PhotoEditorViewController {
         self.barView.addSubview(saveButton)
     }
     
-    @objc func barButtonTapped(sender: UIButton) {
-        switch sender.tag {
-        case 0:
-            borderButton.tintColor = .white
-            saveButton.tintColor = .darkGray
-            mainButtonHide(false)
-            exportButtonHide(true)
-        case 1:
-            adjustmentNameLabel.text = "Export"
-            borderButton.tintColor = .darkGray
-            saveButton.tintColor = .white
-            mainButtonHide(true)
-            exportButtonHide(false)
-        default:
-            print("barButtonTapped default.")
-        }
-    }
-    
-    // function when a colour is tapped
-    @objc func colourTapped(sender: UIButton) {
-        TapticEngine.lightTaptic()
-        
-        let borderColor = sender.backgroundColor!
-        borderView.backgroundColor = borderColor
-    }
-    
     // create ratio selectors
     func setupRatioSelector() {
         ratioSelector = RatioEngine(editorViewW: editorView.frame.width, editorViewH: editorView.frame.height, viewFrameH: view.frame.height, heightMultConst: VIEW_HEIGHTMULTIPLIER_CONSTANT)
@@ -386,61 +302,6 @@ extension PhotoEditorViewController {
         
         // rearrange to fit the content
         ratioSelectorScrollView.contentSize = CGSize(width: ratioSelector.buttonWidth * CGFloat(Double(ratioSelector.ratioName.count) + 1.3), height: colourSelectorScrollView.frame.height)
-    }
-    
-    @objc func ratioTapped(sender: UIButton) {
-        sender.tintColor = .white
-        TapticEngine.lightTaptic()
-        noticeLabel.isHidden = true
-        
-        switch sender.tag {
-            case 0:
-                imageViewTop.image = oriImage
-                borderView.frame = imageViewTop.contentClippingRect
-            
-            case 1:
-                // from the original size's perspective
-                borderView.frame = imageViewTop.contentClippingRect
-                // get the difference to make the border square
-                let heightDiff = borderView.frame.size.width - borderView.frame.size.height
-                // move the y point the same amount the height added.
-                let reducedYPt = borderView.frame.minY - heightDiff / 2
-                borderView.frame.size.height = borderView.frame.size.width
-                // transform.
-                borderView.frame = CGRect(x: 0, y: reducedYPt, width: imageView.frame.width, height: imageView.frame.width)
-                borderView.center = CGPoint(x: imageView.frame.size.width  / 2, y: imageView.frame.size.height / 2)
-                
-                // scale accordingly.
-                // square portrait
-                if oriImage.size.width < oriImage.size.height {
-                    let renderImage = borderEngine.createRenderImageSquare(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
-                    imageViewTop.image = renderImage
-                }
-                
-            case 2:
-                fatalError("No value found!")
-//                // preserve ratio
-//                let newW = 9 * imageView.frame.height / 16
-//                borderView.frame = CGRect(x: 0, y: 0, width: newW, height: imageView.frame.height)
-//                borderView.center = CGPoint(x: imageView.frame.width  / 2, y: imageView.frame.height / 2)
-//
-//                if oriImage.size.width > oriImage.size.height {
-//                    let renderImage = borderEngine.createRenderImagePortrait(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
-//                    imageViewTop.image = renderImage
-//                }
-//                // portrait portrait
-//                else {
-//                    let renderImage = borderEngine.createRenderImagePortrait(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
-//                    imageViewTop.image = renderImage
-//                }
-            
-            default:
-                print("No tag matches! ratioTapped function on PhotoEditorVC Extension+")
-        }
-        
-        hide(progress: nil, barItemOnEdit: nil, ui: nil, slider: nil, colourSelector: nil, ratioSelector: true)
-        mainButtonHide(false)
-        menuBarHide(false)
     }
     
     // MARK: - Hide elements function
@@ -636,5 +497,160 @@ extension PhotoEditorViewController {
         border.frame = CGRect(x: 0, y: 0, width: to.frame.size.width, height: borderWidth)
         
         return border
+    }
+    
+    // MARK: - Objc Functions
+    @objc func sizeButtonTapped(sender: UIButton!) {
+        TapticEngine.lightTaptic()
+        sender.tintColor = .white
+        adjustmentNameLabel.text = borderEngine.adjustmentName[0]
+        mainButtonHide(true)
+        menuBarHide(true)
+        hide(progress: nil, barItemOnEdit: false, ui: nil, slider: false, colourSelector: nil, ratioSelector: nil)
+    }
+    
+    @objc func colourButtonTapped(sender: UIButton!) {
+        TapticEngine.lightTaptic()
+        sender.tintColor = .white
+        adjustmentNameLabel.text = borderEngine.adjustmentName[1]
+        mainButtonHide(true)
+        menuBarHide(true)
+        hide(progress: nil, barItemOnEdit: false, ui: nil, slider: nil, colourSelector: false, ratioSelector: nil)
+    }
+    
+    @objc func ratioButtonTapped(sender: UIButton!) {
+        TapticEngine.lightTaptic()
+        sender.tintColor = .white
+        adjustmentNameLabel.text = borderEngine.adjustmentName[2]
+        mainButtonHide(true)
+        menuBarHide(true)
+        noticeLabel.isHidden = false
+        hide(progress: nil, barItemOnEdit: nil, ui: nil, slider: nil, colourSelector: nil, ratioSelector: false)
+    }
+    
+    // when user select a button but didnt press it.
+    @objc func buttonHighlighted(sender: UIButton!) {
+        sender.tintColor = .lightGray
+    }
+    
+    // when user drag their finger outside the button
+    @objc func buttonNormal(sender: UIButton!) {
+        sender.tintColor = .white
+    }
+    
+    @objc func exportTapped(sender: UIButton) {
+        sender.tintColor = .white
+        let finalImage = borderEngine.blendImages(backgroundImg: borderView.asImage(), foregroundImg: imageViewTop.image!)!
+        
+        
+        switch sender.tag {
+        case 0:
+//            UIImageWriteToSavedPhotosAlbum(UIImage(data: finalImage)!, nil, nil, nil)
+            UIImageWriteToSavedPhotosAlbum(UIImage(data: finalImage)!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+            
+        case 1:
+            print("instagramm®")
+        case 2:
+            print("twitter")
+        case 3:
+            print("Facebook")
+        case 4:
+            print("share")
+        default:
+            print("Default")
+            
+        }
+    }
+    
+    @objc func barButtonTapped(sender: UIButton) {
+        switch sender.tag {
+        case 0:
+            borderButton.tintColor = .white
+            saveButton.tintColor = .darkGray
+            mainButtonHide(false)
+            exportButtonHide(true)
+        case 1:
+            adjustmentNameLabel.text = "Export"
+            borderButton.tintColor = .darkGray
+            saveButton.tintColor = .white
+            mainButtonHide(true)
+            exportButtonHide(false)
+        default:
+            print("barButtonTapped default.")
+        }
+    }
+    
+    // function when a colour is tapped
+    @objc func colourTapped(sender: UIButton) {
+        TapticEngine.lightTaptic()
+        
+        let borderColor = sender.backgroundColor!
+        borderView.backgroundColor = borderColor
+    }
+    
+    @objc func ratioTapped(sender: UIButton) {
+            sender.tintColor = .white
+            TapticEngine.lightTaptic()
+            noticeLabel.isHidden = true
+            
+            switch sender.tag {
+                case 0:
+                    imageViewTop.image = oriImage
+                    borderView.frame = imageViewTop.contentClippingRect
+                    let renderImage = borderEngine.createRenderImage(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
+                    imageViewTop.image = renderImage
+                
+                case 1:
+                    // from the original size's perspective
+                    borderView.frame = imageViewTop.contentClippingRect
+                    // get the difference to make the border square
+                    let heightDiff = borderView.frame.size.width - borderView.frame.size.height
+                    // move the y point the same amount the height added.
+                    let reducedYPt = borderView.frame.minY - heightDiff / 2
+                    borderView.frame.size.height = borderView.frame.size.width
+                    // transform.
+                    borderView.frame = CGRect(x: 0, y: reducedYPt, width: imageView.frame.width, height: imageView.frame.width)
+                    borderView.center = CGPoint(x: imageView.frame.size.width  / 2, y: imageView.frame.size.height / 2)
+                    
+                    // scale accordingly.
+                    // square portrait
+                    if oriImage.size.width < oriImage.size.height {
+                        let renderImage = borderEngine.createRenderImageSquare(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
+                        imageViewTop.image = renderImage
+                    }
+                    
+                case 2:
+                    print("No value found!")
+    //                // preserve ratio
+    //                let newW = 9 * imageView.frame.height / 16
+    //                borderView.frame = CGRect(x: 0, y: 0, width: newW, height: imageView.frame.height)
+    //                borderView.center = CGPoint(x: imageView.frame.width  / 2, y: imageView.frame.height / 2)
+    //
+    //                if oriImage.size.width > oriImage.size.height {
+    //                    let renderImage = borderEngine.createRenderImagePortrait(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
+    //                    imageViewTop.image = renderImage
+    //                }
+    //                // portrait portrait
+    //                else {
+    //                    let renderImage = borderEngine.createRenderImagePortrait(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
+    //                    imageViewTop.image = renderImage
+    //                }
+                
+                default:
+                    print("No tag matches! ratioTapped function on PhotoEditorVC Extension+")
+            }
+            
+            hide(progress: nil, barItemOnEdit: nil, ui: nil, slider: nil, colourSelector: nil, ratioSelector: true)
+            mainButtonHide(false)
+            menuBarHide(false)
+        }
+    
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            // we got back an error!
+            AlertService.alert(self, title: "Oops! There was an error saving the image.", message: error.localizedDescription)
+        } else {
+            AlertService.alert(self, title: "Image has been saved!", message: nil)
+        }
     }
 }
