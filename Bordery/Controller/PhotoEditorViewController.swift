@@ -130,27 +130,31 @@ class PhotoEditorViewController: UIViewController {
                     self.hide(progress: true, barItemOnEdit: nil, ui: false, slider: nil, colourSelector: nil, ratioSelector: nil)
                     guard let image = image else { return }
                     
-                    // the top image that will be resized.
+                    // the top image
                     self.imageViewTop.image = image
                     self.oriImage = image
                     
-                    // the borderView or the border color view.
-                    self.borderView.frame = self.imageViewTop.contentClippingRect
-                    self.borderView.backgroundColor = self.colourSelector.currentColour
-                    
-                    self.imageView.addSubview(self.borderView)
-                    
                     // final rendering
-                    self.imageViewTop.image = self.borderEngine.createRenderImage(foregroundImage: self.imageViewTop.image!, backgroundImageFrame: self.borderView.frame)
+                    self.imageViewTop.image = self.borderEngine.createRenderImage(foregroundImage: self.imageViewTop.image!, backgroundImageFrame: self.imageViewTop.contentClippingRect)
+                    self.borderView.frame = self.imageViewTop.contentClippingRect
+                    
+                    // the borderView or the border color view.
+                    self.borderView.backgroundColor = self.colourSelector.currentColour
+                    self.imageView.addSubview(self.borderView)
                     
                     self.borderEngine.imgSizeMultiplier = 0.0
                     self.borderEngine.sliderCurrentValue = 0.0
                     
+                    if image.size.width == image.size.height {
+                        let a = UIButton()
+                        a.tag = 1
+                        a.setTitle("override", for: .normal)
+                        self.ratioTapped(sender: a)
+                    }
+                    
                     // create a custom colour and append to the colour selector screen
                     DispatchQueue.main.async {
-                        
                         // add the border
-
                         let customColorButton: [UIButton] = self.colourSelector.colorFromImage(image: self.oriImage)
                         
                         customColorButton.last!.addTarget(self, action: #selector(self.colourTapped), for: .touchUpInside)

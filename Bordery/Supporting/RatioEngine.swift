@@ -50,7 +50,7 @@ class RatioEngine {
             ratioButton.clipsToBounds = true
             ratioButton.tintColor = .white
             
-            let buttonImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
+            let buttonImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             buttonImage.image = UIImage(named: ratioIcon[i])?.withRenderingMode(.alwaysTemplate)
             buttonImage.contentMode = .scaleAspectFit
             buttonImage.center = CGPoint(x: ratioButton.frame.size.width / 2, y: ratioButton.frame.size.height * 0.35)

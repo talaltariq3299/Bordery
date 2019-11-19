@@ -392,7 +392,7 @@ extension PhotoEditorViewController {
         NSLayoutConstraint.activate([
             sizeButton.centerXAnchor.constraint(equalTo: editorView.centerXAnchor, constant: -130),
             sizeButton.centerYAnchor.constraint(equalTo: editorView.centerYAnchor ,constant: -5),
-            sizeButton.heightAnchor.constraint(equalToConstant: 130),
+            sizeButton.heightAnchor.constraint(equalToConstant: 120),
             sizeButton.widthAnchor.constraint(equalToConstant: 100)
         ])
         
@@ -400,7 +400,7 @@ extension PhotoEditorViewController {
         NSLayoutConstraint.activate([
             colourButton.centerXAnchor.constraint(equalTo: editorView.centerXAnchor),
             colourButton.centerYAnchor.constraint(equalTo: editorView.centerYAnchor, constant: -5),
-            colourButton.heightAnchor.constraint(equalToConstant: 130),
+            colourButton.heightAnchor.constraint(equalToConstant: 120),
             colourButton.widthAnchor.constraint(equalToConstant: 100)
         ])
         
@@ -408,7 +408,7 @@ extension PhotoEditorViewController {
         NSLayoutConstraint.activate([
             ratioButton.centerXAnchor.constraint(equalTo: editorView.centerXAnchor, constant: 130),
             ratioButton.centerYAnchor.constraint(equalTo: editorView.centerYAnchor, constant: -5),
-            ratioButton.heightAnchor.constraint(equalToConstant: 130),
+            ratioButton.heightAnchor.constraint(equalToConstant: 120),
             ratioButton.widthAnchor.constraint(equalToConstant: 100)
         ])
         
@@ -614,8 +614,15 @@ extension PhotoEditorViewController {
     }
     
     @objc func ratioTapped(sender: UIButton) {
+        if sender.titleLabel?.text != "override" {
+            TapticEngine.lightTaptic()
+        }
+        
+        if oriImage.size.width == oriImage.size.height {
+            sender.tag = 1
+        }
+        
         sender.tintColor = .white
-        TapticEngine.lightTaptic()
         noticeLabel.isHidden = true
         
         switch sender.tag {
@@ -638,8 +645,8 @@ extension PhotoEditorViewController {
             borderView.center = CGPoint(x: imageView.frame.size.width  / 2, y: imageView.frame.size.height / 2)
             
             // scale accordingly.
-            // square portrait
-            if oriImage.size.width < oriImage.size.height {
+            // square portrait or square square
+            if oriImage.size.width < oriImage.size.height || oriImage.size.width == oriImage.size.height {
                 let renderImage = borderEngine.createRenderImageSquare(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
                 imageViewTop.image = renderImage
             }

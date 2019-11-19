@@ -145,43 +145,9 @@ struct ColourEngine {
         
         xCoord += gapBetweenButtons
         masterButton.append(border)
-        
-        // button property
-//        let borderButton = UIButton(type: .custom)
-//        borderButton.autoresizingMask = [.flexibleHeight, .flexibleLeftMargin]
-//        borderButton.frame = CGRect(x: xCoord, y: yCoord, width: buttonWidth, height: buttonHeight)
-//        borderButton.backgroundColor = .clear
-//        borderButton.layer.borderColor = .none
-//        borderButton.clipsToBounds = true
-//
+
         let xOffset: CGFloat = 0.025
         let yOffset: CGFloat = 0.55
-//
-//        // create labels
-//        let borderLabel = UILabel(frame: CGRect(x: borderButton.frame.width * xOffset, y: borderButton.frame.height * yOffset, width: 85, height: 20))
-//        borderLabel.textAlignment = .left
-//        borderLabel.text = "Colour from\nthe image."
-//        borderLabel.numberOfLines = 0
-//        borderLabel.textColor = UIColor.white
-//        borderLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
-//        borderLabel.sizeToFit()
-//
-//
-//        // --------
-//        let borderLabel2 = UILabel(frame: CGRect(x: borderButton.frame.width * xOffset, y: borderButton.frame.height * (yOffset + 0.15), width: 80, height: 20))
-//        borderLabel2.textAlignment = .left
-//        borderLabel2.text = ""
-//        borderLabel2.textColor = UIColor.white
-//        borderLabel2.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
-//
-//
-//        borderButton.addSubview(borderLabel)
-//        borderButton.addSubview(borderLabel2)
-//
-//        xCoord += buttonWidth + gapBetweenButtons
-//        masterButton.append(borderButton)
-        
-        
         // --------
         let color = image.averageColor
         
@@ -193,7 +159,7 @@ struct ColourEngine {
         colourButton.clipsToBounds = true
         
         // create labels
-        let colourLabel = UILabel(frame: CGRect(x: colourButton.frame.width * xOffset, y: colourButton.frame.height * yOffset * 0.7, width: 85, height: 20))
+        let colourLabel = UILabel(frame: CGRect(x: colourButton.frame.width * xOffset, y: colourButton.frame.height * yOffset * 0.65, width: 85, height: 20))
         colourLabel.textAlignment = .left
         colourLabel.text = "Colour\nfrom image"
         colourLabel.numberOfLines = 0
