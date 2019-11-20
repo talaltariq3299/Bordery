@@ -198,7 +198,7 @@ class PhotoEditorViewController: UIViewController {
         
         setupNavBar()
         
-        editorView.addSubview(addTopBorder(with: UIColor(named: "backgroundSecondColor"), andWidth: 1, to: editorView))
+        barView.addSubview(addTopBorder(with: UIColor(named: "backgroundSecondColor"), andWidth: 1, to: barView))
         
     }
     
@@ -249,10 +249,11 @@ class PhotoEditorViewController: UIViewController {
     }
     
     // function for barItem on Edit
-    @objc func cancelButtonTapped() {
+    @objc func cancelButtonTapped(sender: UIButton!) {
         TapticEngine.lightTaptic()
         mainButtonHide(false)
         menuBarHide(false)
+        sender.setTitleColor(.white, for: .normal)
         
         switch adjustmentNameLabel.text {
             case borderEngine.adjustmentName[0]:
@@ -277,10 +278,11 @@ class PhotoEditorViewController: UIViewController {
         }
     }
     
-    @objc func checkButtonTapped() {
+    @objc func checkButtonTapped(sender: UIButton!) {
         TapticEngine.lightTaptic()
         mainButtonHide(false)
         menuBarHide(false)
+        sender.setTitleColor(.white, for: .normal)
         
         switch adjustmentNameLabel.text {
         case borderEngine.adjustmentName[0]:

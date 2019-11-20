@@ -130,7 +130,9 @@ extension PhotoEditorViewController {
         let cancelButton = UIButton(type: .custom)
         cancelButton.setTitle("☓", for: .normal)
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
-        cancelButton.backgroundColor = UIColor(named: "backgroundColor")
+        cancelButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
+        cancelButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
+        cancelButton.backgroundColor = .clear
         cancelButton.contentEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         
         let cancelButtonWrapper = UIView()
@@ -148,7 +150,9 @@ extension PhotoEditorViewController {
         let checkButton = UIButton(type: .custom)
         checkButton.setTitle("✓", for: .normal)
         checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
-        checkButton.backgroundColor = UIColor(named: "backgroundColor")
+        checkButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
+        checkButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
+        checkButton.backgroundColor = .clear
         checkButton.contentEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         
         let checkButtonWrapper = UIView()
@@ -414,7 +418,7 @@ extension PhotoEditorViewController {
         
         barView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            barView.topAnchor.constraint(equalTo: editorView.bottomAnchor),
+            barView.heightAnchor.constraint(equalToConstant: editorView.frame.height * 0.3),
             barView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             barView.leftAnchor.constraint(equalTo: view.leftAnchor),
             barView.rightAnchor.constraint(equalTo: view.rightAnchor),
@@ -532,18 +536,20 @@ extension PhotoEditorViewController {
     // when user select a button but didnt press it.
     @objc func buttonHighlighted(sender: UIButton!) {
         sender.tintColor = .lightGray
+        sender.setTitleColor(.lightGray, for: .normal)
     }
     
     // when user drag their finger outside the button
     @objc func buttonNormal(sender: UIButton!) {
         sender.tintColor = .white
+        sender.setTitleColor(.white, for: .normal)
     }
     
     @objc func exportTapped(sender: UIButton) {
         sender.tintColor = .white
         let finalImageData = borderEngine.blendImages(backgroundImg: borderView.asImage(), foregroundImg: imageViewTop.image!)!
         guard let finalImage = UIImage(data: finalImageData) else {
-            AlertService.alert(self, title: "oof!", message: "It appears that the export engine is not working. Try again later or submit a feedback!")
+            AlertService.alert(self, title: "oof!", message: "It appears that the export engine is not working. Try again later or submit a bug report!")
             return
         }
         
@@ -570,12 +576,9 @@ extension PhotoEditorViewController {
             let image = finalImage
             
             // set up activity view controller
-            let imageToShare = [ image ]
+            let imageToShare = [image]
             let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
             activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
-            
-            // exclude some activity types from the list (optional)
-            activityViewController.excludedActivityTypes = [UIActivity.ActivityType.postToFacebook, UIActivity.ActivityType.postToTwitter, UIActivity.ActivityType.postToTencentWeibo, UIActivity.ActivityType.postToTencentWeibo]
             
             // present the view controller
             self.present(activityViewController, animated: true, completion: nil)
@@ -592,12 +595,14 @@ extension PhotoEditorViewController {
         case 0:
             borderButton.tintColor = .white
             saveButton.tintColor = .darkGray
+            
             mainButtonHide(false)
             exportButtonHide(true)
         case 1:
             adjustmentNameLabel.text = "Export"
             borderButton.tintColor = .darkGray
             saveButton.tintColor = .white
+            
             mainButtonHide(true)
             exportButtonHide(false)
         default:
