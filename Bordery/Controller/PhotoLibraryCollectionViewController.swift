@@ -25,6 +25,15 @@ class PhotoLibraryCollectionViewController: UICollectionViewController, UIGestur
     fileprivate var thumbnailSize: CGSize!
     fileprivate var previousPreheatRect = CGRect.zero
     
+    // collectionViewCell properties
+    lazy var selectedIndex = IndexPath()
+    let scale: CGFloat = 0.9
+    lazy var topViewContainer = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+    lazy var topView = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width * scale, height: UIScreen.main.bounds.height * scale))
+    var targetSize: CGSize {
+        return CGSize(width: topView.bounds.width, height: topView.bounds.height)
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -180,24 +189,46 @@ class PhotoLibraryCollectionViewController: UICollectionViewController, UIGestur
     
     // long press gesture function
     @objc fileprivate func handleLongPress(longPressGR: UILongPressGestureRecognizer) {
-        if longPressGR.state != .ended {
-            let point = longPressGR.location(in: self.collectionView)
-            let indexPath = self.collectionView.indexPathForItem(at: point)
+        let point = longPressGR.location(in: self.collectionView)
+        guard let indexPath = self.collectionView.indexPathForItem(at: point) else { return }
 
-            if let indexPath = indexPath {
-                TapticEngine.lightTaptic()
-                var cell = self.collectionView.cellForItem(at: indexPath)
-                print(indexPath.row)
-                longPressGR.state = .ended
+        switch longPressGR.state {
+        case UIGestureRecognizer.State.began:
+            TapticEngine.lightTaptic()
+            selectedIndex = indexPath
+            
+            // get the asset and process it
+            let options = PHImageRequestOptions()
+            options.deliveryMode = .opportunistic
+            options.isNetworkAccessAllowed = true
+            options.progressHandler = { (progress, _, _, _) in
+                print(progress)
             }
-            else {
-                longPressGR.state = .ended
-//                print("Could not find index path. handleLongPress on PhotoLibraryVC.")
+            let asset = fetchResult.object(at: selectedIndex.item)
+
+            PHImageManager.default().requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options) { (image, _) in
+                guard let image = image else { return }
+                self.topView.image = image
             }
-            return
+
+            UIView.animate(withDuration: 0.25) {
+                self.topViewContainer.isHidden = false
+                self.topView.isHidden = false
+                self.topViewContainer.backgroundColor = UIColor(displayP3Red: 0, green: 0, blue: 0, alpha: 0.63)
+            }
+            
+        case UIGestureRecognizer.State.ended:
+            UIView.animate(withDuration: 0.25) {
+                self.topViewContainer.backgroundColor = .clear
+            }
+            longPressGR.state = .ended
+            topViewContainer.isHidden = true
+            topView.isHidden  = true
+            
+        default:
+            break
         }
-
-
+        return
     }
     
 } // end of class
@@ -206,7 +237,7 @@ class PhotoLibraryCollectionViewController: UICollectionViewController, UIGestur
 extension PhotoLibraryCollectionViewController {
     fileprivate func resetCachedAssets() {
         if imageManager != nil {
-           imageManager!.stopCachingImagesForAllAssets()
+            imageManager!.stopCachingImagesForAllAssets()
         } 
         
         previousPreheatRect = .zero
@@ -240,7 +271,7 @@ extension PhotoLibraryCollectionViewController {
             imageManager!.stopCachingImages(for: removedAssets,
                                             targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
         }
-
+        
         // Store the computed rectangle for future comparison.
         previousPreheatRect = preheatRect
     }
@@ -295,13 +326,13 @@ extension PhotoLibraryCollectionViewController: UICollectionViewDelegateFlowLayo
         let allLayoutAttributes = collectionViewLayout.layoutAttributesForElements(in: rect)!
         return allLayoutAttributes.map { $0.indexPath }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let numberOfCollumns: CGFloat = 3
         let width = collectionView.frame.width
         let xInsets: CGFloat = 5
         let cellSpacing: CGFloat = 1
-
+        
         return CGSize(width: (width / numberOfCollumns) - (xInsets + cellSpacing), height: (width / numberOfCollumns) - (xInsets + cellSpacing))
     }
 }
@@ -320,6 +351,19 @@ extension PhotoLibraryCollectionViewController {
         
         let nav = self.navigationController?.navigationBar
         nav?.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        
+        // render the image preview container.
+        topViewContainer.center = view.center
+
+        topView.center = view.center
+        topView.contentMode = .scaleAspectFit
+        topView.backgroundColor = .clear
+        
+        topViewContainer.addSubview(topView)
+        view.addSubview(topViewContainer)
+        
+        topViewContainer.isHidden = true
+        topView.isHidden = true
     }
     
     private func setupElement() {
