@@ -31,7 +31,8 @@ class PhotoLibraryCollectionViewController: UICollectionViewController, UIGestur
     lazy var topViewContainer = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
     lazy var topView = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width * scale, height: UIScreen.main.bounds.height * scale))
     var targetSize: CGSize {
-        return CGSize(width: topView.bounds.width, height: topView.bounds.height)
+        let scale = UIScreen.main.scale
+        return CGSize(width: topView.bounds.width * scale, height: topView.bounds.height * scale)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
