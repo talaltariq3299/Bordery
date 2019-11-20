@@ -111,8 +111,8 @@ class PhotoEditorViewController: UIViewController {
             if error != nil {
                 DispatchQueue.main.async {
                     self.progressDownloadingLabel.text = "Please check your internet connection and try again."
+                    AlertService.alert(self, title: "No internet Connection!", message: "We cannot download your photos from iCloud. Check your internet Connection and try again.")
                 }
-                AlertService.alert(self, title: "No internet Connection!", message: "We cannot download your photos from iCloud. Check your internet Connection and try again.")
                 print("Internet Error. at PhotoEditor updateImage function.")
             }
             
@@ -126,9 +126,13 @@ class PhotoEditorViewController: UIViewController {
         if asset != nil {
             PHImageManager.default().requestImage(
                 for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options,
-                  resultHandler: { image, _ in
+                resultHandler: { image, _ in
+                    guard let image = image else {
+                        self.progressBarOutlet.isHidden = true
+                        self.progressPercentageLabel.isHidden = true
+                        return
+                    }
                     self.hide(progress: true, barItemOnEdit: nil, ui: false, slider: nil, colourSelector: nil, ratioSelector: nil)
-                    guard let image = image else { return }
                     
                     // the top image
                     self.imageViewTop.image = image
@@ -161,7 +165,7 @@ class PhotoEditorViewController: UIViewController {
                         for button in customColorButton {
                             self.colourSelectorScrollView.addSubview(button)
                         }
-
+                        
                         // rearrange to fit the content
                         self.colourSelectorScrollView.contentSize = CGSize(width: self.colourSelector.buttonWidth * CGFloat(Double(self.colourSelector.colourName.count + customColorButton.count) + 1.3), height: self.colourSelectorScrollView.frame.height)
                         

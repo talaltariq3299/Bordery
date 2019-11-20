@@ -211,19 +211,23 @@ class PhotoLibraryCollectionViewController: UICollectionViewController, UIGestur
                 self.topView.image = image
             }
 
+            self.topViewContainer.isHidden = false
             UIView.animate(withDuration: 0.25) {
-                self.topViewContainer.isHidden = false
-                self.topView.isHidden = false
                 self.topViewContainer.backgroundColor = UIColor(displayP3Red: 0, green: 0, blue: 0, alpha: 0.63)
             }
+            UIView.transition(with: topView, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                self.topView.isHidden = false
+            })
             
         case UIGestureRecognizer.State.ended:
             UIView.animate(withDuration: 0.25) {
                 self.topViewContainer.backgroundColor = .clear
             }
+            UIView.transition(with: topView, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                self.topView.isHidden = true
+            })
             longPressGR.state = .ended
             topViewContainer.isHidden = true
-            topView.isHidden  = true
             
         default:
             break
