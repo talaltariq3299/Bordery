@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E3641BB238659C70039F02B /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3641BA238659C70039F02B /* FirstViewController.swift */; };
 		9E39E007237594C600C15513 /* NewYorkMedium-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E39E005237594C600C15513 /* NewYorkMedium-Regular.otf */; };
 		9E39E008237594C600C15513 /* NewYorkMedium-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E39E006237594C600C15513 /* NewYorkMedium-Semibold.otf */; };
 		9E40EEF7236E9CD5000436C5 /* PhotoEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E40EEF5236E9CD5000436C5 /* PhotoEditorViewController.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9E3641BA238659C70039F02B /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		9E39E005237594C600C15513 /* NewYorkMedium-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NewYorkMedium-Regular.otf"; sourceTree = "<group>"; };
 		9E39E006237594C600C15513 /* NewYorkMedium-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NewYorkMedium-Semibold.otf"; sourceTree = "<group>"; };
 		9E40EEF5236E9CD5000436C5 /* PhotoEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoEditorViewController.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				9E40EEF5236E9CD5000436C5 /* PhotoEditorViewController.swift */,
 				9E40EEF9236E9D30000436C5 /* PhotoEditorVC_Extension+.swift */,
 				9E40EEFA236E9D30000436C5 /* PhotoLibraryCollectionViewController.swift */,
+				9E3641BA238659C70039F02B /* FirstViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -157,6 +160,8 @@
 			dependencies = (
 			);
 			name = Bordery;
+			packageProductDependencies = (
+			);
 			productName = Bordery;
 			productReference = 9EF0DB1F236C0F6E00969F9F /* Bordery.app */;
 			productType = "com.apple.product-type.application";
@@ -185,6 +190,8 @@
 				Base,
 			);
 			mainGroup = 9EF0DB16236C0F6E00969F9F;
+			packageReferences = (
+			);
 			productRefGroup = 9EF0DB20236C0F6E00969F9F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -222,6 +229,7 @@
 				9EF0DB25236C0F6E00969F9F /* SceneDelegate.swift in Sources */,
 				9EC118A8238164F500B1272A /* ExportEngine.swift in Sources */,
 				9EADAEF52379305B00B50C11 /* RangeConverter.swift in Sources */,
+				9E3641BB238659C70039F02B /* FirstViewController.swift in Sources */,
 				9EB21E852370043200D764A0 /* BorderEngine.swift in Sources */,
 				9E40EEFC236E9D30000436C5 /* PhotoLibraryCollectionViewController.swift in Sources */,
 				9E40EEFE236EB40F000436C5 /* ClassExtension+.swift in Sources */,
@@ -304,7 +312,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -358,7 +366,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

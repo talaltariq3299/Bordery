@@ -8,6 +8,16 @@
 
 import UIKit
 
+extension UILabel {
+  func addCharacterSpacing(kernValue: Double = 1) {
+    if let labelText = text, labelText.count > 0 {
+      let attributedString = NSMutableAttributedString(string: labelText)
+        attributedString.addAttribute(NSAttributedString.Key.kern, value: kernValue, range: NSRange(location: 0, length: attributedString.length - 1))
+      attributedText = attributedString
+    }
+  }
+}
+
 extension UIColor {
     // makes the colour a background for uiiimage
     func image(_ size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
@@ -105,4 +115,14 @@ extension UIView {
             return UIImage(cgImage: image!.cgImage!)
         }
     }
+}
+
+extension UIButton{
+
+    func addTextSpacing(_ letterSpacing: CGFloat){
+        let attributedString = NSMutableAttributedString(string: (self.titleLabel?.text!)!)
+        attributedString.addAttribute(NSAttributedString.Key.kern, value: letterSpacing, range: NSRange(location: 0, length: (self.titleLabel?.text!.count)!))
+        self.setAttributedTitle(attributedString, for: .normal)
+    }
+
 }

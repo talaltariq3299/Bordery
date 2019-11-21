@@ -39,10 +39,13 @@ class PhotoLibraryCollectionViewController: UICollectionViewController, UIGestur
         return .lightContent
     }
     
+    
+    // check if user view the app for the firs time
+//    let defaults = UserDefaults.standard
+    
     // UIViewController / Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupUI()
         setupElement()
         checkPermission()
@@ -81,7 +84,6 @@ class PhotoLibraryCollectionViewController: UICollectionViewController, UIGestur
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         // Determine the size of the thumbnails to request from the PHCachingImageManager.
         let scale = UIScreen.main.scale
         let cellSize = collectionViewFlowLayout.itemSize
@@ -91,6 +93,16 @@ class PhotoLibraryCollectionViewController: UICollectionViewController, UIGestur
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateCachedAssets()
+        
+        
+//        if !defaults.bool(forKey: "permissionCheckViewed") {
+//            let permissionCheckView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FirstVC")
+//            permissionCheckView.modalPresentationStyle = .fullScreen
+//            self.present(permissionCheckView, animated:true, completion:nil)
+//
+//
+////            defaults.set(true, forKey: "permissionCheckViewed")
+//        }
     }
     
     // UICollectionView
@@ -166,26 +178,26 @@ class PhotoLibraryCollectionViewController: UICollectionViewController, UIGestur
     // MARK: - Supporting Functions
     // this will make sure that the app has access to the photo library.
     fileprivate func checkPermission() {
-        let status = PHPhotoLibrary.authorizationStatus()
+        self.imageManager = PHCachingImageManager()
         
-        if status == .notDetermined {
-            PHPhotoLibrary.requestAuthorization({status in
-                if status == .authorized {
-                    self.imageManager = PHCachingImageManager()
-                }
-                else if status == .denied {
-                    AlertService.alert(self, title: "Permission Error!", message: "We can't edit your photos without access to your photo library. Please allow access through setting!")
-                    print("Permission Denied. Line 160 at PhotoLibraryVC")
-                }
-            })
-        }
-        else if status == .authorized {
-            self.imageManager = PHCachingImageManager()
-        }
-        else if status == .denied {
-            AlertService.alert(self, title: "Permission Error", message: "Please allow photo library access through setting.")
-            print("Permission Denied. Line 170 at PhotoLibraryVC")
-        }
+//        if status == .notDetermined {
+//            PHPhotoLibrary.requestAuthorization({status in
+//                if status == .authorized {
+//                    self.imageManager = PHCachingImageManager()
+//                }
+//                else if status == .denied {
+//                    AlertService.alert(self, title: "Permission Error!", message: "We can't edit your photos without access to your photo library. Please allow access through setting!")
+//                    print("Permission Denied. Line 160 at PhotoLibraryVC")
+//                }
+//            })
+//        }
+//        else if status == .authorized {
+//            self.imageManager = PHCachingImageManager()
+//        }
+//        else if status == .denied {
+//            AlertService.alert(self, title: "Permission Error", message: "Please allow photo library access through setting.")
+//            print("Permission Denied. Line 170 at PhotoLibraryVC")
+//        }
     }
     
     // long press gesture function
@@ -202,9 +214,6 @@ class PhotoLibraryCollectionViewController: UICollectionViewController, UIGestur
             let options = PHImageRequestOptions()
             options.deliveryMode = .opportunistic
             options.isNetworkAccessAllowed = true
-            options.progressHandler = { (progress, _, _, _) in
-                print(progress)
-            }
             let asset = fetchResult.object(at: selectedIndex.item)
 
             PHImageManager.default().requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options) { (image, _) in

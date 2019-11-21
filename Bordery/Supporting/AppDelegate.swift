@@ -12,9 +12,29 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+//        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+//        if launchedBefore  {
+//            print("launch before")
+//            // launch before
+////            let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+////            let navigationController = UINavigationController.init(rootViewController: storyboard.instantiateViewController(withIdentifier: "PhotoLibraryView"))
+////            self.window = UIWindow(frame: UIScreen.main.bounds)
+////            self.window?.rootViewController = navigationController
+////            self.window?.makeKeyAndVisible()
+//
+//
+//
+//        }
+//        else {
+//            print("new launch")
+//            // new launch
+//            UserDefaults.standard.set(true, forKey: "launchedBefore")
+//        }
+        
+        
         return true
     }
 
