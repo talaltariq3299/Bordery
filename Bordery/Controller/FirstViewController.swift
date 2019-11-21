@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import SwiftConfettiView
 
 class FirstViewController: UIViewController {
 
@@ -23,6 +24,9 @@ class FirstViewController: UIViewController {
     @IBOutlet weak var noticeLabel: UILabel!
     
     
+    var confettiView: SwiftConfettiView!
+    var isConfetti = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -33,6 +37,19 @@ class FirstViewController: UIViewController {
         setupPermissionButton()
         setupNextButton()
         setupConstraint()
+        setupConfettiButton()
+        
+        // confetti adjustment
+        confettiView = SwiftConfettiView(frame: self.view.bounds)
+        confettiView.isUserInteractionEnabled = false
+        confettiView.type = .confetti
+        self.view.addSubview(confettiView)
+        confettiView.startConfetti()
+        perform(#selector(stopConfetti), with: nil, afterDelay: 5)
+    }
+    
+    @objc func stopConfetti() {
+        confettiView.stopConfetti()
     }
 
     @IBAction func permissionButtonTapped(_ sender: Any) {
@@ -47,16 +64,20 @@ class FirstViewController: UIViewController {
                             self.nextButton.isHidden = false
                         })
                         self.noticeLabel.text = "Permission granted!"
+                        self.label1.text = "Happy editing! 😍"
                         self.permissionButton.isEnabled = false
                         self.permissionButton.layer.borderColor = UIColor.gray.cgColor
+                        self.permissionButton.setTitleColor(.gray, for: .normal)
                     }
-                    UserDefaults.standard.set(true, forKey: "launchedBefore")
+//                    UserDefaults.standard.set(true, forKey: "launchedBefore")
                 }
                 else if status == .denied {
                     TapticEngine.errorTaptic()
                     DispatchQueue.main.async {
                         AlertService.alert(self, title: "Permission Error!", message: "We can't edit your photos without access to your photo library. Please allow access through setting!")
+                        self.label1.text = "Is this what betrayal feels like? 😢"
                     }
+                    
 
                 }
             })
@@ -67,21 +88,24 @@ class FirstViewController: UIViewController {
                 self.nextButton.isHidden = false
             })
             permissionButton.isEnabled = false
+            label1.text = "Happy editing! 😍"
             noticeLabel.text = "Permission granted!"
             self.permissionButton.setTitleColor(.gray, for: .normal)
             self.permissionButton.layer.borderColor = UIColor.gray.cgColor
-            UserDefaults.standard.set(true, forKey: "launchedBefore")
+//            UserDefaults.standard.set(true, forKey: "launchedBefore")
         }
         else if status == .denied {
             TapticEngine.errorTaptic()
             DispatchQueue.main.async {
                 AlertService.alert(self, title: "Permission Error!", message: "We can't edit your photos without access to your photo library. Please allow access through setting!")
+                self.label1.text = "Is this what betrayal feels like? 😢"
             }
         }
     }
     
     
     @IBAction func nextButtonTapped(_ sender: Any) {
+        TapticEngine.lightTaptic()
         let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "PhotoLibraryViewNav")
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated:true, completion:nil)
@@ -90,6 +114,7 @@ class FirstViewController: UIViewController {
     fileprivate func setupUI() {
         self.view.backgroundColor = UIColor(named: "backgroundColor")
         nextButton.isHidden = true
+        permissionButton.isEnabled = true
     }
     
     fileprivate func setupLabel1() {
@@ -161,6 +186,35 @@ class FirstViewController: UIViewController {
         nextButton.addTextSpacing(0.5)
         nextButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 17, bottom: 12, right: 17)
         nextButton.layer.borderColor = UIColor.black.cgColor
+    }
+    
+    fileprivate func setupConfettiButton() {
+        let confettiButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        confettiButton.setImage(UIImage(named: "confetti-icon"), for: .normal)
+        confettiButton.addTarget(self, action: #selector(confettiButtonTapped), for: .touchUpInside)
+        self.view.addSubview(confettiButton)
+        
+        confettiButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            confettiButton.leftAnchor.constraint(equalTo: permissionButton.rightAnchor, constant: 30),
+            confettiButton.topAnchor.constraint(equalTo: label2.bottomAnchor, constant: 35),
+            confettiButton.widthAnchor.constraint(equalToConstant: 30),
+            confettiButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
+        
+    }
+    
+    @objc func confettiButtonTapped() {
+        if isConfetti {
+            TapticEngine.lightTaptic()
+            isConfetti = false
+            confettiView.stopConfetti()
+        }
+        else {
+            TapticEngine.lightTaptic()
+            isConfetti = true
+            confettiView.startConfetti()
+        }
     }
     
     fileprivate func setupConstraint() {

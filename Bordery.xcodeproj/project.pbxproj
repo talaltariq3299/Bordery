@@ -28,9 +28,11 @@
 		9EF0DB2F236C0F6F00969F9F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9EF0DB2D236C0F6F00969F9F /* LaunchScreen.storyboard */; };
 		9EF0DB3F236C10E300969F9F /* PhotoLibraryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF0DB3E236C10E300969F9F /* PhotoLibraryCollectionViewCell.swift */; };
 		9EF0DB43236C148B00969F9F /* AlertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF0DB42236C148B00969F9F /* AlertService.swift */; };
+		B19AB60454EBEA5D75DC85B6 /* Pods_Bordery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC47914BE4231823AF5909EA /* Pods_Bordery.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		000CFA715460F0D2328A1CCD /* Pods-Bordery.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bordery.release.xcconfig"; path = "Target Support Files/Pods-Bordery/Pods-Bordery.release.xcconfig"; sourceTree = "<group>"; };
 		9E3641BA238659C70039F02B /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		9E39E005237594C600C15513 /* NewYorkMedium-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NewYorkMedium-Regular.otf"; sourceTree = "<group>"; };
 		9E39E006237594C600C15513 /* NewYorkMedium-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NewYorkMedium-Semibold.otf"; sourceTree = "<group>"; };
@@ -54,6 +56,8 @@
 		9EF0DB30236C0F6F00969F9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9EF0DB3E236C10E300969F9F /* PhotoLibraryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCollectionViewCell.swift; sourceTree = "<group>"; };
 		9EF0DB42236C148B00969F9F /* AlertService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertService.swift; sourceTree = "<group>"; };
+		CC47914BE4231823AF5909EA /* Pods_Bordery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bordery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5DEC38ECF2777AD6D784302 /* Pods-Bordery.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bordery.debug.xcconfig"; path = "Target Support Files/Pods-Bordery/Pods-Bordery.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,12 +65,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B19AB60454EBEA5D75DC85B6 /* Pods_Bordery.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8130E506E7A85C59A5D534A8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CC47914BE4231823AF5909EA /* Pods_Bordery.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9E39E009237594F800C15513 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +94,8 @@
 			children = (
 				9EF0DB21236C0F6E00969F9F /* Bordery */,
 				9EF0DB20236C0F6E00969F9F /* Products */,
+				E7D7487B704756F834B25DBD /* Pods */,
+				8130E506E7A85C59A5D534A8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -144,6 +159,16 @@
 			path = Supporting;
 			sourceTree = "<group>";
 		};
+		E7D7487B704756F834B25DBD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D5DEC38ECF2777AD6D784302 /* Pods-Bordery.debug.xcconfig */,
+				000CFA715460F0D2328A1CCD /* Pods-Bordery.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -151,17 +176,17 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9EF0DB33236C0F6F00969F9F /* Build configuration list for PBXNativeTarget "Bordery" */;
 			buildPhases = (
+				70E0F475445B8F5E09DA6E96 /* [CP] Check Pods Manifest.lock */,
 				9EF0DB1B236C0F6E00969F9F /* Sources */,
 				9EF0DB1C236C0F6E00969F9F /* Frameworks */,
 				9EF0DB1D236C0F6E00969F9F /* Resources */,
+				020FF297905B43FBE6123F58 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = Bordery;
-			packageProductDependencies = (
-			);
 			productName = Bordery;
 			productReference = 9EF0DB1F236C0F6E00969F9F /* Bordery.app */;
 			productType = "com.apple.product-type.application";
@@ -190,8 +215,6 @@
 				Base,
 			);
 			mainGroup = 9EF0DB16236C0F6E00969F9F;
-			packageReferences = (
-			);
 			productRefGroup = 9EF0DB20236C0F6E00969F9F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -215,6 +238,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		020FF297905B43FBE6123F58 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Bordery/Pods-Bordery-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Bordery/Pods-Bordery-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Bordery/Pods-Bordery-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		70E0F475445B8F5E09DA6E96 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Bordery-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		9EF0DB1B236C0F6E00969F9F /* Sources */ = {
@@ -378,6 +443,7 @@
 		};
 		9EF0DB34236C0F6F00969F9F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D5DEC38ECF2777AD6D784302 /* Pods-Bordery.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -396,6 +462,7 @@
 		};
 		9EF0DB35236C0F6F00969F9F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 000CFA715460F0D2328A1CCD /* Pods-Bordery.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
