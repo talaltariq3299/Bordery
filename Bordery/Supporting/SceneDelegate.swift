@@ -42,8 +42,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.window?.rootViewController = rootNC
             self.window?.makeKeyAndVisible()
         }
-        
-        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
