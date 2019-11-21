@@ -12,28 +12,50 @@ import Photos
 import CoreImage
 
 class PhotoEditorViewController: UIViewController {
-
+    
     // Global Variables
-    let VIEW_HEIGHTMULTIPLIER_CONSTANT: CGFloat = 0.19
+    let VIEW_HEIGHTMULTIPLIER_CONSTANT: CGFloat = 0.18
     var asset: PHAsset!
     var targetSize: CGSize {
         let scale = UIScreen.main.scale
         return CGSize(width: imageView.bounds.width * scale, height: imageView.bounds.height * scale)
     }
+    var borderEngine = BorderEngine()
+    var colourSelector: ColourEngine!
+    var ratioSelector: RatioEngine!
+    var oriImage: UIImage!
+    var exportSelector: ExportEngine!
     
     // editorView properties
-    lazy var adjustmentFiltersScrollView = UIScrollView()
+    lazy var sizeButton = UIButton()
+    lazy var colourButton = UIButton()
+    lazy var ratioButton = UIButton()
+    // size
     lazy var sliderValueLabel = UILabel()
     lazy var adjustmentNameLabel = UILabel()
+    // colour
+    lazy var colourSelectorScrollView = UIScrollView()
+    lazy var borderView = UIView()
+    //Ratio
+    lazy var ratioSelectorScrollView = UIScrollView()
+    lazy var noticeLabel = UILabel()
+    
     // barView Properties
     lazy var barItemOnEditStackView = UIStackView()
+    lazy var borderButton = UIButton()
+    lazy var saveButton = UIButton()
+    
+    // export
+    lazy var exportSelectorScrollView = UIScrollView()
     
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var imageViewTop: UIImageView!
     @IBOutlet weak var editorView: UIView!
     @IBOutlet weak var barView: UIView!
     @IBOutlet weak var progressDownloadingLabel: UILabel!
     @IBOutlet weak var progressBarOutlet: UIProgressView!
     @IBOutlet weak var progressPercentageLabel: UILabel!
+    @IBOutlet weak var adjustmentSliderOutlet: UISlider!
     
     @IBOutlet weak var progressStackView: UIStackView!
     
@@ -41,16 +63,22 @@ class PhotoEditorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // hide the progress bar on default
-        hide(progress: true, barItemOnEdit: true, ui: true)
-
+        // hide the elements on default
+        hide(progress: true, barItemOnEdit: true, ui: true, slider: true, colourSelector: true, ratioSelector: true)
+        exportButtonHide(true)
+        
         setupUI()
+        setupBarItemOnEdit() // bar item on editing (x or checkmark)
+        setupMenuBar()
+        
+        //editorView
+        setupMainButtons()
+        setupAdjustmentSlider()
+        setupColourSelector()
+        setupRatioSelector()
+        setupExportSelector()
+        
         setupConstraint()
-        // bar item on editing
-        setupBarItemOnEdit()
-        // Adjustment View
-        setupAdjustmentView()
-
         setupDebug()
     }
     
@@ -70,7 +98,7 @@ class PhotoEditorViewController: UIViewController {
     // MARK: - Main Functions
     // image downloading function
     fileprivate func updateImage() {
-        hide(progress: false, barItemOnEdit: nil, ui: nil)
+        hide(progress: false, barItemOnEdit: nil, ui: nil, slider: nil, colourSelector: nil, ratioSelector: nil)
         // reset the progressBar value
         progressBarOutlet.progress = 0.0
         
@@ -83,9 +111,9 @@ class PhotoEditorViewController: UIViewController {
             if error != nil {
                 DispatchQueue.main.async {
                     self.progressDownloadingLabel.text = "Please check your internet connection and try again."
+                    AlertService.alert(self, title: "No internet Connection!", message: "We cannot download your photos from iCloud. Check your internet Connection and try again.")
                 }
-                AlertService.alert(self, title: "No internet Connection!", message: "We cannot download your photos from iCloud. Check your internet Connection and try again.")
-                print("Internet Error. at PhotoEditor VC line 105")
+                print("Internet Error. at PhotoEditor updateImage function.")
             }
             
             // update the UI
@@ -96,22 +124,73 @@ class PhotoEditorViewController: UIViewController {
         }
         // request the image and displaying it.
         if asset != nil {
-            PHImageManager.default().requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options,
-                                                  resultHandler: { image, _ in
-                                                    guard let image = image else { return }
-//                                                    self.imageView.image = image
-                                                    self.hide(progress: true, barItemOnEdit: nil, ui: false)
-                                                    let borderColor = UIColor.white.image()
-
-                                                    let image2: UIImage = UIImage(data: self.blendImages(borderColor, image)!)!
-                                                    self.imageView.image = image2
-                                                    
+            PHImageManager.default().requestImage(
+                for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options,
+                resultHandler: { image, _ in
+                    guard let image = image else {
+                        self.progressBarOutlet.isHidden = true
+                        self.progressPercentageLabel.isHidden = true
+                        return
+                    }
+                    self.hide(progress: true, barItemOnEdit: nil, ui: false, slider: nil, colourSelector: nil, ratioSelector: nil)
+                    
+                    // the top image
+                    self.imageViewTop.image = image
+                    self.oriImage = image
+                    
+                    // final rendering
+                    self.imageViewTop.image = self.borderEngine.createRenderImage(foregroundImage: self.imageViewTop.image!, backgroundImageFrame: self.imageViewTop.contentClippingRect)
+                    self.borderView.frame = self.imageViewTop.contentClippingRect
+                    
+                    // the borderView or the border color view.
+                    self.borderView.backgroundColor = self.colourSelector.currentColour
+                    self.imageView.addSubview(self.borderView)
+                    
+                    self.borderEngine.imgSizeMultiplier = 0.0
+                    self.borderEngine.sliderCurrentValue = 0.0
+                    
+                    if image.size.width == image.size.height {
+                        let a = UIButton()
+                        a.tag = 1
+                        a.setTitle("override", for: .normal)
+                        self.ratioTapped(sender: a)
+                    }
+                    
+                    // create a custom colour and append to the colour selector screen
+                    DispatchQueue.main.async {
+                        // add the border
+                        let customColorButton: [UIButton] = self.colourSelector.colorFromImage(image: self.oriImage)
+                        
+                        customColorButton.last!.addTarget(self, action: #selector(self.colourTapped), for: .touchUpInside)
+                        for button in customColorButton {
+                            self.colourSelectorScrollView.addSubview(button)
+                        }
+                        
+                        // rearrange to fit the content
+                        self.colourSelectorScrollView.contentSize = CGSize(width: self.colourSelector.buttonWidth * CGFloat(Double(self.colourSelector.colourName.count + customColorButton.count) + 1.3), height: self.colourSelectorScrollView.frame.height)
+                        
+                    }
             })
         }
     }
     
     // MARK: - Supporting Functions
     fileprivate func setupUI() {
+        adjustmentNameLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        adjustmentNameLabel.textColor = UIColor.white
+        adjustmentNameLabel.textAlignment = .center
+        adjustmentNameLabel.numberOfLines = 0
+        
+        noticeLabel.frame = CGRect(x: 0, y: 0, width: 100, height: 21)
+        noticeLabel.textAlignment = .center
+        noticeLabel.text = "The app will automatically adjust the ratio and return to the previous screen."
+        noticeLabel.textColor = .gray
+        noticeLabel.font = UIFont.systemFont(ofSize: 11)
+        noticeLabel.numberOfLines = 0
+        noticeLabel.sizeToFit()
+        
+        noticeLabel.isHidden = true
+        
         view.backgroundColor = UIColor(named: "backgroundColor")
         // progress colour
         progressPercentageLabel.textColor = UIColor.white
@@ -122,62 +201,30 @@ class PhotoEditorViewController: UIViewController {
         progressPercentageLabel.text = "0%"
         
         setupNavBar()
-
+        
+        barView.addSubview(addTopBorder(with: UIColor(named: "backgroundSecondColor"), andWidth: 1, to: barView))
+        
     }
     
     // create navigation bar
     fileprivate func setupNavBar() {
-//        let startingYPos = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
         let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
         let startingYPos = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
         
-        let navBar = UINavigationBar(frame: CGRect(x: 0, y: startingYPos, width: self.view.bounds.width, height: 44))
+        let navItem = UINavigationItem(title: "Bordery.")
+        navItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelAction))
+        
+        let navBar = UINavigationBar(frame: CGRect(x: 0, y: startingYPos, width: view.bounds.width, height: 44))
         navBar.barTintColor = UIColor(named: "backgroundColor")
         navBar.isTranslucent = false
         navBar.tintColor = UIColor.white
-        let navItem = UINavigationItem(title: "Bordery")
-        
-        let backButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: nil, action: #selector(cancelAction))
-        navItem.leftBarButtonItem = backButton
+        guard let customFont = UIFont(name: "NewYorkMedium-Semibold", size: 20) else {
+            fatalError("Failed to load the font")
+        }
+        navBar.titleTextAttributes = [.foregroundColor: UIColor.white, .font: customFont]
         navBar.setItems([navItem], animated: true)
-        
-        self.view.addSubview(navBar)
-    }
-    
-    // create constraint
-    fileprivate func setupConstraint() {
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 45),
-            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 5),
-            imageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -5),
-            imageView.heightAnchor.constraint(equalToConstant: view.frame.height * 0.6)
-            ])
-        
-        progressStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            progressStackView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
-            progressStackView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
-            ])
-        
-        editorView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            editorView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 10),
-            editorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            editorView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            editorView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            editorView.heightAnchor.constraint(equalToConstant: view.frame.height * VIEW_HEIGHTMULTIPLIER_CONSTANT)
-            ])
 
-        barView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            barView.topAnchor.constraint(equalTo: editorView.bottomAnchor),
-            barView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            barView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            barView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            barView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-            ])
+        view.addSubview(navBar)
     }
     
     // for debugging
@@ -186,7 +233,19 @@ class PhotoEditorViewController: UIViewController {
         barView.backgroundColor = .clear
         imageView.backgroundColor = .clear
     }
-
+    
+    @IBAction func sliderDidChange(_ sender: UISlider) {
+        // convert the range
+        var ratioConverter = RangeConverter(oldMax: sender.maximumValue, oldMin: sender.minimumValue, newMax: 10, newMin: 0, oldValue: sender.value)
+        DispatchQueue.main.async {
+            self.sliderValueLabel.text = "\(ratioConverter.getNewValueStr(decimalPlace: 1)) pts"
+        }
+        
+        let y:Float = (sender.minimumValue + sender.maximumValue) - sender.value
+        let imgSizeMultiplier: CGFloat = CGFloat(y)
+        
+        imageViewTop.transform = CGAffineTransform(scaleX: imgSizeMultiplier, y: imgSizeMultiplier)
+    }
     
     // MARK: - Selector functions
     @objc func cancelAction() {
@@ -194,14 +253,66 @@ class PhotoEditorViewController: UIViewController {
     }
     
     // function for barItem on Edit
-    @objc func cancelButtonTapped() {
-        hide(progress: nil, barItemOnEdit: true, ui: nil)
-        adjustmentFiltersScrollView.isHidden = false
+    @objc func cancelButtonTapped(sender: UIButton!) {
+        TapticEngine.lightTaptic()
+        mainButtonHide(false)
+        menuBarHide(false)
+        sender.setTitleColor(.white, for: .normal)
+        
+        switch adjustmentNameLabel.text {
+            case borderEngine.adjustmentName[0]:
+                hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true, colourSelector: nil, ratioSelector: nil)
+                
+                // reset the configuration back to its previous state
+                adjustmentSliderOutlet.value = borderEngine.sliderCurrentValue
+                sliderValueLabel.text = "\(borderEngine.sliderCurrentValueRatio) pts"
+                imageViewTop.transform = CGAffineTransform(scaleX: borderEngine.imgSizeMultiplierCurrent, y: borderEngine.imgSizeMultiplierCurrent)
+
+            case borderEngine.adjustmentName[1]:
+                hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: true, ratioSelector: nil)
+            
+                // reset the configuration back to it previous state
+                borderView.backgroundColor = colourSelector.currentColour
+                
+            case borderEngine.adjustmentName[2]:
+                hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: nil, ratioSelector: true)
+                
+            default:
+                print("No execution detected! PhotoEditorVC checkButtonTapped function")
+        }
     }
     
-    @objc func checkButtonTapped() {
-        hide(progress: nil, barItemOnEdit: true, ui: nil)
-        adjustmentFiltersScrollView.isHidden = false
+    @objc func checkButtonTapped(sender: UIButton!) {
+        TapticEngine.lightTaptic()
+        mainButtonHide(false)
+        menuBarHide(false)
+        sender.setTitleColor(.white, for: .normal)
+        
+        switch adjustmentNameLabel.text {
+        case borderEngine.adjustmentName[0]:
+            hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true, colourSelector: nil, ratioSelector: nil)
+            
+            // convert to 0 - 0.5 range for blending
+            var ratioConverter = RangeConverter(oldMax: adjustmentSliderOutlet.maximumValue, oldMin: adjustmentSliderOutlet.minimumValue, newMax: 0.5, newMin: 0, oldValue: adjustmentSliderOutlet.value)
+            borderEngine.imgSizeMultiplier = CGFloat(ratioConverter.getNewValueFloat())
+            borderEngine.sliderCurrentValue = adjustmentSliderOutlet.value
+            
+            // convert to 0 - 10 range and store current value for future undo.
+            var ratioConverter2 = RangeConverter(oldMax: adjustmentSliderOutlet.maximumValue, oldMin: adjustmentSliderOutlet.minimumValue, newMax: 10, newMin: 0, oldValue: adjustmentSliderOutlet.value)
+            borderEngine.sliderCurrentValueRatio = ratioConverter2.getNewValueStr(decimalPlace: 1)
+            borderEngine.imgSizeMultiplierCurrent = imageViewTop.transform.a
+            
+        case borderEngine.adjustmentName[1]:
+            hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: true, ratioSelector: nil)
+            colourSelector.currentColour = borderView.backgroundColor!
+            
+            
+        case borderEngine.adjustmentName[2]:
+            hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: nil, ratioSelector: true)
+            
+        default:
+            fatalError("No execution detected! PhotoEditorVC checkButtonTapped function")
+        }
         
     }
     

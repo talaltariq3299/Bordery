@@ -13,7 +13,7 @@ import PhotosUI
 private let reuseIdentifier = "photoCell"
 
 // this class is heavily inspired by apple's. (reference: PhotoKit Example Project)
-class PhotoLibraryCollectionViewController: UICollectionViewController {
+class PhotoLibraryCollectionViewController: UICollectionViewController, UIGestureRecognizerDelegate {
     
     var fetchResult: PHFetchResult<PHAsset>!
     var assetCollection: PHAssetCollection!
@@ -24,6 +24,16 @@ class PhotoLibraryCollectionViewController: UICollectionViewController {
     fileprivate var imageManager: PHCachingImageManager?
     fileprivate var thumbnailSize: CGSize!
     fileprivate var previousPreheatRect = CGRect.zero
+    
+    // collectionViewCell properties
+    lazy var selectedIndex = IndexPath()
+    let scale: CGFloat = 0.9
+    lazy var topViewContainer = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+    lazy var topView = UIImageView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width * scale, height: UIScreen.main.bounds.height * scale))
+    var targetSize: CGSize {
+        let scale = UIScreen.main.scale
+        return CGSize(width: topView.bounds.width * scale, height: topView.bounds.height * scale)
+    }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -45,6 +55,12 @@ class PhotoLibraryCollectionViewController: UICollectionViewController {
             allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
             fetchResult = PHAsset.fetchAssets(with: .image, options: allPhotosOptions)
         }
+        
+        // long press gesture
+        let longPressGR = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(longPressGR:)))
+        longPressGR.minimumPressDuration = 0.3
+        longPressGR.delaysTouchesBegan = true
+        self.collectionView.addGestureRecognizer(longPressGR)
     }
     
     deinit {
@@ -172,13 +188,61 @@ class PhotoLibraryCollectionViewController: UICollectionViewController {
         }
     }
     
+    // long press gesture function
+    @objc fileprivate func handleLongPress(longPressGR: UILongPressGestureRecognizer) {
+        let point = longPressGR.location(in: self.collectionView)
+        guard let indexPath = self.collectionView.indexPathForItem(at: point) else { return }
+
+        switch longPressGR.state {
+        case UIGestureRecognizer.State.began:
+            TapticEngine.lightTaptic()
+            selectedIndex = indexPath
+            
+            // get the asset and process it
+            let options = PHImageRequestOptions()
+            options.deliveryMode = .opportunistic
+            options.isNetworkAccessAllowed = true
+            options.progressHandler = { (progress, _, _, _) in
+                print(progress)
+            }
+            let asset = fetchResult.object(at: selectedIndex.item)
+
+            PHImageManager.default().requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options) { (image, _) in
+                guard let image = image else { return }
+                self.topView.image = image
+            }
+
+            self.topViewContainer.isHidden = false
+            UIView.animate(withDuration: 0.25) {
+                self.topViewContainer.backgroundColor = UIColor(displayP3Red: 0, green: 0, blue: 0, alpha: 0.63)
+            }
+            UIView.transition(with: topView, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                self.topView.isHidden = false
+            })
+            
+        case UIGestureRecognizer.State.ended:
+            UIView.animate(withDuration: 0.25) {
+                self.topViewContainer.backgroundColor = .clear
+            }
+            UIView.transition(with: topView, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                self.topView.isHidden = true
+            })
+            longPressGR.state = .ended
+            topViewContainer.isHidden = true
+            
+        default:
+            break
+        }
+        return
+    }
+    
 } // end of class
 
 // MARK: - Asset Caching
 extension PhotoLibraryCollectionViewController {
     fileprivate func resetCachedAssets() {
         if imageManager != nil {
-           imageManager!.stopCachingImagesForAllAssets()
+            imageManager!.stopCachingImagesForAllAssets()
         } 
         
         previousPreheatRect = .zero
@@ -212,7 +276,7 @@ extension PhotoLibraryCollectionViewController {
             imageManager!.stopCachingImages(for: removedAssets,
                                             targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
         }
-
+        
         // Store the computed rectangle for future comparison.
         previousPreheatRect = preheatRect
     }
@@ -267,13 +331,13 @@ extension PhotoLibraryCollectionViewController: UICollectionViewDelegateFlowLayo
         let allLayoutAttributes = collectionViewLayout.layoutAttributesForElements(in: rect)!
         return allLayoutAttributes.map { $0.indexPath }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let numberOfCollumns: CGFloat = 3
         let width = collectionView.frame.width
         let xInsets: CGFloat = 5
         let cellSpacing: CGFloat = 1
-
+        
         return CGSize(width: (width / numberOfCollumns) - (xInsets + cellSpacing), height: (width / numberOfCollumns) - (xInsets + cellSpacing))
     }
 }
@@ -292,6 +356,19 @@ extension PhotoLibraryCollectionViewController {
         
         let nav = self.navigationController?.navigationBar
         nav?.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        
+        // render the image preview container.
+        topViewContainer.center = view.center
+
+        topView.center = view.center
+        topView.contentMode = .scaleAspectFit
+        topView.backgroundColor = .clear
+        
+        topViewContainer.addSubview(topView)
+        view.addSubview(topViewContainer)
+        
+        topViewContainer.isHidden = true
+        topView.isHidden = true
     }
     
     private func setupElement() {
