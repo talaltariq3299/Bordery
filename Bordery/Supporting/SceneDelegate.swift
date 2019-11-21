@@ -23,7 +23,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: windowScene)
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
         if launchedBefore  {
-            print("launch before")
             // launch before
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             guard let rootVC = storyboard.instantiateViewController(identifier: "PhotoLibraryView") as? UICollectionViewController else {
@@ -35,14 +34,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.window?.makeKeyAndVisible()
         }
         else {
-            print("new launch")
             // new launch
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            guard let rootVC = storyboard.instantiateViewController(identifier: "FirstVC") as? UIViewController else {
-                print("ViewController not found")
-                return
-            }
+            let rootVC = storyboard.instantiateViewController(identifier: "FirstVC")
             let rootNC = UINavigationController(rootViewController: rootVC)
+            rootNC.setNavigationBarHidden(true, animated: false)
             self.window?.rootViewController = rootNC
             self.window?.makeKeyAndVisible()
         }
