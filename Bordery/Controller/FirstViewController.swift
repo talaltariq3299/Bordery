@@ -33,15 +33,6 @@ class FirstViewController: UIViewController {
         setupPermissionButton()
         setupNextButton()
         setupConstraint()
-        
-        
-        
-        
-        
-        
-        
-        
-
     }
 
     @IBAction func permissionButtonTapped(_ sender: Any) {

@@ -22,14 +22,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: windowScene)
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
         if launchedBefore  {
-            // launch before
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            guard let rootVC = storyboard.instantiateViewController(identifier: "PhotoLibraryView") as? UICollectionViewController else {
-                print("ViewController not found")
-                return
-            }
-            let rootNC = UINavigationController(rootViewController: rootVC)
-            self.window?.rootViewController = rootNC
+            // launch before 
+            let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "PhotoLibraryViewNav")
+            vc.modalPresentationStyle = .fullScreen
+            self.window?.rootViewController = vc
             self.window?.makeKeyAndVisible()
         }
         else {

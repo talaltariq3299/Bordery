@@ -418,7 +418,7 @@ extension PhotoEditorViewController {
         
         barView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            barView.heightAnchor.constraint(equalToConstant: editorView.frame.height * 0.3),
+            barView.heightAnchor.constraint(equalToConstant: 49),
             barView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             barView.leftAnchor.constraint(equalTo: view.leftAnchor),
             barView.rightAnchor.constraint(equalTo: view.rightAnchor),
