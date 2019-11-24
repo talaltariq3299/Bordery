@@ -44,6 +44,7 @@ class PhotoEditorViewController: UIViewController {
     lazy var barItemOnEditStackView = UIStackView()
     lazy var borderButton = UIButton()
     lazy var saveButton = UIButton()
+    lazy var adjustmentButton = UIButton()
     
     // export
     lazy var exportSelectorScrollView = UIScrollView()

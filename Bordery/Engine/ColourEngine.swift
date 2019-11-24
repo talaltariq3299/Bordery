@@ -54,7 +54,7 @@ struct ColourEngine {
             
             // button property
             let colourButton = UIButton(type: .custom)
-            colourButton.frame = CGRect(x: xCoord, y: yCoord, width: buttonWidth, height: buttonHeight)
+            colourButton.frame = CGRect(x: xCoord, y: yCoord, width: buttonWidth, height: buttonWidth)
             colourButton.backgroundColor = hexUIColor
             colourButton.layer.borderColor = .none
             colourButton.tag = itemCount
@@ -153,7 +153,7 @@ struct ColourEngine {
         
         // button property
         let colourButton = UIButton(type: .custom)
-        colourButton.frame = CGRect(x: xCoord, y: yCoord, width: buttonWidth, height: buttonHeight)
+        colourButton.frame = CGRect(x: xCoord, y: yCoord, width: buttonWidth, height: buttonWidth)
         colourButton.backgroundColor = color
         colourButton.layer.borderColor = .none
         colourButton.clipsToBounds = true

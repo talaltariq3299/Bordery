@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		9E3641BB238659C70039F02B /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3641BA238659C70039F02B /* FirstViewController.swift */; };
+		9E39A74F238A70B0006774F2 /* MenuBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A74E238A70B0006774F2 /* MenuBarButton.swift */; };
+		9E39A753238A776C006774F2 /* MainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A752238A776C006774F2 /* MainButton.swift */; };
+		9E39A756238A79FE006774F2 /* BarItemEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A755238A79FE006774F2 /* BarItemEdit.swift */; };
 		9E39E007237594C600C15513 /* NewYorkMedium-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E39E005237594C600C15513 /* NewYorkMedium-Regular.otf */; };
 		9E39E008237594C600C15513 /* NewYorkMedium-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E39E006237594C600C15513 /* NewYorkMedium-Semibold.otf */; };
 		9E40EEF7236E9CD5000436C5 /* PhotoEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E40EEF5236E9CD5000436C5 /* PhotoEditorViewController.swift */; };
@@ -34,6 +37,9 @@
 /* Begin PBXFileReference section */
 		000CFA715460F0D2328A1CCD /* Pods-Bordery.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bordery.release.xcconfig"; path = "Target Support Files/Pods-Bordery/Pods-Bordery.release.xcconfig"; sourceTree = "<group>"; };
 		9E3641BA238659C70039F02B /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
+		9E39A74E238A70B0006774F2 /* MenuBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarButton.swift; sourceTree = "<group>"; };
+		9E39A752238A776C006774F2 /* MainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButton.swift; sourceTree = "<group>"; };
+		9E39A755238A79FE006774F2 /* BarItemEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarItemEdit.swift; sourceTree = "<group>"; };
 		9E39E005237594C600C15513 /* NewYorkMedium-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NewYorkMedium-Regular.otf"; sourceTree = "<group>"; };
 		9E39E006237594C600C15513 /* NewYorkMedium-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NewYorkMedium-Semibold.otf"; sourceTree = "<group>"; };
 		9E40EEF5236E9CD5000436C5 /* PhotoEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoEditorViewController.swift; sourceTree = "<group>"; };
@@ -80,6 +86,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9E39A754238A7962006774F2 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				9EADAEF42379305B00B50C11 /* RangeConverter.swift */,
+				9ED7D74D237A460E00735D9A /* TapticEngine.swift */,
+				9EB21E842370043200D764A0 /* BorderEngine.swift */,
+				9EBF3AF423798303003F9BF3 /* ColourEngine.swift */,
+				9E61B7CC237A9F43004E0A95 /* RatioEngine.swift */,
+				9EC118A7238164F500B1272A /* ExportEngine.swift */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
 		9E39E009237594F800C15513 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				9E39E009237594F800C15513 /* Fonts */,
+				9E39A754238A7962006774F2 /* Engine */,
 				9EF0DB38236C0FBA00969F9F /* Supporting */,
 				9EF0DB37236C0FB000969F9F /* View */,
 				9EF0DB36236C0FA800969F9F /* Controller */,
@@ -147,14 +167,11 @@
 				9EF0DB24236C0F6E00969F9F /* SceneDelegate.swift */,
 				9EF0DB3E236C10E300969F9F /* PhotoLibraryCollectionViewCell.swift */,
 				9E40EEFD236EB40F000436C5 /* ClassExtension+.swift */,
-				9EADAEF42379305B00B50C11 /* RangeConverter.swift */,
 				9EF0DB42236C148B00969F9F /* AlertService.swift */,
-				9ED7D74D237A460E00735D9A /* TapticEngine.swift */,
-				9EB21E842370043200D764A0 /* BorderEngine.swift */,
-				9EBF3AF423798303003F9BF3 /* ColourEngine.swift */,
-				9E61B7CC237A9F43004E0A95 /* RatioEngine.swift */,
-				9EC118A7238164F500B1272A /* ExportEngine.swift */,
 				9E9C0F982382694000D5E33E /* CustomPhotoAlbum.swift */,
+				9E39A74E238A70B0006774F2 /* MenuBarButton.swift */,
+				9E39A752238A776C006774F2 /* MainButton.swift */,
+				9E39A755238A79FE006774F2 /* BarItemEdit.swift */,
 			);
 			path = Supporting;
 			sourceTree = "<group>";
@@ -286,7 +303,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9ED7D74E237A460E00735D9A /* TapticEngine.swift in Sources */,
+				9E39A756238A79FE006774F2 /* BarItemEdit.swift in Sources */,
 				9EF0DB23236C0F6E00969F9F /* AppDelegate.swift in Sources */,
+				9E39A753238A776C006774F2 /* MainButton.swift in Sources */,
 				9EF0DB3F236C10E300969F9F /* PhotoLibraryCollectionViewCell.swift in Sources */,
 				9E9C0F992382694000D5E33E /* CustomPhotoAlbum.swift in Sources */,
 				9E40EEF7236E9CD5000436C5 /* PhotoEditorViewController.swift in Sources */,
@@ -294,6 +313,7 @@
 				9EC118A8238164F500B1272A /* ExportEngine.swift in Sources */,
 				9EADAEF52379305B00B50C11 /* RangeConverter.swift in Sources */,
 				9E3641BB238659C70039F02B /* FirstViewController.swift in Sources */,
+				9E39A74F238A70B0006774F2 /* MenuBarButton.swift in Sources */,
 				9EB21E852370043200D764A0 /* BorderEngine.swift in Sources */,
 				9E40EEFC236E9D30000436C5 /* PhotoLibraryCollectionViewController.swift in Sources */,
 				9E40EEFE236EB40F000436C5 /* ClassExtension+.swift in Sources */,

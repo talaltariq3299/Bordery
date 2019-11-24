@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 class ExportEngine {
-//    var currentRatio: UIColor = .white
     
     var xCoord: CGFloat
     let yCoord: CGFloat

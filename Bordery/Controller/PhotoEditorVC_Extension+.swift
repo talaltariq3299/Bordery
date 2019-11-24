@@ -11,6 +11,8 @@ import UIKit
 
 extension PhotoEditorViewController {
     
+    //------------------------------
+    // MARK: - Main buttons
     // main buttons for the app
     func setupMainButtons() {
         // variables
@@ -18,161 +20,28 @@ extension PhotoEditorViewController {
         let colourIcon = UIImage(named: "colour-icon")!.withRenderingMode(.alwaysTemplate)
         let ratioIcon = UIImage(named: "ratio-icon")!.withRenderingMode(.alwaysTemplate)
         
-        let buttonSize = 100
-        let imageViewSize = 30
-        let labelSize = 40
-        let textSize: CGFloat = 13
-        
-        // --------
-        sizeButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
-        sizeButton.backgroundColor = .clear
+        sizeButton = MainButton.createButton(buttonIcon: sizeIcon, buttonName: borderEngine.adjustmentName[0])
         sizeButton.addTarget(self, action: #selector(sizeButtonTapped), for: .touchUpInside)
         sizeButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
         sizeButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
         
-        let sizeImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageViewSize, height: imageViewSize))
-        sizeImageView.image = sizeIcon
-        sizeImageView.contentMode = .scaleAspectFit
-        sizeImageView.center = sizeButton.convert(sizeButton.center, to: sizeImageView.superview)
-        sizeButton.tintColor = .white
-        
-        let sizeLabel = UILabel(frame: CGRect(x: 0, y: 0, width: labelSize, height: labelSize))
-        sizeLabel.textAlignment = .center
-        sizeLabel.text = borderEngine.adjustmentName[0]
-        sizeLabel.textColor = UIColor.white
-        sizeLabel.font = UIFont.systemFont(ofSize: textSize, weight: UIFont.Weight.regular)
-        
-        sizeButton.addSubview(sizeImageView)
-        sizeButton.addSubview(sizeLabel)
-        
-        sizeLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            sizeLabel.centerXAnchor.constraint(equalTo: sizeButton.centerXAnchor),
-            sizeLabel.centerYAnchor.constraint(equalTo: sizeButton.centerYAnchor, constant: 30)
-        ])
-        
-        // --------
-        colourButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
-        colourButton.backgroundColor = .clear
+        colourButton = MainButton.createButton(buttonIcon: colourIcon, buttonName: borderEngine.adjustmentName[1])
         colourButton.addTarget(self, action: #selector(colourButtonTapped), for: .touchUpInside)
         colourButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
         colourButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
         
-        let colourImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageViewSize, height: imageViewSize))
-        colourImageView.image = colourIcon
-        colourImageView.contentMode = .scaleAspectFit
-        colourImageView.center = colourButton.convert(colourButton.center, to: colourImageView.superview)
-        colourButton.tintColor = .white
-        
-        let colourLabel = UILabel(frame: CGRect(x: 0, y: 0, width: labelSize, height: labelSize))
-        colourLabel.textAlignment = .center
-        colourLabel.text = borderEngine.adjustmentName[1]
-        colourLabel.textColor = UIColor.white
-        colourLabel.font = UIFont.systemFont(ofSize: textSize, weight: UIFont.Weight.regular)
-        
-        colourButton.addSubview(colourImageView)
-        colourButton.addSubview(colourLabel)
-        
-        colourLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            colourLabel.centerXAnchor.constraint(equalTo: colourButton.centerXAnchor),
-            colourLabel.centerYAnchor.constraint(equalTo: colourButton.centerYAnchor, constant: 30)
-        ])
-        
-        // --------
-        ratioButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
-        ratioButton.backgroundColor = .clear
+        ratioButton = MainButton.createButton(buttonIcon: ratioIcon, buttonName: borderEngine.adjustmentName[2])
         ratioButton.addTarget(self, action: #selector(ratioButtonTapped), for: .touchUpInside)
         ratioButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
         ratioButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
-        
-        let ratioImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageViewSize, height: imageViewSize))
-        ratioImageView.image = ratioIcon
-        ratioImageView.contentMode = .scaleAspectFit
-        ratioImageView.center = ratioButton.convert(ratioButton.center, to: colourImageView.superview)
-        ratioButton.tintColor = .white
-        
-        let ratioLabel = UILabel(frame: CGRect(x: 0, y: 0, width: labelSize, height: labelSize))
-        ratioLabel.textAlignment = .center
-        ratioLabel.text = borderEngine.adjustmentName[2]
-        ratioLabel.textColor = UIColor.white
-        ratioLabel.font = UIFont.systemFont(ofSize: textSize, weight: UIFont.Weight.regular)
-        
-        ratioButton.addSubview(ratioImageView)
-        ratioButton.addSubview(ratioLabel)
-        
-        ratioLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            ratioLabel.centerXAnchor.constraint(equalTo: ratioButton.centerXAnchor),
-            ratioLabel.centerYAnchor.constraint(equalTo: ratioButton.centerYAnchor, constant: 30)
-        ])
-        
         
         self.editorView.addSubview(sizeButton)
         self.editorView.addSubview(colourButton)
         self.editorView.addSubview(ratioButton)
     }
     
-    // create bar items to present option to proceed or not on an edit
-    func setupBarItemOnEdit() {
-        barItemOnEditStackView.translatesAutoresizingMaskIntoConstraints = false
-        barItemOnEditStackView.axis = .horizontal
-        barItemOnEditStackView.distribution = .fillProportionally
-        barView.addSubview(barItemOnEditStackView)
-        
-        NSLayoutConstraint.activate([
-            barItemOnEditStackView.topAnchor.constraint(equalTo: barView.topAnchor),
-            barItemOnEditStackView.leftAnchor.constraint(equalTo: barView.leftAnchor),
-            barItemOnEditStackView.rightAnchor.constraint(equalTo: barView.rightAnchor),
-            barItemOnEditStackView.bottomAnchor.constraint(equalTo: barView.bottomAnchor),
-        ])
-        
-        let cancelButton = UIButton(type: .custom)
-        cancelButton.setTitle("☓", for: .normal)
-        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
-        cancelButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
-        cancelButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
-        cancelButton.backgroundColor = .clear
-        cancelButton.contentEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        
-        let cancelButtonWrapper = UIView()
-        cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        cancelButtonWrapper.addSubview(cancelButton)
-        
-        NSLayoutConstraint.activate([
-            cancelButton.topAnchor.constraint(equalTo: cancelButtonWrapper.topAnchor, constant: 5),
-            cancelButton.bottomAnchor.constraint(equalTo: cancelButtonWrapper.bottomAnchor, constant: -5),
-            cancelButton.leftAnchor.constraint(equalTo: cancelButtonWrapper.leftAnchor, constant: 5),
-            cancelButton.rightAnchor.constraint(equalTo: cancelButtonWrapper.rightAnchor, constant: -5)
-        ])
-        
-        
-        let checkButton = UIButton(type: .custom)
-        checkButton.setTitle("✓", for: .normal)
-        checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
-        checkButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
-        checkButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
-        checkButton.backgroundColor = .clear
-        checkButton.contentEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        
-        let checkButtonWrapper = UIView()
-        checkButton.translatesAutoresizingMaskIntoConstraints = false
-        checkButtonWrapper.addSubview(checkButton)
-        
-        NSLayoutConstraint.activate([
-            checkButton.topAnchor.constraint(equalTo: checkButtonWrapper.topAnchor, constant: 5),
-            checkButton.bottomAnchor.constraint(equalTo: checkButtonWrapper.bottomAnchor, constant: -5),
-            checkButton.leftAnchor.constraint(equalTo: checkButtonWrapper.leftAnchor, constant: 5),
-            checkButton.rightAnchor.constraint(equalTo: checkButtonWrapper.rightAnchor, constant: -5)
-        ])
-        
-        barItemOnEditStackView.addArrangedSubview(cancelButtonWrapper)
-        barItemOnEditStackView.addArrangedSubview(checkButtonWrapper)
-        
-        
-    }
-    
-    // MARK: - Functions to create the Editor UI
+    //------------------------------
+    // MARK: - Main buttons components
     // create a slider for adjusting the image
     func setupAdjustmentSlider() {
         editorView.addSubview(sliderValueLabel)
@@ -233,59 +102,6 @@ extension PhotoEditorViewController {
         exportSelectorScrollView.contentSize = CGSize(width: exportSelector.buttonWidth * CGFloat(Double(exportSelector.exportName.count) + 0.6), height: exportSelectorScrollView.frame.height)
     }
     
-    // create main menu bar (border or save)
-    func setupMenuBar() {
-        let saveIcon = UIImage(named: "save-icon")!.withRenderingMode(.alwaysTemplate)
-        let borderIcon = UIImage(named: "border-icon")!.withRenderingMode(.alwaysTemplate)
-        
-        let imageViewSize = 25
-        
-        // --------
-        borderButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        borderButton.backgroundColor = .clear
-        borderButton.tag = 0
-        borderButton.tintColor = .white
-        borderButton.addTarget(self, action: #selector(barButtonTapped), for: .touchUpInside)
-        
-        let borderImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageViewSize, height: imageViewSize))
-        borderImageView.image = borderIcon
-        borderImageView.contentMode = .scaleAspectFit
-        
-        borderButton.addSubview(borderImageView)
-        
-        borderImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            borderImageView.centerXAnchor.constraint(equalTo: borderButton.centerXAnchor, constant: 0),
-            borderImageView.centerYAnchor.constraint(equalTo: borderButton.centerYAnchor, constant: 0),
-            borderImageView.heightAnchor.constraint(equalToConstant: 20),
-            borderImageView.widthAnchor.constraint(equalToConstant: 20)
-        ])
-        
-        // --------
-        saveButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        saveButton.backgroundColor = .clear
-        saveButton.tag = 1
-        saveButton.tintColor = .darkGray
-        saveButton.addTarget(self, action: #selector(barButtonTapped), for: .touchUpInside)
-        
-        let saveImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageViewSize, height: imageViewSize))
-        saveImageView.image = saveIcon
-        saveImageView.contentMode = .scaleAspectFit
-        
-        saveButton.addSubview(saveImageView)
-        
-        saveImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            saveImageView.centerXAnchor.constraint(equalTo: saveButton.centerXAnchor, constant: 0),
-            saveImageView.centerYAnchor.constraint(equalTo: saveButton.centerYAnchor, constant: 0),
-            saveImageView.heightAnchor.constraint(equalToConstant: 20),
-            saveImageView.widthAnchor.constraint(equalToConstant: 20)
-        ])
-        
-        self.barView.addSubview(borderButton)
-        self.barView.addSubview(saveButton)
-    }
-    
     // create ratio selectors
     func setupRatioSelector() {
         ratioSelector = RatioEngine(editorViewW: editorView.frame.width, editorViewH: editorView.frame.height, viewFrameH: view.frame.height, heightMultConst: VIEW_HEIGHTMULTIPLIER_CONSTANT)
@@ -307,6 +123,79 @@ extension PhotoEditorViewController {
         // rearrange to fit the content
         ratioSelectorScrollView.contentSize = CGSize(width: ratioSelector.buttonWidth * CGFloat(Double(ratioSelector.ratioName.count) + 1.3), height: colourSelectorScrollView.frame.height)
     }
+    
+    //------------------------------
+    // MARK: - Menu bar
+    // create bar items to present option to proceed or not on an edit
+    func setupBarItemOnEdit() {
+        barItemOnEditStackView.translatesAutoresizingMaskIntoConstraints = false
+        barItemOnEditStackView.axis = .horizontal
+        barItemOnEditStackView.distribution = .fillProportionally
+        barView.addSubview(barItemOnEditStackView)
+        
+        NSLayoutConstraint.activate([
+            barItemOnEditStackView.topAnchor.constraint(equalTo: barView.topAnchor),
+            barItemOnEditStackView.leftAnchor.constraint(equalTo: barView.leftAnchor),
+            barItemOnEditStackView.rightAnchor.constraint(equalTo: barView.rightAnchor),
+            barItemOnEditStackView.bottomAnchor.constraint(equalTo: barView.bottomAnchor),
+        ])
+        
+        let cancelButton = BarItemEdit.createBarItemButton(title: "☓")
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
+        cancelButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
+        let cancelButtonWrapper = UIView()
+        cancelButtonWrapper.addSubview(cancelButton)
+        
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            cancelButton.topAnchor.constraint(equalTo: cancelButtonWrapper.topAnchor, constant: 5),
+            cancelButton.bottomAnchor.constraint(equalTo: cancelButtonWrapper.bottomAnchor, constant: -5),
+            cancelButton.leftAnchor.constraint(equalTo: cancelButtonWrapper.leftAnchor, constant: 5),
+            cancelButton.rightAnchor.constraint(equalTo: cancelButtonWrapper.rightAnchor, constant: -5)
+        ])
+        
+        let checkButton = BarItemEdit.createBarItemButton(title: "✓")
+        checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
+        checkButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
+        checkButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
+        let checkButtonWrapper = UIView()
+        checkButtonWrapper.addSubview(checkButton)
+        
+        checkButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            checkButton.topAnchor.constraint(equalTo: checkButtonWrapper.topAnchor, constant: 5),
+            checkButton.bottomAnchor.constraint(equalTo: checkButtonWrapper.bottomAnchor, constant: -5),
+            checkButton.leftAnchor.constraint(equalTo: checkButtonWrapper.leftAnchor, constant: 5),
+            checkButton.rightAnchor.constraint(equalTo: checkButtonWrapper.rightAnchor, constant: -5)
+        ])
+        
+        barItemOnEditStackView.addArrangedSubview(cancelButtonWrapper)
+        barItemOnEditStackView.addArrangedSubview(checkButtonWrapper)
+        
+        
+    }
+
+    // create main menu bar
+    func setupMenuBar() {
+        let saveIcon = UIImage(named: "save-icon")!.withRenderingMode(.alwaysTemplate)
+        let borderIcon = UIImage(named: "border-icon")!.withRenderingMode(.alwaysTemplate)
+        let adjustmentIcon = UIImage(named: "adjustment-icon")!.withRenderingMode(.alwaysTemplate)
+        
+        borderButton = MenuBarButton.createButton(buttonIcon: borderIcon, buttonTag: 0, isActive: true)
+        borderButton.addTarget(self, action: #selector(menuBarTapped), for: .touchUpInside)
+        
+        saveButton = MenuBarButton.createButton(buttonIcon: saveIcon, buttonTag: 1, isActive: false)
+        saveButton.addTarget(self, action: #selector(menuBarTapped), for: .touchUpInside)
+        
+        adjustmentButton = MenuBarButton.createButton(buttonIcon: adjustmentIcon, buttonTag: 2, isActive: false)
+        adjustmentButton.addTarget(self, action: #selector(menuBarTapped), for: .touchUpInside)
+
+        self.barView.addSubview(borderButton)
+        self.barView.addSubview(saveButton)
+        self.barView.addSubview(adjustmentButton)
+    }
+    
     
     // MARK: - Hide elements function
     func hide(progress: Bool?, barItemOnEdit: Bool?, ui: Bool?, slider: Bool?, colourSelector: Bool?, ratioSelector: Bool?) {
@@ -341,8 +230,7 @@ extension PhotoEditorViewController {
         adjustmentNameLabel.isHidden = bool
         exportSelectorScrollView.isHidden = bool
     }
-    
-    
+
     // this function is to hide the main buttons for showing detailed panel.
     func mainButtonHide(_ bool: Bool) {
         colourButton.isHidden = bool
@@ -350,10 +238,11 @@ extension PhotoEditorViewController {
         ratioButton.isHidden = bool
     }
     
-    // this function is to hid the menu bar buttons.
+    // this function is to hide the menu bar buttons.
     func menuBarHide(_ bool: Bool) {
         borderButton.isHidden = bool
         saveButton.isHidden = bool
+        adjustmentButton.isHidden = bool
     }
     
     
@@ -472,16 +361,23 @@ extension PhotoEditorViewController {
         
         borderButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            borderButton.widthAnchor.constraint(equalTo: barView.widthAnchor, multiplier: 0.5),
+            borderButton.widthAnchor.constraint(equalTo: barView.widthAnchor, multiplier: 0.33),
             borderButton.leftAnchor.constraint(equalTo: barView.leftAnchor, constant: 0),
             borderButton.heightAnchor.constraint(equalTo: barView.heightAnchor)
         ])
         
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            saveButton.widthAnchor.constraint(equalTo: barView.widthAnchor, multiplier: 0.5),
+            saveButton.widthAnchor.constraint(equalTo: barView.widthAnchor, multiplier: 0.33),
             saveButton.rightAnchor.constraint(equalTo: barView.rightAnchor, constant: 0),
             saveButton.heightAnchor.constraint(equalTo: barView.heightAnchor)
+        ])
+        
+        adjustmentButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            adjustmentButton.widthAnchor.constraint(equalTo: barView.widthAnchor, multiplier: 0.33),
+            adjustmentButton.centerXAnchor.constraint(equalTo: barView.centerXAnchor, constant: 0),
+            adjustmentButton.heightAnchor.constraint(equalTo: barView.heightAnchor),
         ])
         
         noticeLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -590,11 +486,12 @@ extension PhotoEditorViewController {
         }
     }
     
-    @objc func barButtonTapped(sender: UIButton) {
+    @objc func menuBarTapped(sender: UIButton) {
         switch sender.tag {
         case 0:
             borderButton.tintColor = .white
             saveButton.tintColor = .darkGray
+            adjustmentButton.tintColor = .darkGray
             
             mainButtonHide(false)
             exportButtonHide(true)
@@ -602,9 +499,17 @@ extension PhotoEditorViewController {
             adjustmentNameLabel.text = "Export"
             borderButton.tintColor = .darkGray
             saveButton.tintColor = .white
+            adjustmentButton.tintColor = .darkGray
             
             mainButtonHide(true)
             exportButtonHide(false)
+        case 2:
+            adjustmentNameLabel.text = "Effects"
+            borderButton.tintColor = .darkGray
+            saveButton.tintColor = .darkGray
+            adjustmentButton.tintColor = .white
+            
+            mainButtonHide(true)
         default:
             print("barButtonTapped default.")
         }
