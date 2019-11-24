@@ -237,10 +237,10 @@ class PhotoEditorViewController: UIViewController {
     @IBAction func sliderDidChange(_ sender: UISlider) {
         // convert the range
         var ratioConverter = RangeConverter(oldMax: sender.maximumValue, oldMin: sender.minimumValue, newMax: 10, newMin: 0, oldValue: sender.value)
+        let newValue = ratioConverter.getNewValueStr(decimalPlace: 1)
         DispatchQueue.main.async {
-            self.sliderValueLabel.text = "\(ratioConverter.getNewValueStr(decimalPlace: 1)) pts"
+            self.sliderValueLabel.text = "\(newValue) pts"
         }
-        
         let y:Float = (sender.minimumValue + sender.maximumValue) - sender.value
         let imgSizeMultiplier: CGFloat = CGFloat(y)
         

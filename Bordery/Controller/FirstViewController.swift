@@ -69,7 +69,7 @@ class FirstViewController: UIViewController {
                         self.permissionButton.layer.borderColor = UIColor.gray.cgColor
                         self.permissionButton.setTitleColor(.gray, for: .normal)
                     }
-//                    UserDefaults.standard.set(true, forKey: "launchedBefore")
+                    UserDefaults.standard.set(true, forKey: "launchedBefore")
                 }
                 else if status == .denied {
                     TapticEngine.errorTaptic()
@@ -92,7 +92,7 @@ class FirstViewController: UIViewController {
             noticeLabel.text = "Permission granted!"
             self.permissionButton.setTitleColor(.gray, for: .normal)
             self.permissionButton.layer.borderColor = UIColor.gray.cgColor
-//            UserDefaults.standard.set(true, forKey: "launchedBefore")
+            UserDefaults.standard.set(true, forKey: "launchedBefore")
         }
         else if status == .denied {
             TapticEngine.errorTaptic()
