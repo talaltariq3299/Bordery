@@ -19,24 +19,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        self.window = UIWindow(windowScene: windowScene)
-        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
-        if launchedBefore  {
-            // launch before 
-            let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "PhotoLibraryViewNav")
-            vc.modalPresentationStyle = .fullScreen
-            self.window?.rootViewController = vc
-            self.window?.makeKeyAndVisible()
-        }
-        else {
-            // new launch
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let rootVC = storyboard.instantiateViewController(identifier: "FirstVC")
-            let rootNC = UINavigationController(rootViewController: rootVC)
-            rootNC.setNavigationBarHidden(true, animated: false)
-            self.window?.rootViewController = rootNC
-            self.window?.makeKeyAndVisible()
-        }
+//        self.window = UIWindow(windowScene: windowScene)
+//        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+//        if launchedBefore  {
+//            // launch before 
+//            let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "PhotoLibraryViewNav")
+//            vc.modalPresentationStyle = .fullScreen
+//            self.window?.rootViewController = vc
+//            self.window?.makeKeyAndVisible()
+//        }
+//        else {
+//            // new launch
+//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            let rootVC = storyboard.instantiateViewController(identifier: "FirstVC")
+//            let rootNC = UINavigationController(rootViewController: rootVC)
+//            rootNC.setNavigationBarHidden(true, animated: false)
+//            self.window?.rootViewController = rootNC
+//            self.window?.makeKeyAndVisible()
+//        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

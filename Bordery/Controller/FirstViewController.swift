@@ -25,6 +25,7 @@ class FirstViewController: UIViewController {
     
     
     var confettiView: SwiftConfettiView!
+    let confettiButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
     var isConfetti = true
     
     override func viewDidLoad() {
@@ -122,7 +123,7 @@ class FirstViewController: UIViewController {
         label1.numberOfLines = 0
         label1.text = "Hello!"
         label1.sizeToFit()
-        label1.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+        label1.font = UIFont(name: "NewYorkMedium-Semibold", size: 25)
         label1.addCharacterSpacing()
     }
     
@@ -189,11 +190,11 @@ class FirstViewController: UIViewController {
     }
     
     fileprivate func setupConfettiButton() {
-        let confettiButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        confettiButton.setImage(UIImage(named: "confetti-icon"), for: .normal)
+        confettiButton.setImage(UIImage(named: "confetti-icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
         confettiButton.addTarget(self, action: #selector(confettiButtonTapped), for: .touchUpInside)
         self.view.addSubview(confettiButton)
         
+        confettiButton.tintColor = .green
         confettiButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             confettiButton.leftAnchor.constraint(equalTo: permissionButton.rightAnchor, constant: 30),
@@ -208,11 +209,13 @@ class FirstViewController: UIViewController {
         if isConfetti {
             TapticEngine.lightTaptic()
             isConfetti = false
+            confettiButton.tintColor = .red
             confettiView.stopConfetti()
         }
         else {
             TapticEngine.lightTaptic()
             isConfetti = true
+            confettiButton.tintColor = .green
             confettiView.startConfetti()
         }
     }
