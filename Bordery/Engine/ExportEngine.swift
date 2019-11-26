@@ -64,7 +64,7 @@ class ExportEngine {
             
             // create labels
             let ExportLabel = UILabel(frame: CGRect(x: exportButton.frame.width * xOffset, y: exportButton.frame.height * yOffset, width: 85, height: 20))
-            ExportLabel.textAlignment = .left
+            ExportLabel.textAlignment = .center
             ExportLabel.text = exportName[i]
             ExportLabel.textColor = UIColor.white
             ExportLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)

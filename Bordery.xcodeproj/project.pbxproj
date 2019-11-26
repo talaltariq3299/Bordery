@@ -12,7 +12,6 @@
 		9E39A753238A776C006774F2 /* MainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A752238A776C006774F2 /* MainButton.swift */; };
 		9E39A756238A79FE006774F2 /* BarItemEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A755238A79FE006774F2 /* BarItemEdit.swift */; };
 		9E39A758238A8F70006774F2 /* GlowingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A757238A8F70006774F2 /* GlowingLabel.swift */; };
-		9E39A75A238A9365006774F2 /* DIGITALDREAM.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E39A759238A9365006774F2 /* DIGITALDREAM.ttf */; };
 		9E39A75C238A9759006774F2 /* DatestampEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A75B238A9759006774F2 /* DatestampEngine.swift */; };
 		9E39A76D238BE678006774F2 /* Effects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A76C238BE678006774F2 /* Effects.swift */; };
 		9E39E007237594C600C15513 /* NewYorkMedium-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E39E005237594C600C15513 /* NewYorkMedium-Regular.otf */; };
@@ -24,6 +23,7 @@
 		9E61B7CD237A9F43004E0A95 /* RatioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E61B7CC237A9F43004E0A95 /* RatioEngine.swift */; };
 		9E9C0F992382694000D5E33E /* CustomPhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C0F982382694000D5E33E /* CustomPhotoAlbum.swift */; };
 		9EADAEF52379305B00B50C11 /* RangeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EADAEF42379305B00B50C11 /* RangeConverter.swift */; };
+		9EB17EAB238D16760020AB2C /* DateStamp.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9EB17EA7238D16750020AB2C /* DateStamp.otf */; };
 		9EB21E852370043200D764A0 /* BorderEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB21E842370043200D764A0 /* BorderEngine.swift */; };
 		9EBF3AF523798303003F9BF3 /* ColourEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EBF3AF423798303003F9BF3 /* ColourEngine.swift */; };
 		9EC118A8238164F500B1272A /* ExportEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC118A7238164F500B1272A /* ExportEngine.swift */; };
@@ -45,7 +45,6 @@
 		9E39A752238A776C006774F2 /* MainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButton.swift; sourceTree = "<group>"; };
 		9E39A755238A79FE006774F2 /* BarItemEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarItemEdit.swift; sourceTree = "<group>"; };
 		9E39A757238A8F70006774F2 /* GlowingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlowingLabel.swift; sourceTree = "<group>"; };
-		9E39A759238A9365006774F2 /* DIGITALDREAM.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DIGITALDREAM.ttf; sourceTree = "<group>"; };
 		9E39A75B238A9759006774F2 /* DatestampEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatestampEngine.swift; sourceTree = "<group>"; };
 		9E39A76C238BE678006774F2 /* Effects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effects.swift; sourceTree = "<group>"; };
 		9E39E005237594C600C15513 /* NewYorkMedium-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NewYorkMedium-Regular.otf"; sourceTree = "<group>"; };
@@ -57,6 +56,7 @@
 		9E61B7CC237A9F43004E0A95 /* RatioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatioEngine.swift; sourceTree = "<group>"; };
 		9E9C0F982382694000D5E33E /* CustomPhotoAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPhotoAlbum.swift; sourceTree = "<group>"; };
 		9EADAEF42379305B00B50C11 /* RangeConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeConverter.swift; sourceTree = "<group>"; };
+		9EB17EA7238D16750020AB2C /* DateStamp.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DateStamp.otf; sourceTree = "<group>"; };
 		9EB21E842370043200D764A0 /* BorderEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderEngine.swift; sourceTree = "<group>"; };
 		9EBF3AF423798303003F9BF3 /* ColourEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColourEngine.swift; sourceTree = "<group>"; };
 		9EC118A7238164F500B1272A /* ExportEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportEngine.swift; sourceTree = "<group>"; };
@@ -111,7 +111,7 @@
 		9E39E009237594F800C15513 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				9E39A759238A9365006774F2 /* DIGITALDREAM.ttf */,
+				9EB17EA7238D16750020AB2C /* DateStamp.otf */,
 				9E39E005237594C600C15513 /* NewYorkMedium-Regular.otf */,
 				9E39E006237594C600C15513 /* NewYorkMedium-Semibold.otf */,
 			);
@@ -257,12 +257,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9EB17EAB238D16760020AB2C /* DateStamp.otf in Resources */,
 				9EF0DB2F236C0F6F00969F9F /* LaunchScreen.storyboard in Resources */,
 				9EF0DB2C236C0F6F00969F9F /* Assets.xcassets in Resources */,
 				9EF0DB2A236C0F6E00969F9F /* Main.storyboard in Resources */,
 				9E39E008237594C600C15513 /* NewYorkMedium-Semibold.otf in Resources */,
 				9E39E007237594C600C15513 /* NewYorkMedium-Regular.otf in Resources */,
-				9E39A75A238A9365006774F2 /* DIGITALDREAM.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

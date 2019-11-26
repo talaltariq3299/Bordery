@@ -9,19 +9,31 @@
 import Foundation
 import UIKit
 
-struct DatestampEngine {
-    var currentColour: UIColor = .white
+class DatestampEngine {
+    var currentColour: UIColor = UIColor(displayP3Red: 239/255, green: 82/255, blue: 46/255, alpha: 1.0)
+    var isHidden = true
     
     var xCoord: CGFloat
     let yCoord: CGFloat
     let buttonWidth: CGFloat
     let buttonHeight: CGFloat
     
+    // datestamp properties
+    // font from https://allbestfonts.com/date-stamp/
+    let dateText = "24 10 '14"
+    let dateFont = UIFont(name: "DateStamp", size: 10)
+    let dateGlowsize: CGFloat = 0
+    
     let gapBetweenButtons: CGFloat = 10
     let colourName = [
+        ["Crimson", "#DE131A"],
         ["Cinnabar", "#E34A2C"],
-        ["Orange", "#b35b20"]
+        ["Crail", "#C76043"],
+        ["Carmine", "#A94333"],
+        ["Yellow", "#F6EE54"],
     ]
+    let functionName = ["Hide/show \ndatestamp"]
+    let functionIcon = ["hideshow-icon"]
     
     init(editorViewW: CGFloat, editorViewH: CGFloat, viewFrameH: CGFloat, heightMultConst: CGFloat) {
         self.xCoord = editorViewW * 0.02
@@ -34,7 +46,7 @@ struct DatestampEngine {
      Creates an array of buttons of colour picker.
      - Returns: An array of buttons complete with its properties.
      */
-    mutating func createButtonArray() -> [UIButton] {
+    func createButtonArray() -> [UIButton] {
         var itemCount = 0
         var colourButtons: [UIButton] = [UIButton()]
         let xOffset: CGFloat = 0.025
@@ -85,43 +97,56 @@ struct DatestampEngine {
      Creates an array of buttons of date function.
      - Returns: An array of buttons complete with its properties.
      */
-    mutating func createDateFunction() -> [UIButton] {
-        let itemCount = 99
-        var functionButtons: [UIButton] = []
+    func createDateFunction() -> [UIButton] {
+        var itemCount = 98
         let xOffset: CGFloat = 0.5
-        let yOffset: CGFloat = 0.5
+        let yOffset: CGFloat = 0.65
+        var functionButtons: [UIButton] = []
 
-        
-        // create hide/show datestamp button
-        let hideShowButton = UIButton(type: .custom)
-        hideShowButton.frame = CGRect(x: xCoord, y: yCoord, width: buttonWidth, height: buttonHeight)
-        hideShowButton.backgroundColor = .black
-        hideShowButton.layer.borderColor = .none
-        hideShowButton.tag = itemCount
-        hideShowButton.clipsToBounds = true
-        
-        // create labels
-        let label = UILabel(frame: CGRect(x: hideShowButton.frame.width * xOffset, y: hideShowButton.frame.height * yOffset, width: 85, height: 20))
-        label.textAlignment = .center
-        label.text = "Hide/show"
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
-        label.sizeToFit()
-        label.center =  CGPoint(x: hideShowButton.frame.size.width / 2, y: hideShowButton.frame.size.height * 0.5)
-        
-        hideShowButton.addSubview(label)
-        
-        xCoord += buttonWidth + gapBetweenButtons
-        functionButtons.append(hideShowButton)
+        // button property
+        for i in 0 ..< functionName.count {
+            itemCount += 1
+            let hideShowButton = UIButton(type: .custom)
+            hideShowButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
+            hideShowButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
+            hideShowButton.frame = CGRect(x: xCoord, y: yCoord, width: buttonWidth, height: buttonHeight)
+            hideShowButton.backgroundColor = .clear
+            hideShowButton.layer.borderColor = .none
+            hideShowButton.tag = itemCount
+            hideShowButton.clipsToBounds = true
+            hideShowButton.tintColor = .white
+            
+            let buttonImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
+            buttonImage.image = UIImage(named: functionIcon[i])?.withRenderingMode(.alwaysTemplate)
+            buttonImage.contentMode = .scaleAspectFit
+            buttonImage.center = CGPoint(x: hideShowButton.frame.size.width / 2, y: hideShowButton.frame.size.height * 0.35)
+            
+            // create labels
+            let exportLabel = UILabel(frame: CGRect(x: hideShowButton.frame.width * xOffset, y: hideShowButton.frame.height * yOffset, width: 85, height: 20))
+            exportLabel.textAlignment = .center
+            exportLabel.numberOfLines = 0
+            exportLabel.text = functionName[i]
+            exportLabel.textColor = UIColor.white
+            exportLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
+            exportLabel.sizeToFit()
+            exportLabel.center = CGPoint(x: hideShowButton.frame.size.width / 2, y: hideShowButton.frame.size.height * 0.8)
+            
+            hideShowButton.addSubview(exportLabel)
+            hideShowButton.addSubview(buttonImage)
+            
+            xCoord += buttonWidth + gapBetweenButtons
+            functionButtons.append(hideShowButton)
+        }
         
         let border = UIButton(type: .custom)
-        border.autoresizingMask = [.flexibleHeight, .flexibleRightMargin]
+        border.autoresizingMask = [.flexibleRightMargin]
         border.frame = CGRect(x: xCoord, y: yCoord, width: 1, height: buttonHeight)
         border.backgroundColor = UIColor(named: "backgroundSecondColor")
         border.clipsToBounds = true
 
         xCoord += gapBetweenButtons
         functionButtons.append(border)
+
         
         
         return functionButtons
@@ -158,19 +183,28 @@ struct DatestampEngine {
     func datestamp() -> UILabel {
         let datestamp = GlowingLabel(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
         datestamp.backgroundColor = .clear
-        datestamp.text = "14 08 '99"
-        datestamp.font = UIFont(name: "digitaldream", size: 7.5)
+        datestamp.text = dateText
+        datestamp.addCharacterSpacing(kernValue: 1.3)
+        datestamp.font = dateFont
         datestamp.textAlignment = .center
         datestamp.numberOfLines = 0
         
-        datestamp.glowSize = 7
-        datestamp.blurColor = UIColor(displayP3Red: 250/255, green: 80/255, blue: 32/255, alpha: 1.0)
+        datestamp.glowSize = dateGlowsize
+        datestamp.blurColor = UIColor(displayP3Red: 250/255, green: 80/255, blue: 32/255, alpha: 0.0)
         datestamp.textColor = currentColour
         
         
         return datestamp
     }
     
+    
+    @objc func buttonHighlighted(sender: UIButton!) {
+        sender.tintColor = .lightGray
+    }
+    
+    @objc func buttonNormal(sender: UIButton!) {
+        sender.tintColor = .white
+    }
     
     
 }

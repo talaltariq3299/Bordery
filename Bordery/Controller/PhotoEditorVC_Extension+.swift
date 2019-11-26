@@ -81,7 +81,6 @@ extension PhotoEditorViewController {
         colourSelector = ColourEngine(editorViewW: editorView.frame.width, editorViewH: editorView.frame.height, viewFrameH: view.frame.height, heightMultConst: VIEW_HEIGHTMULTIPLIER_CONSTANT)
         
         // add to subview
-        editorView.addSubview(adjustmentNameLabel)
         editorView.addSubview(colourSelectorScrollView)
         colourSelectorScrollView.showsHorizontalScrollIndicator = false
         
@@ -100,7 +99,6 @@ extension PhotoEditorViewController {
         
         // add to subview
         editorView.addSubview(exportSelectorScrollView)
-        editorView.addSubview(adjustmentNameLabel)
         exportSelectorScrollView.showsHorizontalScrollIndicator = false
         
         // instantiate
@@ -120,7 +118,6 @@ extension PhotoEditorViewController {
         ratioSelector = RatioEngine(editorViewW: editorView.frame.width, editorViewH: editorView.frame.height, viewFrameH: view.frame.height, heightMultConst: VIEW_HEIGHTMULTIPLIER_CONSTANT)
         
         // add to subview
-        editorView.addSubview(adjustmentNameLabel)
         editorView.addSubview(ratioSelectorScrollView)
         barView.addSubview(noticeLabel)
         ratioSelectorScrollView.showsHorizontalScrollIndicator = false
@@ -142,7 +139,6 @@ extension PhotoEditorViewController {
         datestampEngine = DatestampEngine(editorViewW: editorView.frame.width, editorViewH: editorView.frame.height, viewFrameH: view.frame.height, heightMultConst: VIEW_HEIGHTMULTIPLIER_CONSTANT)
         
         // add to subview
-        editorView.addSubview(adjustmentNameLabel)
         editorView.addSubview(dateColourSelectorScrollView)
         dateColourSelectorScrollView.showsHorizontalScrollIndicator = false
         
@@ -615,6 +611,7 @@ extension PhotoEditorViewController {
     }
     
     @objc func dateColourTapped(sender: UIButton) {
+        sender.tintColor = .white
         TapticEngine.lightTaptic()
         if sender.tag == 99 {
             if !hasDate {

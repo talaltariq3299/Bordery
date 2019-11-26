@@ -274,34 +274,35 @@ class PhotoEditorViewController: UIViewController {
         sender.setTitleColor(.white, for: .normal)
         
         switch adjustmentNameLabel.text {
-            case borderEngine.adjustmentName[0]:
-                mainButtonHide(false)
-                hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true, colourSelector: nil, ratioSelector: nil)
-                
-                // reset the configuration back to its previous state
-                adjustmentSliderOutlet.value = borderEngine.sliderCurrentValue
-                sliderValueLabel.text = "\(borderEngine.sliderCurrentValueRatio) pts"
-                imageViewTop.transform = CGAffineTransform(scaleX: borderEngine.imgSizeMultiplierCurrent, y: borderEngine.imgSizeMultiplierCurrent)
-
-            case borderEngine.adjustmentName[1]:
-                mainButtonHide(false)
-                hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: true, ratioSelector: nil)
+        case borderEngine.adjustmentName[0]:
+            mainButtonHide(false)
+            hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true, colourSelector: nil, ratioSelector: nil)
             
-                // reset the configuration back to it previous state
-                borderView.backgroundColor = colourSelector.currentColour
-                
-            case borderEngine.adjustmentName[2]:
-                mainButtonHide(false)
-                hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: nil, ratioSelector: true)
+            // reset the configuration back to its previous state
+            adjustmentSliderOutlet.value = borderEngine.sliderCurrentValue
+            sliderValueLabel.text = "\(borderEngine.sliderCurrentValueRatio) pts"
+            imageViewTop.transform = CGAffineTransform(scaleX: borderEngine.imgSizeMultiplierCurrent, y: borderEngine.imgSizeMultiplierCurrent)
             
-            case Effects.datestamp.rawValue:
-                hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: nil, ratioSelector: nil)
-                dateColourHide(true)
-                effectsButtonHide(false)
-                datestamp.textColor = datestampEngine.currentColour
-                
-            default:
-                print("No execution detected! PhotoEditorVC cancelButtonTapped function")
+        case borderEngine.adjustmentName[1]:
+            mainButtonHide(false)
+            hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: true, ratioSelector: nil)
+            
+            // reset the configuration back to it previous state
+            borderView.backgroundColor = colourSelector.currentColour
+            
+        case borderEngine.adjustmentName[2]:
+            mainButtonHide(false)
+            hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: nil, ratioSelector: true)
+            
+        case Effects.datestamp.rawValue:
+            hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: nil, ratioSelector: nil)
+            dateColourHide(true)
+            effectsButtonHide(false)
+            datestamp.textColor = datestampEngine.currentColour
+            datestamp.isHidden = datestampEngine.isHidden
+            
+        default:
+            print("No execution detected! PhotoEditorVC cancelButtonTapped function")
         }
     }
     
@@ -340,6 +341,7 @@ class PhotoEditorViewController: UIViewController {
             dateColourHide(true)
             effectsButtonHide(false)
             datestampEngine.currentColour = datestamp.textColor
+            datestampEngine.isHidden = datestamp.isHidden
             
         default:
             fatalError("No execution detected! PhotoEditorVC checkButtonTapped function")
