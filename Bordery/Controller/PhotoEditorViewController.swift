@@ -25,11 +25,13 @@ class PhotoEditorViewController: UIViewController {
     var ratioSelector: RatioEngine!
     var oriImage: UIImage!
     var exportSelector: ExportEngine!
+    var datestampEngine: DatestampEngine!
     
     // editorView properties
     lazy var sizeButton = UIButton()
     lazy var colourButton = UIButton()
     lazy var ratioButton = UIButton()
+    lazy var datestampButton = UIButton()
     // size
     lazy var sliderValueLabel = UILabel()
     lazy var adjustmentNameLabel = UILabel()
@@ -39,6 +41,10 @@ class PhotoEditorViewController: UIViewController {
     //Ratio
     lazy var ratioSelectorScrollView = UIScrollView()
     lazy var noticeLabel = UILabel()
+    //datestamp
+    lazy var hasDate = false
+    lazy var datestamp = UILabel()
+    lazy var dateColourSelectorScrollView = UIScrollView()
     
     // barView Properties
     lazy var barItemOnEditStackView = UIStackView()
@@ -67,6 +73,7 @@ class PhotoEditorViewController: UIViewController {
         // hide the elements on default
         hide(progress: true, barItemOnEdit: true, ui: true, slider: true, colourSelector: true, ratioSelector: true)
         exportButtonHide(true)
+        dateColourHide(true)
         
         setupUI()
         setupBarItemOnEdit() // bar item on editing (x or checkmark)
@@ -78,6 +85,7 @@ class PhotoEditorViewController: UIViewController {
         setupColourSelector()
         setupRatioSelector()
         setupExportSelector()
+        setupDateColorSelector()
         
         setupConstraint()
         setupDebug()
@@ -169,8 +177,14 @@ class PhotoEditorViewController: UIViewController {
                         
                         // rearrange to fit the content
                         self.colourSelectorScrollView.contentSize = CGSize(width: self.colourSelector.buttonWidth * CGFloat(Double(self.colourSelector.colourName.count + customColorButton.count) + 1.3), height: self.colourSelectorScrollView.frame.height)
-                        
                     }
+                    
+                    // add a default timestamp
+                    self.datestamp = self.adjustDateStamp(datestamp: self.datestampEngine.datestamp())
+                    self.imageViewTop.addSubview(self.datestamp)
+                    self.datestamp.isHidden = true
+                    
+                    
             })
         }
     }
@@ -256,12 +270,12 @@ class PhotoEditorViewController: UIViewController {
     // function for barItem on Edit
     @objc func cancelButtonTapped(sender: UIButton!) {
         TapticEngine.lightTaptic()
-        mainButtonHide(false)
         menuBarHide(false)
         sender.setTitleColor(.white, for: .normal)
         
         switch adjustmentNameLabel.text {
             case borderEngine.adjustmentName[0]:
+                mainButtonHide(false)
                 hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true, colourSelector: nil, ratioSelector: nil)
                 
                 // reset the configuration back to its previous state
@@ -270,27 +284,35 @@ class PhotoEditorViewController: UIViewController {
                 imageViewTop.transform = CGAffineTransform(scaleX: borderEngine.imgSizeMultiplierCurrent, y: borderEngine.imgSizeMultiplierCurrent)
 
             case borderEngine.adjustmentName[1]:
+                mainButtonHide(false)
                 hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: true, ratioSelector: nil)
             
                 // reset the configuration back to it previous state
                 borderView.backgroundColor = colourSelector.currentColour
                 
             case borderEngine.adjustmentName[2]:
+                mainButtonHide(false)
                 hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: nil, ratioSelector: true)
+            
+            case Effects.datestamp.rawValue:
+                hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: nil, ratioSelector: nil)
+                dateColourHide(true)
+                effectsButtonHide(false)
+                datestamp.textColor = datestampEngine.currentColour
                 
             default:
-                print("No execution detected! PhotoEditorVC checkButtonTapped function")
+                print("No execution detected! PhotoEditorVC cancelButtonTapped function")
         }
     }
     
     @objc func checkButtonTapped(sender: UIButton!) {
         TapticEngine.lightTaptic()
-        mainButtonHide(false)
         menuBarHide(false)
         sender.setTitleColor(.white, for: .normal)
         
         switch adjustmentNameLabel.text {
         case borderEngine.adjustmentName[0]:
+            mainButtonHide(false)
             hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true, colourSelector: nil, ratioSelector: nil)
             
             // convert to 0 - 0.5 range for blending
@@ -304,12 +326,20 @@ class PhotoEditorViewController: UIViewController {
             borderEngine.imgSizeMultiplierCurrent = imageViewTop.transform.a
             
         case borderEngine.adjustmentName[1]:
+            mainButtonHide(false)
             hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: true, ratioSelector: nil)
             colourSelector.currentColour = borderView.backgroundColor!
             
             
         case borderEngine.adjustmentName[2]:
+            mainButtonHide(false)
             hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: nil, ratioSelector: true)
+            
+        case Effects.datestamp.rawValue:
+            hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: nil, ratioSelector: nil)
+            dateColourHide(true)
+            effectsButtonHide(false)
+            datestampEngine.currentColour = datestamp.textColor
             
         default:
             fatalError("No execution detected! PhotoEditorVC checkButtonTapped function")

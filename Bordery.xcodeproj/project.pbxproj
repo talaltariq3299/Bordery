@@ -11,6 +11,10 @@
 		9E39A74F238A70B0006774F2 /* MenuBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A74E238A70B0006774F2 /* MenuBarButton.swift */; };
 		9E39A753238A776C006774F2 /* MainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A752238A776C006774F2 /* MainButton.swift */; };
 		9E39A756238A79FE006774F2 /* BarItemEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A755238A79FE006774F2 /* BarItemEdit.swift */; };
+		9E39A758238A8F70006774F2 /* GlowingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A757238A8F70006774F2 /* GlowingLabel.swift */; };
+		9E39A75A238A9365006774F2 /* DIGITALDREAM.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E39A759238A9365006774F2 /* DIGITALDREAM.ttf */; };
+		9E39A75C238A9759006774F2 /* DatestampEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A75B238A9759006774F2 /* DatestampEngine.swift */; };
+		9E39A76D238BE678006774F2 /* Effects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A76C238BE678006774F2 /* Effects.swift */; };
 		9E39E007237594C600C15513 /* NewYorkMedium-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E39E005237594C600C15513 /* NewYorkMedium-Regular.otf */; };
 		9E39E008237594C600C15513 /* NewYorkMedium-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E39E006237594C600C15513 /* NewYorkMedium-Semibold.otf */; };
 		9E40EEF7236E9CD5000436C5 /* PhotoEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E40EEF5236E9CD5000436C5 /* PhotoEditorViewController.swift */; };
@@ -40,6 +44,10 @@
 		9E39A74E238A70B0006774F2 /* MenuBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarButton.swift; sourceTree = "<group>"; };
 		9E39A752238A776C006774F2 /* MainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButton.swift; sourceTree = "<group>"; };
 		9E39A755238A79FE006774F2 /* BarItemEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarItemEdit.swift; sourceTree = "<group>"; };
+		9E39A757238A8F70006774F2 /* GlowingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlowingLabel.swift; sourceTree = "<group>"; };
+		9E39A759238A9365006774F2 /* DIGITALDREAM.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DIGITALDREAM.ttf; sourceTree = "<group>"; };
+		9E39A75B238A9759006774F2 /* DatestampEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatestampEngine.swift; sourceTree = "<group>"; };
+		9E39A76C238BE678006774F2 /* Effects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effects.swift; sourceTree = "<group>"; };
 		9E39E005237594C600C15513 /* NewYorkMedium-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NewYorkMedium-Regular.otf"; sourceTree = "<group>"; };
 		9E39E006237594C600C15513 /* NewYorkMedium-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NewYorkMedium-Semibold.otf"; sourceTree = "<group>"; };
 		9E40EEF5236E9CD5000436C5 /* PhotoEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoEditorViewController.swift; sourceTree = "<group>"; };
@@ -95,6 +103,7 @@
 				9EBF3AF423798303003F9BF3 /* ColourEngine.swift */,
 				9E61B7CC237A9F43004E0A95 /* RatioEngine.swift */,
 				9EC118A7238164F500B1272A /* ExportEngine.swift */,
+				9E39A75B238A9759006774F2 /* DatestampEngine.swift */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -102,6 +111,7 @@
 		9E39E009237594F800C15513 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				9E39A759238A9365006774F2 /* DIGITALDREAM.ttf */,
 				9E39E005237594C600C15513 /* NewYorkMedium-Regular.otf */,
 				9E39E006237594C600C15513 /* NewYorkMedium-Semibold.otf */,
 			);
@@ -130,8 +140,8 @@
 			isa = PBXGroup;
 			children = (
 				9E39E009237594F800C15513 /* Fonts */,
-				9E39A754238A7962006774F2 /* Engine */,
 				9EF0DB38236C0FBA00969F9F /* Supporting */,
+				9E39A754238A7962006774F2 /* Engine */,
 				9EF0DB37236C0FB000969F9F /* View */,
 				9EF0DB36236C0FA800969F9F /* Controller */,
 				9EF0DB2B236C0F6F00969F9F /* Assets.xcassets */,
@@ -172,6 +182,8 @@
 				9E39A74E238A70B0006774F2 /* MenuBarButton.swift */,
 				9E39A752238A776C006774F2 /* MainButton.swift */,
 				9E39A755238A79FE006774F2 /* BarItemEdit.swift */,
+				9E39A757238A8F70006774F2 /* GlowingLabel.swift */,
+				9E39A76C238BE678006774F2 /* Effects.swift */,
 			);
 			path = Supporting;
 			sourceTree = "<group>";
@@ -250,6 +262,7 @@
 				9EF0DB2A236C0F6E00969F9F /* Main.storyboard in Resources */,
 				9E39E008237594C600C15513 /* NewYorkMedium-Semibold.otf in Resources */,
 				9E39E007237594C600C15513 /* NewYorkMedium-Regular.otf in Resources */,
+				9E39A75A238A9365006774F2 /* DIGITALDREAM.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,6 +315,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9E39A76D238BE678006774F2 /* Effects.swift in Sources */,
 				9ED7D74E237A460E00735D9A /* TapticEngine.swift in Sources */,
 				9E39A756238A79FE006774F2 /* BarItemEdit.swift in Sources */,
 				9EF0DB23236C0F6E00969F9F /* AppDelegate.swift in Sources */,
@@ -317,7 +331,9 @@
 				9EB21E852370043200D764A0 /* BorderEngine.swift in Sources */,
 				9E40EEFC236E9D30000436C5 /* PhotoLibraryCollectionViewController.swift in Sources */,
 				9E40EEFE236EB40F000436C5 /* ClassExtension+.swift in Sources */,
+				9E39A75C238A9759006774F2 /* DatestampEngine.swift in Sources */,
 				9E40EEFB236E9D30000436C5 /* PhotoEditorVC_Extension+.swift in Sources */,
+				9E39A758238A8F70006774F2 /* GlowingLabel.swift in Sources */,
 				9EF0DB43236C148B00969F9F /* AlertService.swift in Sources */,
 				9EBF3AF523798303003F9BF3 /* ColourEngine.swift in Sources */,
 				9E61B7CD237A9F43004E0A95 /* RatioEngine.swift in Sources */,

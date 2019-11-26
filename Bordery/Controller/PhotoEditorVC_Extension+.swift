@@ -20,24 +20,37 @@ extension PhotoEditorViewController {
         let colourIcon = UIImage(named: "colour-icon")!.withRenderingMode(.alwaysTemplate)
         let ratioIcon = UIImage(named: "ratio-icon")!.withRenderingMode(.alwaysTemplate)
         
-        sizeButton = MainButton.createButton(buttonIcon: sizeIcon, buttonName: borderEngine.adjustmentName[0])
-        sizeButton.addTarget(self, action: #selector(sizeButtonTapped), for: .touchUpInside)
+        sizeButton = MainButton.createButton(buttonIcon: sizeIcon, buttonName: borderEngine.adjustmentName[0], buttonTag: 0)
+        sizeButton.addTarget(self, action: #selector(mainButtonTapped), for: .touchUpInside)
         sizeButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
         sizeButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
         
-        colourButton = MainButton.createButton(buttonIcon: colourIcon, buttonName: borderEngine.adjustmentName[1])
-        colourButton.addTarget(self, action: #selector(colourButtonTapped), for: .touchUpInside)
+        colourButton = MainButton.createButton(buttonIcon: colourIcon, buttonName: borderEngine.adjustmentName[1], buttonTag: 1)
+        colourButton.addTarget(self, action: #selector(mainButtonTapped), for: .touchUpInside)
         colourButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
         colourButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
         
-        ratioButton = MainButton.createButton(buttonIcon: ratioIcon, buttonName: borderEngine.adjustmentName[2])
-        ratioButton.addTarget(self, action: #selector(ratioButtonTapped), for: .touchUpInside)
+        ratioButton = MainButton.createButton(buttonIcon: ratioIcon, buttonName: borderEngine.adjustmentName[2], buttonTag: 2)
+        ratioButton.addTarget(self, action: #selector(mainButtonTapped), for: .touchUpInside)
         ratioButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
         ratioButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
+        
+        setupEffectsButton()
         
         self.editorView.addSubview(sizeButton)
         self.editorView.addSubview(colourButton)
         self.editorView.addSubview(ratioButton)
+    }
+    
+    func setupEffectsButton() {
+        let datestampIcon = UIImage(named: "datestamp-icon")!.withRenderingMode(.alwaysTemplate)
+        // datestamp
+        datestampButton = MainButton.createButton(buttonIcon: datestampIcon, buttonName: "Date stamp", buttonTag: 3)
+        datestampButton.addTarget(self, action: #selector(mainButtonTapped), for: .touchUpInside)
+        datestampButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
+        datestampButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
+        effectsButtonHide(true)
+        editorView.addSubview(datestampButton)
     }
     
     //------------------------------
@@ -122,6 +135,43 @@ extension PhotoEditorViewController {
         
         // rearrange to fit the content
         ratioSelectorScrollView.contentSize = CGSize(width: ratioSelector.buttonWidth * CGFloat(Double(ratioSelector.ratioName.count) + 1.3), height: colourSelectorScrollView.frame.height)
+    }
+    
+    // datestamp
+    func setupDateColorSelector() {
+        datestampEngine = DatestampEngine(editorViewW: editorView.frame.width, editorViewH: editorView.frame.height, viewFrameH: view.frame.height, heightMultConst: VIEW_HEIGHTMULTIPLIER_CONSTANT)
+        
+        // add to subview
+        editorView.addSubview(adjustmentNameLabel)
+        editorView.addSubview(dateColourSelectorScrollView)
+        dateColourSelectorScrollView.showsHorizontalScrollIndicator = false
+        
+        // instantiate
+        let dateColourFunctionButtons = datestampEngine.createDateFunction()
+        for button1 in dateColourFunctionButtons {
+            if button1.tag == 99 {
+                button1.addTarget(self, action: #selector(dateColourTapped), for: .touchUpInside)
+            }
+            dateColourSelectorScrollView.addSubview(button1)
+        }
+
+        let dateColourButtons: [UIButton] = datestampEngine.createButtonArray()
+        for dateColourButton in dateColourButtons {
+            dateColourButton.addTarget(self, action: #selector(dateColourTapped), for: .touchUpInside)
+            dateColourSelectorScrollView.addSubview(dateColourButton)
+        }
+
+        dateColourSelectorScrollView.contentSize = CGSize(width: datestampEngine.buttonWidth * CGFloat(Double(datestampEngine.colourName.count + dateColourFunctionButtons.count) + 1.6), height: dateColourSelectorScrollView.frame.height)
+        
+    }
+    
+    func adjustDateStamp(datestamp: UILabel) -> UILabel {
+        let imageFrameY = imageViewTop.contentClippingRect.maxY * 0.9
+        let imageFrameX = imageViewTop.contentClippingRect.maxX * 0.85
+        
+        datestamp.center = CGPoint(x: imageFrameX, y: imageFrameY)
+        
+        return datestamp
     }
     
     //------------------------------
@@ -238,11 +288,20 @@ extension PhotoEditorViewController {
         ratioButton.isHidden = bool
     }
     
+    func effectsButtonHide(_ bool: Bool) {
+        datestampButton.isHidden = bool
+    }
+    
     // this function is to hide the menu bar buttons.
     func menuBarHide(_ bool: Bool) {
         borderButton.isHidden = bool
         saveButton.isHidden = bool
         adjustmentButton.isHidden = bool
+    }
+    
+    func dateColourHide(_ bool: Bool) {
+        adjustmentNameLabel.isHidden = bool
+        dateColourSelectorScrollView.isHidden = bool
     }
     
     
@@ -314,6 +373,14 @@ extension PhotoEditorViewController {
             barView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
+        datestampButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            datestampButton.centerXAnchor.constraint(equalTo: editorView.centerXAnchor, constant: -130),
+            datestampButton.centerYAnchor.constraint(equalTo: editorView.centerYAnchor ,constant: -5),
+            datestampButton.heightAnchor.constraint(equalToConstant: 120),
+            datestampButton.widthAnchor.constraint(equalToConstant: 100)
+        ])
+        
         // setup the constraints for the labels and slider.
         adjustmentSliderOutlet.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -359,6 +426,14 @@ extension PhotoEditorViewController {
             exportSelectorScrollView.bottomAnchor.constraint(equalTo: editorView.bottomAnchor)
         ])
         
+        dateColourSelectorScrollView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            dateColourSelectorScrollView.topAnchor.constraint(equalTo: editorView.topAnchor),
+            dateColourSelectorScrollView.leftAnchor.constraint(equalTo: editorView.leftAnchor),
+            dateColourSelectorScrollView.rightAnchor.constraint(equalTo: editorView.rightAnchor),
+            dateColourSelectorScrollView.bottomAnchor.constraint(equalTo: editorView.bottomAnchor)
+        ])
+        
         borderButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             borderButton.widthAnchor.constraint(equalTo: barView.widthAnchor, multiplier: 0.33),
@@ -401,32 +476,45 @@ extension PhotoEditorViewController {
     
     
     // MARK: - Objc Functions
-    @objc func sizeButtonTapped(sender: UIButton!) {
-        TapticEngine.lightTaptic()
-        sender.tintColor = .white
-        adjustmentNameLabel.text = borderEngine.adjustmentName[0]
-        mainButtonHide(true)
-        menuBarHide(true)
-        hide(progress: nil, barItemOnEdit: false, ui: nil, slider: false, colourSelector: nil, ratioSelector: nil)
-    }
-    
-    @objc func colourButtonTapped(sender: UIButton!) {
-        TapticEngine.lightTaptic()
-        sender.tintColor = .white
-        adjustmentNameLabel.text = borderEngine.adjustmentName[1]
-        mainButtonHide(true)
-        menuBarHide(true)
-        hide(progress: nil, barItemOnEdit: false, ui: nil, slider: nil, colourSelector: false, ratioSelector: nil)
-    }
-    
-    @objc func ratioButtonTapped(sender: UIButton!) {
-        TapticEngine.lightTaptic()
-        sender.tintColor = .white
-        adjustmentNameLabel.text = borderEngine.adjustmentName[2]
-        mainButtonHide(true)
-        menuBarHide(true)
-        noticeLabel.isHidden = false
-        hide(progress: nil, barItemOnEdit: nil, ui: nil, slider: nil, colourSelector: nil, ratioSelector: false)
+    @objc func mainButtonTapped(sender: UIButton!) {
+        switch sender.tag {
+        // border
+        case 0:
+            TapticEngine.lightTaptic()
+            sender.tintColor = .white
+            adjustmentNameLabel.text = borderEngine.adjustmentName[0]
+            mainButtonHide(true)
+            menuBarHide(true)
+            hide(progress: nil, barItemOnEdit: false, ui: nil, slider: false, colourSelector: nil, ratioSelector: nil)
+        // colour
+        case 1:
+            TapticEngine.lightTaptic()
+            sender.tintColor = .white
+            adjustmentNameLabel.text = borderEngine.adjustmentName[1]
+            mainButtonHide(true)
+            menuBarHide(true)
+            hide(progress: nil, barItemOnEdit: false, ui: nil, slider: nil, colourSelector: false, ratioSelector: nil)
+        // ratio
+        case 2:
+            TapticEngine.lightTaptic()
+            sender.tintColor = .white
+            adjustmentNameLabel.text = borderEngine.adjustmentName[2]
+            mainButtonHide(true)
+            menuBarHide(true)
+            noticeLabel.isHidden = false
+            hide(progress: nil, barItemOnEdit: nil, ui: nil, slider: nil, colourSelector: nil, ratioSelector: false)
+        // datestamp
+        case 3:
+            sender.tintColor = .white
+            adjustmentNameLabel.text = Effects.datestamp.rawValue
+            dateColourHide(false)
+            effectsButtonHide(true)
+            menuBarHide(true)
+            hide(progress: nil, barItemOnEdit: false, ui: nil, slider: nil, colourSelector: nil, ratioSelector: nil)
+            
+        default:
+            break
+        }
     }
     
     // when user select a button but didnt press it.
@@ -457,7 +545,6 @@ extension PhotoEditorViewController {
                     DispatchQueue.main.async {
                         AlertService.alert(self, title: "Hooray!", message: "Your photo has been successfully saved!")
                     }
-                    
                 }
                 else {
                     DispatchQueue.main.async {
@@ -479,7 +566,6 @@ extension PhotoEditorViewController {
             // present the view controller
             self.present(activityViewController, animated: true, completion: nil)
             
-            
         default:
             print("Default")
             
@@ -495,6 +581,7 @@ extension PhotoEditorViewController {
             
             mainButtonHide(false)
             exportButtonHide(true)
+            effectsButtonHide(true)
         case 1:
             adjustmentNameLabel.text = "Export"
             borderButton.tintColor = .darkGray
@@ -503,6 +590,7 @@ extension PhotoEditorViewController {
             
             mainButtonHide(true)
             exportButtonHide(false)
+            effectsButtonHide(true)
         case 2:
             adjustmentNameLabel.text = "Effects"
             borderButton.tintColor = .darkGray
@@ -510,6 +598,9 @@ extension PhotoEditorViewController {
             adjustmentButton.tintColor = .white
             
             mainButtonHide(true)
+            exportButtonHide(true)
+            effectsButtonHide(false)
+
         default:
             print("barButtonTapped default.")
         }
@@ -521,6 +612,22 @@ extension PhotoEditorViewController {
         
         let borderColor = sender.backgroundColor!
         borderView.backgroundColor = borderColor
+    }
+    
+    @objc func dateColourTapped(sender: UIButton) {
+        TapticEngine.lightTaptic()
+        if sender.tag == 99 {
+            if !hasDate {
+                datestamp.isHidden = false
+                hasDate = true
+            } else {
+                datestamp.isHidden = true
+                hasDate = false
+            }
+        }
+        else {
+         self.datestamp.textColor = sender.backgroundColor!
+        }
     }
     
     @objc func ratioTapped(sender: UIButton) {

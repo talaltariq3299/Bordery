@@ -24,6 +24,7 @@
 	<string>We need access to your photo library in order to edit your photos.</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>DIGITALDREAM.ttf</string>
 		<string>NewYorkMedium-Regular.otf</string>
 		<string>NewYorkMedium-Semibold.otf</string>
 	</array>

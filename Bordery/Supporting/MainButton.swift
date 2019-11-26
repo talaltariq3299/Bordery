@@ -11,7 +11,7 @@ import UIKit
 
 // Responsible to create the main button.
 struct MainButton {
-    static func createButton(buttonIcon: UIImage, buttonName: String) -> UIButton {
+    static func createButton(buttonIcon: UIImage, buttonName: String, buttonTag: Int) -> UIButton {
         let buttonSize = 100
         let imageViewSize = 30
         let labelSize = 40
@@ -25,6 +25,7 @@ struct MainButton {
         buttonImageView.contentMode = .scaleAspectFit
         buttonImageView.center = button.convert(button.center, to: buttonImageView.superview)
         button.tintColor = .white
+        button.tag = buttonTag
         
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: labelSize, height: labelSize))
         label.textAlignment = .center
