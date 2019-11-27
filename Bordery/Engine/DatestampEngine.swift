@@ -69,14 +69,14 @@ class DatestampEngine {
             let colourLabel = UILabel(frame: CGRect(x: colourButton.frame.width * xOffset, y: colourButton.frame.height * yOffset, width: 85, height: 20))
             colourLabel.textAlignment = .left
             colourLabel.text = colourName[i][0]
-            colourLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.bold)
+            colourLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
             colourLabel.sizeToFit()
             
             // --------
             let hexLabel = UILabel(frame: CGRect(x: colourButton.frame.width * xOffset, y: colourButton.frame.height * (yOffset + 0.15), width: 80, height: 20))
             hexLabel.textAlignment = .left
             hexLabel.text = colourName[i][1]
-            hexLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
+            hexLabel.font = UIFont.systemFont(ofSize: 11, weight: UIFont.Weight.light)
             
             // colour for better usability
             let textColour = colourButton.backgroundColor?.isDarkColor == true ? UIColor.white : UIColor.black
@@ -145,7 +145,6 @@ class DatestampEngine {
         border.frame = CGRect(x: xCoord, y: yCoord, width: 1, height: buttonHeight)
         border.backgroundColor = UIColor(named: "backgroundSecondColor")
         border.clipsToBounds = true
-        border.tag = -1
 
         xCoord += gapBetweenButtons
         functionButtons.append(border)
@@ -187,7 +186,7 @@ class DatestampEngine {
         let datestamp = GlowingLabel(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
         datestamp.backgroundColor = .clear
         datestamp.text = dateText
-        datestamp.addCharacterSpacing(kernValue: 1.3)
+        datestamp.addCharacterSpacing(kernValue: 1.4)
         datestamp.font = dateFont
         datestamp.textAlignment = .center
         datestamp.numberOfLines = 0

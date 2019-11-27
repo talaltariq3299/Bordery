@@ -146,8 +146,6 @@ extension PhotoEditorViewController {
         let dateColourFunctionButtons = datestampEngine.createDateFunction()
         for button1 in dateColourFunctionButtons {
             switch button1.tag {
-            case -1:
-                break
             case 99, 100:
                 button1.addTarget(self, action: #selector(datestampFunctionTapped), for: .touchUpInside)
             default:
@@ -163,7 +161,7 @@ extension PhotoEditorViewController {
             dateColourSelectorScrollView.addSubview(dateColourButton)
         }
         
-        dateColourSelectorScrollView.contentSize = CGSize(width: datestampEngine.buttonWidth * CGFloat(Double(datestampEngine.colourName.count + dateColourFunctionButtons.count) + 1.6), height: dateColourSelectorScrollView.frame.height)
+        dateColourSelectorScrollView.contentSize = CGSize(width: datestampEngine.buttonWidth * CGFloat(Double(datestampEngine.colourName.count + dateColourFunctionButtons.count) + 0.4), height: dateColourSelectorScrollView.frame.height)
     }
     
     func adjustDateStamp(datestamp: UILabel) -> UILabel {
@@ -476,10 +474,10 @@ extension PhotoEditorViewController {
     
     // MARK: - Objc Functions
     @objc func mainButtonTapped(sender: UIButton!) {
+        TapticEngine.lightTaptic()
         switch sender.tag {
         // border
         case 0:
-            TapticEngine.lightTaptic()
             sender.tintColor = .white
             adjustmentNameLabel.text = borderEngine.adjustmentName[0]
             mainButtonHide(true)
@@ -487,7 +485,6 @@ extension PhotoEditorViewController {
             hide(progress: nil, barItemOnEdit: false, ui: nil, slider: false, colourSelector: nil, ratioSelector: nil)
         // colour
         case 1:
-            TapticEngine.lightTaptic()
             sender.tintColor = .white
             adjustmentNameLabel.text = borderEngine.adjustmentName[1]
             mainButtonHide(true)
@@ -495,7 +492,6 @@ extension PhotoEditorViewController {
             hide(progress: nil, barItemOnEdit: false, ui: nil, slider: nil, colourSelector: false, ratioSelector: nil)
         // ratio
         case 2:
-            TapticEngine.lightTaptic()
             sender.tintColor = .white
             adjustmentNameLabel.text = borderEngine.adjustmentName[2]
             mainButtonHide(true)
@@ -512,6 +508,7 @@ extension PhotoEditorViewController {
             hide(progress: nil, barItemOnEdit: false, ui: nil, slider: nil, colourSelector: nil, ratioSelector: nil)
             
         default:
+            print("Attempting to run a non linked main button function. (mainButtonTapped)")
             break
         }
     }
@@ -613,10 +610,10 @@ extension PhotoEditorViewController {
         borderView.backgroundColor = borderColor
     }
     
+    // funtion resonponsible on display the edit text on datestamp.
     @objc func datestampFunctionTapped(sender: UIButton) {
         sender.tintColor = .white
         TapticEngine.lightTaptic()
-        
         switch sender.tag {
         case 99:
             if !hasDate {
@@ -642,7 +639,7 @@ extension PhotoEditorViewController {
             dateText.textAlignment = .center
             dateText.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width * 0.8, height: self.view.frame.size.height * 0.04)
             dateText.center = CGPoint(x: self.view.frame.midX, y: self.view.frame.midY * 0.8)
-            dateText.backgroundColor = .blue
+            dateText.backgroundColor = .clear
             dateText.tag = ViewTagReserved.datestamp.rawValue
             
             let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
@@ -660,6 +657,7 @@ extension PhotoEditorViewController {
             dateText.becomeFirstResponder()
             
             
+        // default would be when user tap on the colour selector.
         default:
             self.datestamp.textColor = sender.backgroundColor!
         }

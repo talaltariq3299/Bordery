@@ -67,14 +67,14 @@ struct ColourEngine {
             let colourLabel = UILabel(frame: CGRect(x: colourButton.frame.width * xOffset, y: colourButton.frame.height * yOffset, width: 85, height: 20))
             colourLabel.textAlignment = .left
             colourLabel.text = colourName[i][0]
-            colourLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.bold)
+            colourLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
             colourLabel.sizeToFit()
 
             // --------
             let hexLabel = UILabel(frame: CGRect(x: colourButton.frame.width * xOffset, y: colourButton.frame.height * (yOffset + 0.15), width: 80, height: 20))
             hexLabel.textAlignment = .left
             hexLabel.text = colourName[i][1]
-            hexLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
+            hexLabel.font = UIFont.systemFont(ofSize: 11, weight: UIFont.Weight.light)
             
             // colour for better usability
             let textColour = colourButton.backgroundColor?.isDarkColor == true ? UIColor.white : UIColor.black
@@ -156,14 +156,14 @@ struct ColourEngine {
         colourLabel.textAlignment = .left
         colourLabel.text = "Colour\nfrom image"
         colourLabel.numberOfLines = 0
-        colourLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.bold)
+        colourLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
         colourLabel.sizeToFit()
 
         // --------
         let hexLabel = UILabel(frame: CGRect(x: colourButton.frame.width * xOffset, y: colourButton.frame.height * (yOffset + 0.15), width: 80, height: 20))
         hexLabel.textAlignment = .left
         hexLabel.text = color?.hexString
-        hexLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
+        hexLabel.font = UIFont.systemFont(ofSize: 11, weight: UIFont.Weight.light)
         
         // colour for better usability
         let textColour = colourButton.backgroundColor?.isDarkColor == true ? UIColor.white : UIColor.black

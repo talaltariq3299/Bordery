@@ -57,6 +57,7 @@ class FirstViewController: UIViewController {
     @objc func confettiTimeStop() {
         stopConfetti()
         confettiButton.tintColor = .red
+        isConfetti = false
     }
 
     @IBAction func permissionButtonTapped(_ sender: Any) {
