@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        self.window = UIWindow(windowScene: windowScene)
 //        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
 //        if launchedBefore  {
-//            // launch before 
+//            // launch before
 //            let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "PhotoLibraryViewNav")
 //            vc.modalPresentationStyle = .fullScreen
 //            self.window?.rootViewController = vc

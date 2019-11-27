@@ -1,16 +1,20 @@
 PODS:
+  - BonMot (5.4.1)
   - SwiftConfettiView (0.1.0)
 
 DEPENDENCIES:
+  - BonMot
   - SwiftConfettiView
 
 SPEC REPOS:
   trunk:
+    - BonMot
     - SwiftConfettiView
 
 SPEC CHECKSUMS:
+  BonMot: aa82119ff2ffa184223d8a31c72aed84fbb009e0
   SwiftConfettiView: 1bdbc2e6913b6b1c76d8070802b212508ad5c352
 
-PODFILE CHECKSUM: 4824d750d9d97b8960642179893959793d054b12
+PODFILE CHECKSUM: 091368fddf755a5174dc854dd0355f95b6c1fddd
 
 COCOAPODS: 1.8.4

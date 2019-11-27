@@ -9,6 +9,7 @@
 import UIKit
 import Photos
 import SwiftConfettiView
+import BonMot
 
 class FirstViewController: UIViewController {
 
@@ -46,11 +47,16 @@ class FirstViewController: UIViewController {
         confettiView.type = .confetti
         self.view.addSubview(confettiView)
         confettiView.startConfetti()
-        perform(#selector(stopConfetti), with: nil, afterDelay: 3)
+        perform(#selector(confettiTimeStop), with: nil, afterDelay: 3)
     }
     
     @objc func stopConfetti() {
         confettiView.stopConfetti()
+    }
+    
+    @objc func confettiTimeStop() {
+        stopConfetti()
+        confettiButton.tintColor = .red
     }
 
     @IBAction func permissionButtonTapped(_ sender: Any) {
@@ -64,11 +70,19 @@ class FirstViewController: UIViewController {
                         UIView.transition(with: self.nextButton, duration: 0.25, options: .transitionCrossDissolve, animations: {
                             self.nextButton.isHidden = false
                         })
-                        self.noticeLabel.text = "Permission granted!"
-                        self.label1.text = "Happy editing! 😍"
+                        let text1 = "Happy editing! 😍"
+                        let text2 = ""
+                        self.label1.attributedText = text1.styled(with: Typography.titleLarge())
+                        self.noticeLabel.attributedText = text2.styled(with: Typography.subbodyLarge())
                         self.permissionButton.isEnabled = false
                         self.permissionButton.layer.borderColor = UIColor.gray.cgColor
-                        self.permissionButton.setTitleColor(.gray, for: .normal)
+                        let a = "PERMISSION GRANTED"
+                        let style = StringStyle(
+                            .color(.gray),
+                            .font(UIFont.systemFont(ofSize: 13, weight: .regular)),
+                            .tracking(.point(0.3))
+                        )
+                        self.permissionButton.setAttributedTitle(a.styled(with: style), for: .normal)
                     }
                     UserDefaults.standard.set(true, forKey: "launchedBefore")
                 }
@@ -76,7 +90,8 @@ class FirstViewController: UIViewController {
                     TapticEngine.errorTaptic()
                     DispatchQueue.main.async {
                         AlertService.alert(self, title: "Permission Error!", message: "We can't edit your photos without access to your photo library. Please allow access through setting!")
-                        self.label1.text = "Is this what betrayal feels like? 😢"
+                        let text1 = "Is this what betrayal feels like? 😢"
+                        self.label1.attributedText = text1.styled(with: Typography.titleLarge())
                     }
                     
 
@@ -89,17 +104,26 @@ class FirstViewController: UIViewController {
                 self.nextButton.isHidden = false
             })
             permissionButton.isEnabled = false
-            label1.text = "Happy editing! 😍"
-            noticeLabel.text = "Permission granted!"
-            self.permissionButton.setTitleColor(.gray, for: .normal)
+            let text1 = "Happy editing! 😍"
+            let text2 = ""
+            self.label1.attributedText = text1.styled(with: Typography.titleLarge())
+            self.noticeLabel.attributedText = text2.styled(with: Typography.subbodyLarge())
             self.permissionButton.layer.borderColor = UIColor.gray.cgColor
+            let a = "PERMISSION GRANTED"
+            let style = StringStyle(
+                .color(.gray),
+                .font(UIFont.systemFont(ofSize: 13, weight: .regular)),
+                .tracking(.point(0.3))
+            )
+            self.permissionButton.setAttributedTitle(a.styled(with: style), for: .normal)
             UserDefaults.standard.set(true, forKey: "launchedBefore")
         }
         else if status == .denied {
             TapticEngine.errorTaptic()
             DispatchQueue.main.async {
                 AlertService.alert(self, title: "Permission Error!", message: "We can't edit your photos without access to your photo library. Please allow access through setting!")
-                self.label1.text = "Is this what betrayal feels like? 😢"
+                let text1 = "Is this what betrayal feels like? 😢"
+                self.label1.attributedText = text1.styled(with: Typography.titleLarge())
             }
         }
     }
@@ -118,50 +142,45 @@ class FirstViewController: UIViewController {
     }
     
     fileprivate func setupLabel1() {
+        let text = "Hello!"
+        
+        label1.attributedText = text.styled(with: Typography.titleLarge())
         label1.textColor = .white
         label1.numberOfLines = 0
-        label1.text = "Hello!"
         label1.sizeToFit()
-        label1.font = UIFont(name: "NewYorkMedium-Semibold", size: 25)
-        label1.addCharacterSpacing()
     }
     
     fileprivate func setupLabel2() {
-        let attributedString = NSMutableAttributedString(string: "Thank you for downloading Bordery.\nThis app was made with love and passion in Melbourne, Australia by Kevin Laminto.")
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 3
-        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attributedString.length))
-        label2.attributedText = attributedString
-        
+        let text = "Thank you for downloading Bordery.\nThis app was made with love and passion in Melbourne, Australia by Kevin Laminto."
+
+        label2.attributedText = text.styled(with: Typography.bodyLarge())
         label2.textColor = .white
         label2.numberOfLines = 0
         label2.sizeToFit()
-        label2.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        label2.addCharacterSpacing(kernValue: 0.2)
     }
     
     fileprivate func setupNoticeLabel() {
-        let attributedString = NSMutableAttributedString(string: "We need access to your photo library\nso we can help you make some rad photos(:")
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 3
-        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attributedString.length))
-        noticeLabel.attributedText = attributedString
+        let text = "We need access to your photo library\nso we can help you make some rad photos(:"
         
+        noticeLabel.attributedText = text.styled(with: Typography.subbodyLarge())
         noticeLabel.textColor = .gray
         noticeLabel.numberOfLines = 0
         noticeLabel.sizeToFit()
-        noticeLabel.font = UIFont.systemFont(ofSize: 11, weight: .regular)
-        noticeLabel.addCharacterSpacing(kernValue: 0.2)
+
     }
     
     fileprivate func setupPermissionButton() {
         var a = "Grant Permission"
         a = a.uppercased()
+        let style = StringStyle(
+            .color(.white),
+            .font(UIFont.systemFont(ofSize: 13, weight: .regular)),
+            .tracking(.point(0.3))
+        )
+        permissionButton.setAttributedTitle(a.styled(with: style), for: .normal)
         permissionButton.backgroundColor = .clear
-        permissionButton.setTitle(a, for: .normal)
         permissionButton.titleLabel?.numberOfLines = 0
         permissionButton.titleLabel?.textAlignment = .center
-        permissionButton.titleLabel!.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         permissionButton.setTitleColor(.white, for: .normal)
         permissionButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 17, bottom: 12, right: 17)
         permissionButton.layer.borderColor = UIColor.white.cgColor
@@ -171,19 +190,23 @@ class FirstViewController: UIViewController {
     
     fileprivate func setupNextButton() {
         var a = "Start Editing"
+        a = a.uppercased()
+        let style = StringStyle(
+            .color(.black),
+            .font(UIFont(name: "NewYorkMedium-Semibold", size: 14)!),
+            .tracking(.point(0.3))
+        )
+        nextButton.setAttributedTitle(a.styled(with: style), for: .normal)
+        
         nextButton.semanticContentAttribute = UIApplication.shared
         .userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
-        a = a.uppercased()
         let icon = UIImage(systemName: "arrow.left")?.withRenderingMode(.alwaysTemplate)
         nextButton.setImage(icon, for: .normal)
         nextButton.tintColor = .black
-        nextButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
+        nextButton.imageEdgeInsets = UIEdgeInsets(top: 3, left: 10, bottom: 3, right: 2)
         nextButton.backgroundColor = .white
-        nextButton.setTitle(a, for: .normal)
         nextButton.titleLabel?.numberOfLines = 0
         nextButton.titleLabel?.textAlignment = .center
-        nextButton.titleLabel!.font = UIFont(name: "NewYorkMedium-Semibold", size: 15)
-        nextButton.addTextSpacing(0.5)
         nextButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 17, bottom: 12, right: 17)
         nextButton.layer.borderColor = UIColor.black.cgColor
     }
@@ -198,8 +221,8 @@ class FirstViewController: UIViewController {
         NSLayoutConstraint.activate([
             confettiButton.leftAnchor.constraint(equalTo: permissionButton.rightAnchor, constant: 30),
             confettiButton.topAnchor.constraint(equalTo: label2.bottomAnchor, constant: 35),
-            confettiButton.widthAnchor.constraint(equalToConstant: 30),
-            confettiButton.heightAnchor.constraint(equalToConstant: 30)
+            confettiButton.widthAnchor.constraint(equalToConstant: 25),
+            confettiButton.heightAnchor.constraint(equalToConstant: 25)
         ])
         
     }
@@ -224,9 +247,8 @@ class FirstViewController: UIViewController {
         NSLayoutConstraint.activate([
             image.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20),
             image.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
-            image.widthAnchor.constraint(equalToConstant: view.frame.width * 0.8),
-            image.heightAnchor.constraint(equalToConstant: view.frame.width * 0.8)
-            
+            image.widthAnchor.constraint(equalToConstant: view.frame.width * 0.6),
+            image.heightAnchor.constraint(equalToConstant: view.frame.width * 0.6)
         ])
         
         label1.translatesAutoresizingMaskIntoConstraints = false
@@ -238,7 +260,7 @@ class FirstViewController: UIViewController {
         label2.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             label2.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
-            label2.topAnchor.constraint(equalTo: label1.bottomAnchor, constant: 5),
+            label2.topAnchor.constraint(equalTo: label1.bottomAnchor, constant: 3),
             label2.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
         ])
         

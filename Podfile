@@ -7,4 +7,5 @@ target 'Bordery' do
 
   # Pods for Bordery
   pod 'SwiftConfettiView'
+  pod 'BonMot'
 end
