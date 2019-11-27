@@ -142,23 +142,28 @@ extension PhotoEditorViewController {
         editorView.addSubview(dateColourSelectorScrollView)
         dateColourSelectorScrollView.showsHorizontalScrollIndicator = false
         
-        // instantiate
+        // Functions
         let dateColourFunctionButtons = datestampEngine.createDateFunction()
         for button1 in dateColourFunctionButtons {
-            if button1.tag == 99 {
-                button1.addTarget(self, action: #selector(dateColourTapped), for: .touchUpInside)
+            switch button1.tag {
+            case -1:
+                break
+            case 99, 100:
+                button1.addTarget(self, action: #selector(datestampFunctionTapped), for: .touchUpInside)
+            default:
+                print("Attempt to add a function to a non existing button tag. (setupDateColorSelector function)")
             }
             dateColourSelectorScrollView.addSubview(button1)
         }
-
+        
+        // colour buttons array
         let dateColourButtons: [UIButton] = datestampEngine.createButtonArray()
         for dateColourButton in dateColourButtons {
-            dateColourButton.addTarget(self, action: #selector(dateColourTapped), for: .touchUpInside)
+            dateColourButton.addTarget(self, action: #selector(datestampFunctionTapped), for: .touchUpInside)
             dateColourSelectorScrollView.addSubview(dateColourButton)
         }
-
-        dateColourSelectorScrollView.contentSize = CGSize(width: datestampEngine.buttonWidth * CGFloat(Double(datestampEngine.colourName.count + dateColourFunctionButtons.count) + 1.6), height: dateColourSelectorScrollView.frame.height)
         
+        dateColourSelectorScrollView.contentSize = CGSize(width: datestampEngine.buttonWidth * CGFloat(Double(datestampEngine.colourName.count + dateColourFunctionButtons.count) + 1.6), height: dateColourSelectorScrollView.frame.height)
     }
     
     func adjustDateStamp(datestamp: UILabel) -> UILabel {
@@ -299,7 +304,6 @@ extension PhotoEditorViewController {
         adjustmentNameLabel.isHidden = bool
         dateColourSelectorScrollView.isHidden = bool
     }
-    
     
     // MARK: - Constraints
     func setupConstraint() {
@@ -470,7 +474,6 @@ extension PhotoEditorViewController {
         return border
     }
     
-    
     // MARK: - Objc Functions
     @objc func mainButtonTapped(sender: UIButton!) {
         switch sender.tag {
@@ -610,21 +613,57 @@ extension PhotoEditorViewController {
         borderView.backgroundColor = borderColor
     }
     
-    @objc func dateColourTapped(sender: UIButton) {
+    @objc func datestampFunctionTapped(sender: UIButton) {
         sender.tintColor = .white
         TapticEngine.lightTaptic()
-        if sender.tag == 99 {
+        
+        switch sender.tag {
+        case 99:
             if !hasDate {
                 datestamp.isHidden = false
                 hasDate = true
-            } else {
+            }
+            else {
                 datestamp.isHidden = true
                 hasDate = false
             }
+            
+        case 100:
+            let tap = UITapGestureRecognizer(target: self, action: #selector(keyboardDoneTapped))
+            
+            let backView = UIView(frame: self.view.frame)
+            backView.backgroundColor = UIColor(displayP3Red: 0, green: 0, blue: 0, alpha: 0.8)
+            backView.tag = ViewTagReserved.datestamp.rawValue
+            backView.addGestureRecognizer(tap)
+            
+            dateText.textColor = .white
+            dateText.text = datestampEngine.dateText
+            dateText.font = UIFont(name: "DateStamp", size: 30)
+            dateText.textAlignment = .center
+            dateText.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width * 0.8, height: self.view.frame.size.height * 0.04)
+            dateText.center = CGPoint(x: self.view.frame.midX, y: self.view.frame.midY * 0.8)
+            dateText.backgroundColor = .blue
+            dateText.tag = ViewTagReserved.datestamp.rawValue
+            
+            let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+            doneToolbar.barStyle = .default
+            doneToolbar.backgroundColor = .clear
+            let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(keyboardDoneTapped))
+            let items = [flexSpace, done]
+            doneToolbar.items = items
+            doneToolbar.sizeToFit()
+            dateText.inputAccessoryView = doneToolbar
+            
+            self.view.addSubview(backView)
+            self.view.addSubview(dateText)
+            dateText.becomeFirstResponder()
+            
+            
+        default:
+            self.datestamp.textColor = sender.backgroundColor!
         }
-        else {
-         self.datestamp.textColor = sender.backgroundColor!
-        }
+        
     }
     
     @objc func ratioTapped(sender: UIButton) {
@@ -689,5 +728,29 @@ extension PhotoEditorViewController {
         hide(progress: nil, barItemOnEdit: nil, ui: nil, slider: nil, colourSelector: nil, ratioSelector: true)
         mainButtonHide(false)
         menuBarHide(false)
+    }
+    
+    @objc func keyboardDoneTapped() {
+        for _ in 0 ..< 3 {
+            guard let viewWithTag = self.view.viewWithTag(ViewTagReserved.datestamp.rawValue) else {
+                print("cannot remove datestamp views! (keyboardDoneTapped)")
+                return
+            }
+            viewWithTag.removeFromSuperview()
+        }
+        
+        if let text = dateText.text {
+            if !text.trimmingCharacters(in: .whitespaces).isEmpty {
+                datestampEngine.dateText = text
+            }
+            else {
+                datestampEngine.dateText = "09 01 '18"
+            }
+        }
+
+        self.datestamp = self.adjustDateStamp(datestamp: self.datestampEngine.datestamp())
+        self.datestamp.tag = ViewTagReserved.datestamp.rawValue
+        self.imageViewTop.addSubview(self.datestamp)
+        
     }
 }

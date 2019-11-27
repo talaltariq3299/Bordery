@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E0F84ED238E57BD00D174C2 /* ViewTagReserved.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E0F84EC238E57BD00D174C2 /* ViewTagReserved.swift */; };
 		9E3641BB238659C70039F02B /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3641BA238659C70039F02B /* FirstViewController.swift */; };
 		9E39A74F238A70B0006774F2 /* MenuBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A74E238A70B0006774F2 /* MenuBarButton.swift */; };
 		9E39A753238A776C006774F2 /* MainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A752238A776C006774F2 /* MainButton.swift */; };
@@ -40,6 +41,7 @@
 
 /* Begin PBXFileReference section */
 		000CFA715460F0D2328A1CCD /* Pods-Bordery.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bordery.release.xcconfig"; path = "Target Support Files/Pods-Bordery/Pods-Bordery.release.xcconfig"; sourceTree = "<group>"; };
+		9E0F84EC238E57BD00D174C2 /* ViewTagReserved.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTagReserved.swift; sourceTree = "<group>"; };
 		9E3641BA238659C70039F02B /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		9E39A74E238A70B0006774F2 /* MenuBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarButton.swift; sourceTree = "<group>"; };
 		9E39A752238A776C006774F2 /* MainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButton.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				9E39A755238A79FE006774F2 /* BarItemEdit.swift */,
 				9E39A757238A8F70006774F2 /* GlowingLabel.swift */,
 				9E39A76C238BE678006774F2 /* Effects.swift */,
+				9E0F84EC238E57BD00D174C2 /* ViewTagReserved.swift */,
 			);
 			path = Supporting;
 			sourceTree = "<group>";
@@ -215,6 +218,8 @@
 			dependencies = (
 			);
 			name = Bordery;
+			packageProductDependencies = (
+			);
 			productName = Bordery;
 			productReference = 9EF0DB1F236C0F6E00969F9F /* Bordery.app */;
 			productType = "com.apple.product-type.application";
@@ -243,6 +248,8 @@
 				Base,
 			);
 			mainGroup = 9EF0DB16236C0F6E00969F9F;
+			packageReferences = (
+			);
 			productRefGroup = 9EF0DB20236C0F6E00969F9F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -336,6 +343,7 @@
 				9E39A758238A8F70006774F2 /* GlowingLabel.swift in Sources */,
 				9EF0DB43236C148B00969F9F /* AlertService.swift in Sources */,
 				9EBF3AF523798303003F9BF3 /* ColourEngine.swift in Sources */,
+				9E0F84ED238E57BD00D174C2 /* ViewTagReserved.swift in Sources */,
 				9E61B7CD237A9F43004E0A95 /* RatioEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

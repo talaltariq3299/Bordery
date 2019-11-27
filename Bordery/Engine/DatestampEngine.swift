@@ -20,7 +20,7 @@ class DatestampEngine {
     
     // datestamp properties
     // font from https://allbestfonts.com/date-stamp/
-    let dateText = "24 10 '14"
+    var dateText = "09 01 '18"
     let dateFont = UIFont(name: "DateStamp", size: 10)
     let dateGlowsize: CGFloat = 0
     
@@ -32,8 +32,8 @@ class DatestampEngine {
         ["Carmine", "#A94333"],
         ["Yellow", "#F6EE54"],
     ]
-    let functionName = ["Hide/show \ndatestamp"]
-    let functionIcon = ["hideshow-icon"]
+    let functionName = ["Hide/show \ndatestamp", "Edit text"]
+    let functionIcon = ["hideshow-icon", "editText-icon"]
     
     init(editorViewW: CGFloat, editorViewH: CGFloat, viewFrameH: CGFloat, heightMultConst: CGFloat) {
         self.xCoord = editorViewW * 0.02
@@ -116,11 +116,14 @@ class DatestampEngine {
             hideShowButton.clipsToBounds = true
             hideShowButton.tintColor = .white
             
-            let buttonImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
-            buttonImage.image = UIImage(named: functionIcon[i])?.withRenderingMode(.alwaysTemplate)
-            buttonImage.contentMode = .scaleAspectFit
-            buttonImage.center = CGPoint(x: hideShowButton.frame.size.width / 2, y: hideShowButton.frame.size.height * 0.35)
-            
+            if i < functionIcon.count {
+                let buttonImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
+                buttonImage.image = UIImage(named: functionIcon[i])?.withRenderingMode(.alwaysTemplate)
+                buttonImage.contentMode = .scaleAspectFit
+                buttonImage.center = CGPoint(x: hideShowButton.frame.size.width / 2, y: hideShowButton.frame.size.height * 0.35)
+                hideShowButton.addSubview(buttonImage)
+            }
+
             // create labels
             let exportLabel = UILabel(frame: CGRect(x: hideShowButton.frame.width * xOffset, y: hideShowButton.frame.height * yOffset, width: 85, height: 20))
             exportLabel.textAlignment = .center
@@ -132,7 +135,6 @@ class DatestampEngine {
             exportLabel.center = CGPoint(x: hideShowButton.frame.size.width / 2, y: hideShowButton.frame.size.height * 0.8)
             
             hideShowButton.addSubview(exportLabel)
-            hideShowButton.addSubview(buttonImage)
             
             xCoord += buttonWidth + gapBetweenButtons
             functionButtons.append(hideShowButton)
@@ -143,6 +145,7 @@ class DatestampEngine {
         border.frame = CGRect(x: xCoord, y: yCoord, width: 1, height: buttonHeight)
         border.backgroundColor = UIColor(named: "backgroundSecondColor")
         border.clipsToBounds = true
+        border.tag = -1
 
         xCoord += gapBetweenButtons
         functionButtons.append(border)
@@ -192,7 +195,6 @@ class DatestampEngine {
         datestamp.glowSize = dateGlowsize
         datestamp.blurColor = UIColor(displayP3Red: 250/255, green: 80/255, blue: 32/255, alpha: 0.0)
         datestamp.textColor = currentColour
-        
         
         return datestamp
     }

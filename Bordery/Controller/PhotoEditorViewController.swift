@@ -45,6 +45,7 @@ class PhotoEditorViewController: UIViewController {
     lazy var hasDate = false
     lazy var datestamp = UILabel()
     lazy var dateColourSelectorScrollView = UIScrollView()
+    lazy var dateText = UITextField()
     
     // barView Properties
     lazy var barItemOnEditStackView = UIStackView()
@@ -181,10 +182,9 @@ class PhotoEditorViewController: UIViewController {
                     
                     // add a default timestamp
                     self.datestamp = self.adjustDateStamp(datestamp: self.datestampEngine.datestamp())
+                    self.datestamp.tag = ViewTagReserved.datestamp.rawValue
                     self.imageViewTop.addSubview(self.datestamp)
                     self.datestamp.isHidden = true
-                    
-                    
             })
         }
     }
@@ -300,6 +300,7 @@ class PhotoEditorViewController: UIViewController {
             effectsButtonHide(false)
             datestamp.textColor = datestampEngine.currentColour
             datestamp.isHidden = datestampEngine.isHidden
+            hasDate = !hasDate
             
         default:
             print("No execution detected! PhotoEditorVC cancelButtonTapped function")

@@ -46,7 +46,7 @@ class FirstViewController: UIViewController {
         confettiView.type = .confetti
         self.view.addSubview(confettiView)
         confettiView.startConfetti()
-        perform(#selector(stopConfetti), with: nil, afterDelay: 5)
+        perform(#selector(stopConfetti), with: nil, afterDelay: 3)
     }
     
     @objc func stopConfetti() {
@@ -103,7 +103,6 @@ class FirstViewController: UIViewController {
             }
         }
     }
-    
     
     @IBAction func nextButtonTapped(_ sender: Any) {
         TapticEngine.lightTaptic()

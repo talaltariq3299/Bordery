@@ -93,16 +93,6 @@ class PhotoLibraryCollectionViewController: UICollectionViewController, UIGestur
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateCachedAssets()
-        
-        
-//        if !defaults.bool(forKey: "permissionCheckViewed") {
-//            let permissionCheckView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FirstVC")
-//            permissionCheckView.modalPresentationStyle = .fullScreen
-//            self.present(permissionCheckView, animated:true, completion:nil)
-//
-//
-////            defaults.set(true, forKey: "permissionCheckViewed")
-//        }
     }
     
     // UICollectionView
@@ -179,25 +169,6 @@ class PhotoLibraryCollectionViewController: UICollectionViewController, UIGestur
     // this will make sure that the app has access to the photo library.
     fileprivate func checkPermission() {
         self.imageManager = PHCachingImageManager()
-        
-//        if status == .notDetermined {
-//            PHPhotoLibrary.requestAuthorization({status in
-//                if status == .authorized {
-//                    self.imageManager = PHCachingImageManager()
-//                }
-//                else if status == .denied {
-//                    AlertService.alert(self, title: "Permission Error!", message: "We can't edit your photos without access to your photo library. Please allow access through setting!")
-//                    print("Permission Denied. Line 160 at PhotoLibraryVC")
-//                }
-//            })
-//        }
-//        else if status == .authorized {
-//            self.imageManager = PHCachingImageManager()
-//        }
-//        else if status == .denied {
-//            AlertService.alert(self, title: "Permission Error", message: "Please allow photo library access through setting.")
-//            print("Permission Denied. Line 170 at PhotoLibraryVC")
-//        }
     }
     
     // long press gesture function
