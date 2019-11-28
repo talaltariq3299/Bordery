@@ -27,6 +27,9 @@
 		<string>NewYorkMedium-Regular.otf</string>
 		<string>NewYorkMedium-Semibold.otf</string>
 		<string>DateStamp.otf</string>
+		<string>DateStampBold.otf</string>
+		<string>DateStampBoldItalic.otf</string>
+		<string>DateStampItalic.otf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

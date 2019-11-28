@@ -21,7 +21,7 @@ class DatestampEngine {
     // datestamp properties
     // font from https://allbestfonts.com/date-stamp/
     var dateText = "09 01 '18"
-    let dateFont = UIFont(name: "DateStamp", size: 10)
+    let dateFont = UIFont(name: "DateStamp-Bold", size: 11)
     let dateGlowsize: CGFloat = 0
     
     var currentAllignment: NSTextAlignment = .center
@@ -32,8 +32,10 @@ class DatestampEngine {
         ["Cinnabar", "#E34A2C"],
         ["Crail", "#C76043"],
         ["Carmine", "#A94333"],
+        ["Flush Orange", "#FF8400"],
         ["Porsche", "#EEB966"],
         ["Yellow", "#F6EE54"],
+        
     ]
     let functionName = ["Hide/show \ndatestamp", "Edit text"]
     let functionIcon = ["hideshow-icon", "editText-icon"]
@@ -186,17 +188,22 @@ class DatestampEngine {
     }
     
     func datestamp() -> UILabel {
-        let datestamp = GlowingLabel(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
+        let datestamp = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
         datestamp.backgroundColor = .clear
         datestamp.text = dateText
-        datestamp.addCharacterSpacing(kernValue: 1.4)
         datestamp.font = dateFont
+        datestamp.addCharacterSpacing(kernValue: 0.3)
         datestamp.textAlignment = currentAllignment
         datestamp.numberOfLines = 0
-        
-        datestamp.glowSize = dateGlowsize
-        datestamp.blurColor = UIColor(displayP3Red: 250/255, green: 80/255, blue: 32/255, alpha: 1.0)
         datestamp.textColor = currentColour
+        
+        // glow
+        datestamp.layer.shadowColor = hexStringToUIColor(hex: "#bd171c").cgColor
+        datestamp.layer.shadowOffset = .zero
+        datestamp.layer.shadowRadius = 1.2
+        datestamp.layer.shadowOpacity = 1.0
+        datestamp.layer.masksToBounds = false
+        datestamp.layer.shouldRasterize = true
         
         return datestamp
     }

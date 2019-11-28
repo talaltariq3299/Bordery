@@ -639,7 +639,7 @@ extension PhotoEditorViewController {
             
             dateText.textColor = .white
             dateText.text = datestampEngine.dateText
-            dateText.font = UIFont(name: "DateStamp", size: 25)
+            dateText.font = UIFont(name: "DateStamp-Bold", size: 25)
             dateText.textAlignment = datestampEngine.currentAllignment
             dateText.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width * 0.8, height: self.view.frame.size.height * 0.04)
             dateText.center = CGPoint(x: self.view.frame.midX, y: self.view.frame.midY * 0.8)

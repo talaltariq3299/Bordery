@@ -13,7 +13,6 @@
 		9E39A74F238A70B0006774F2 /* MenuBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A74E238A70B0006774F2 /* MenuBarButton.swift */; };
 		9E39A753238A776C006774F2 /* MainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A752238A776C006774F2 /* MainButton.swift */; };
 		9E39A756238A79FE006774F2 /* BarItemEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A755238A79FE006774F2 /* BarItemEdit.swift */; };
-		9E39A758238A8F70006774F2 /* GlowingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A757238A8F70006774F2 /* GlowingLabel.swift */; };
 		9E39A75C238A9759006774F2 /* DatestampEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A75B238A9759006774F2 /* DatestampEngine.swift */; };
 		9E39A76D238BE678006774F2 /* Effects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A76C238BE678006774F2 /* Effects.swift */; };
 		9E39E007237594C600C15513 /* NewYorkMedium-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E39E005237594C600C15513 /* NewYorkMedium-Regular.otf */; };
@@ -23,6 +22,9 @@
 		9E40EEFC236E9D30000436C5 /* PhotoLibraryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E40EEFA236E9D30000436C5 /* PhotoLibraryCollectionViewController.swift */; };
 		9E40EEFE236EB40F000436C5 /* ClassExtension+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E40EEFD236EB40F000436C5 /* ClassExtension+.swift */; };
 		9E61B7CD237A9F43004E0A95 /* RatioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E61B7CC237A9F43004E0A95 /* RatioEngine.swift */; };
+		9E89A09623900E6700DA2AD6 /* DateStampBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E89A09323900E6700DA2AD6 /* DateStampBoldItalic.otf */; };
+		9E89A09723900E6700DA2AD6 /* DateStampItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E89A09423900E6700DA2AD6 /* DateStampItalic.otf */; };
+		9E89A09823900E6700DA2AD6 /* DateStampBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E89A09523900E6700DA2AD6 /* DateStampBold.otf */; };
 		9E9C0F992382694000D5E33E /* CustomPhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C0F982382694000D5E33E /* CustomPhotoAlbum.swift */; };
 		9EADAEF52379305B00B50C11 /* RangeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EADAEF42379305B00B50C11 /* RangeConverter.swift */; };
 		9EB17EAB238D16760020AB2C /* DateStamp.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9EB17EA7238D16750020AB2C /* DateStamp.otf */; };
@@ -48,7 +50,6 @@
 		9E39A74E238A70B0006774F2 /* MenuBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarButton.swift; sourceTree = "<group>"; };
 		9E39A752238A776C006774F2 /* MainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButton.swift; sourceTree = "<group>"; };
 		9E39A755238A79FE006774F2 /* BarItemEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarItemEdit.swift; sourceTree = "<group>"; };
-		9E39A757238A8F70006774F2 /* GlowingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlowingLabel.swift; sourceTree = "<group>"; };
 		9E39A75B238A9759006774F2 /* DatestampEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatestampEngine.swift; sourceTree = "<group>"; };
 		9E39A76C238BE678006774F2 /* Effects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effects.swift; sourceTree = "<group>"; };
 		9E39E005237594C600C15513 /* NewYorkMedium-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NewYorkMedium-Regular.otf"; sourceTree = "<group>"; };
@@ -58,6 +59,9 @@
 		9E40EEFA236E9D30000436C5 /* PhotoLibraryCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCollectionViewController.swift; sourceTree = "<group>"; };
 		9E40EEFD236EB40F000436C5 /* ClassExtension+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClassExtension+.swift"; sourceTree = "<group>"; };
 		9E61B7CC237A9F43004E0A95 /* RatioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatioEngine.swift; sourceTree = "<group>"; };
+		9E89A09323900E6700DA2AD6 /* DateStampBoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DateStampBoldItalic.otf; sourceTree = "<group>"; };
+		9E89A09423900E6700DA2AD6 /* DateStampItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DateStampItalic.otf; sourceTree = "<group>"; };
+		9E89A09523900E6700DA2AD6 /* DateStampBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DateStampBold.otf; sourceTree = "<group>"; };
 		9E9C0F982382694000D5E33E /* CustomPhotoAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPhotoAlbum.swift; sourceTree = "<group>"; };
 		9EADAEF42379305B00B50C11 /* RangeConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeConverter.swift; sourceTree = "<group>"; };
 		9EB17EA7238D16750020AB2C /* DateStamp.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DateStamp.otf; sourceTree = "<group>"; };
@@ -115,6 +119,9 @@
 		9E39E009237594F800C15513 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				9E89A09323900E6700DA2AD6 /* DateStampBoldItalic.otf */,
+				9E89A09523900E6700DA2AD6 /* DateStampBold.otf */,
+				9E89A09423900E6700DA2AD6 /* DateStampItalic.otf */,
 				9EB17EA7238D16750020AB2C /* DateStamp.otf */,
 				9E39E005237594C600C15513 /* NewYorkMedium-Regular.otf */,
 				9E39E006237594C600C15513 /* NewYorkMedium-Semibold.otf */,
@@ -186,7 +193,6 @@
 				9E39A74E238A70B0006774F2 /* MenuBarButton.swift */,
 				9E39A752238A776C006774F2 /* MainButton.swift */,
 				9E39A755238A79FE006774F2 /* BarItemEdit.swift */,
-				9E39A757238A8F70006774F2 /* GlowingLabel.swift */,
 				9E39A76C238BE678006774F2 /* Effects.swift */,
 				9E0F84EC238E57BD00D174C2 /* ViewTagReserved.swift */,
 				9E07E668238EB6BF0003D8EF /* Typography.swift */,
@@ -270,9 +276,12 @@
 				9EB17EAB238D16760020AB2C /* DateStamp.otf in Resources */,
 				9EF0DB2F236C0F6F00969F9F /* LaunchScreen.storyboard in Resources */,
 				9EF0DB2C236C0F6F00969F9F /* Assets.xcassets in Resources */,
+				9E89A09623900E6700DA2AD6 /* DateStampBoldItalic.otf in Resources */,
 				9EF0DB2A236C0F6E00969F9F /* Main.storyboard in Resources */,
+				9E89A09723900E6700DA2AD6 /* DateStampItalic.otf in Resources */,
 				9E39E008237594C600C15513 /* NewYorkMedium-Semibold.otf in Resources */,
 				9E39E007237594C600C15513 /* NewYorkMedium-Regular.otf in Resources */,
+				9E89A09823900E6700DA2AD6 /* DateStampBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,7 +353,6 @@
 				9E40EEFE236EB40F000436C5 /* ClassExtension+.swift in Sources */,
 				9E39A75C238A9759006774F2 /* DatestampEngine.swift in Sources */,
 				9E40EEFB236E9D30000436C5 /* PhotoEditorVC_Extension+.swift in Sources */,
-				9E39A758238A8F70006774F2 /* GlowingLabel.swift in Sources */,
 				9EF0DB43236C148B00969F9F /* AlertService.swift in Sources */,
 				9EBF3AF523798303003F9BF3 /* ColourEngine.swift in Sources */,
 				9E0F84ED238E57BD00D174C2 /* ViewTagReserved.swift in Sources */,
