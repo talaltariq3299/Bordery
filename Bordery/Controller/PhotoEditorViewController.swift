@@ -46,6 +46,10 @@ class PhotoEditorViewController: UIViewController {
     lazy var datestamp = UILabel()
     lazy var dateColourSelectorScrollView = UIScrollView()
     lazy var dateText = UITextField()
+    lazy var counter = 0
+    lazy var allignmentArray: [NSTextAlignment] = [.center, .right, .left]
+    lazy var hasDateCounter = 0
+    lazy var hasDateArray = [true, false]
     
     // barView Properties
     lazy var barItemOnEditStackView = UIStackView()

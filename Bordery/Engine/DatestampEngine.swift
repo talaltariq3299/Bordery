@@ -24,12 +24,15 @@ class DatestampEngine {
     let dateFont = UIFont(name: "DateStamp", size: 10)
     let dateGlowsize: CGFloat = 0
     
+    var currentAllignment: NSTextAlignment = .center
+    
     let gapBetweenButtons: CGFloat = 10
     let colourName = [
         ["Crimson", "#DE131A"],
         ["Cinnabar", "#E34A2C"],
         ["Crail", "#C76043"],
         ["Carmine", "#A94333"],
+        ["Porsche", "#EEB966"],
         ["Yellow", "#F6EE54"],
     ]
     let functionName = ["Hide/show \ndatestamp", "Edit text"]
@@ -188,11 +191,11 @@ class DatestampEngine {
         datestamp.text = dateText
         datestamp.addCharacterSpacing(kernValue: 1.4)
         datestamp.font = dateFont
-        datestamp.textAlignment = .center
+        datestamp.textAlignment = currentAllignment
         datestamp.numberOfLines = 0
         
         datestamp.glowSize = dateGlowsize
-        datestamp.blurColor = UIColor(displayP3Red: 250/255, green: 80/255, blue: 32/255, alpha: 0.0)
+        datestamp.blurColor = UIColor(displayP3Red: 250/255, green: 80/255, blue: 32/255, alpha: 1.0)
         datestamp.textColor = currentColour
         
         return datestamp

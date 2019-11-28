@@ -616,17 +616,12 @@ extension PhotoEditorViewController {
         TapticEngine.lightTaptic()
         switch sender.tag {
         case 99:
-            if !hasDate {
-                datestamp.isHidden = false
-                hasDate = true
-            }
-            else {
-                datestamp.isHidden = true
-                hasDate = false
-            }
+            // from https://stackoverflow.com/questions/39423809/toggle-between-three-states-with-uibutton
+            hasDateCounter = (hasDateCounter + 1) % hasDateArray.count
+            datestamp.isHidden = hasDateArray[hasDateCounter]
             
         case 100:
-            let tap = UITapGestureRecognizer(target: self, action: #selector(keyboardDoneTapped))
+            let tap = UITapGestureRecognizer(target: self, action: #selector(datestampViewTapped))
             
             let backView = UIView(frame: self.view.frame)
             backView.backgroundColor = UIColor(displayP3Red: 0, green: 0, blue: 0, alpha: 0.8)
@@ -635,8 +630,8 @@ extension PhotoEditorViewController {
             
             dateText.textColor = .white
             dateText.text = datestampEngine.dateText
-            dateText.font = UIFont(name: "DateStamp", size: 30)
-            dateText.textAlignment = .center
+            dateText.font = UIFont(name: "DateStamp", size: 25)
+            dateText.textAlignment = datestampEngine.currentAllignment
             dateText.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width * 0.8, height: self.view.frame.size.height * 0.04)
             dateText.center = CGPoint(x: self.view.frame.midX, y: self.view.frame.midY * 0.8)
             dateText.backgroundColor = .clear
@@ -646,8 +641,11 @@ extension PhotoEditorViewController {
             doneToolbar.barStyle = .default
             doneToolbar.backgroundColor = .clear
             let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-            let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(keyboardDoneTapped))
-            let items = [flexSpace, done]
+            let done = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(datestampKeyboardToolBarTapped))
+            done.tag = 0
+            let allignment = UIBarButtonItem(title: "Allignment", style: .plain, target: self, action: #selector(datestampKeyboardToolBarTapped))
+            allignment.tag = 1
+            let items = [allignment, flexSpace, done]
             doneToolbar.items = items
             doneToolbar.sizeToFit()
             dateText.inputAccessoryView = doneToolbar
@@ -728,27 +726,48 @@ extension PhotoEditorViewController {
         menuBarHide(false)
     }
     
-    @objc func keyboardDoneTapped() {
-        for _ in 0 ..< 3 {
-            guard let viewWithTag = self.view.viewWithTag(ViewTagReserved.datestamp.rawValue) else {
-                print("cannot remove datestamp views! (keyboardDoneTapped)")
-                return
+    @objc func datestampKeyboardToolBarTapped(sender: UIBarButtonItem!) {
+        switch sender.tag {
+        // done
+        case 0:
+            for _ in 0 ..< 3 {
+                guard let viewWithTag = self.view.viewWithTag(ViewTagReserved.datestamp.rawValue) else {
+                    print("cannot remove datestamp views! (keyboardDoneTapped)")
+                    return
+                }
+                viewWithTag.removeFromSuperview()
             }
-            viewWithTag.removeFromSuperview()
-        }
-        
-        if let text = dateText.text {
-            if !text.trimmingCharacters(in: .whitespaces).isEmpty {
-                datestampEngine.dateText = text
+            
+            if let text = dateText.text {
+                if !text.trimmingCharacters(in: .whitespaces).isEmpty {
+                    datestampEngine.dateText = text
+                }
+                else {
+                    datestampEngine.dateText = "09 01 '18"
+                }
             }
-            else {
-                datestampEngine.dateText = "09 01 '18"
-            }
+            // adjust allignment
+            datestampEngine.currentAllignment = allignmentArray[counter]
+            
+            self.datestamp = self.adjustDateStamp(datestamp: self.datestampEngine.datestamp())
+            self.datestamp.tag = ViewTagReserved.datestamp.rawValue
+            self.imageViewTop.addSubview(self.datestamp)
+
+        // allignment
+        case 1:
+            counter = (counter + 1) % allignmentArray.count
+            dateText.textAlignment = allignmentArray[counter]
+            
+        default:
+            break
         }
 
-        self.datestamp = self.adjustDateStamp(datestamp: self.datestampEngine.datestamp())
-        self.datestamp.tag = ViewTagReserved.datestamp.rawValue
-        self.imageViewTop.addSubview(self.datestamp)
         
+    }
+    
+    @objc func datestampViewTapped() {
+        let a = UIBarButtonItem()
+        a.tag = 0
+        datestampKeyboardToolBarTapped(sender: a)
     }
 }
