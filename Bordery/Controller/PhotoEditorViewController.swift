@@ -52,6 +52,7 @@ class PhotoEditorViewController: UIViewController {
     lazy var hasDateArray = [true, false]
     
     // barView Properties
+    lazy var menuBarBackgroundView = UIView()
     lazy var barItemOnEditStackView = UIStackView()
     lazy var borderButton = UIButton()
     lazy var saveButton = UIButton()
@@ -222,6 +223,11 @@ class PhotoEditorViewController: UIViewController {
         setupNavBar()
         
         barView.addSubview(addTopBorder(with: UIColor(named: "backgroundSecondColor"), andWidth: 1, to: barView))
+        menuBarBackgroundView.frame = barView.frame
+        menuBarBackgroundView.backgroundColor = UIColor(displayP3Red: 30/255, green: 30/255, blue: 30/255, alpha: 1.0)
+        barView.addSubview(menuBarBackgroundView)
+        
+        barView.sendSubviewToBack(menuBarBackgroundView)
         
     }
     

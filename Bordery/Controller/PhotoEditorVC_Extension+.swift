@@ -368,7 +368,16 @@ extension PhotoEditorViewController {
             barView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             barView.leftAnchor.constraint(equalTo: view.leftAnchor),
             barView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            barView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            barView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ])
+        
+        menuBarBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            menuBarBackgroundView.topAnchor.constraint(equalTo: barView.topAnchor),
+            menuBarBackgroundView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            menuBarBackgroundView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            menuBarBackgroundView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            menuBarBackgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
         
         datestampButton.translatesAutoresizingMaskIntoConstraints = false
