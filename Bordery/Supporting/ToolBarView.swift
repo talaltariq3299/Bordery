@@ -22,7 +22,7 @@ class ToolBarView {
     var counter = 0
     
     init(toolbarW: CGFloat, toolbarH: CGFloat) {
-        self.xCoord = toolbarW * 0.02
+        self.xCoord = toolbarW * 0.05
         self.yCoord = toolbarH * 0.5
         self.buttonWidth = toolbarH * 0.5
         self.buttonHeight = toolbarH * 0.5

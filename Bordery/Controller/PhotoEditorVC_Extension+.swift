@@ -655,23 +655,45 @@ extension PhotoEditorViewController {
             dateText.tag = ViewTagReserved.datestamp.rawValue
             
             // toolbar setup
-            let toolbar = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
-            toolbar.backgroundColor = UIColor(named: "backgroundSecondColor")
+            let toolbar = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 100))
+            toolbar.backgroundColor = .clear
+            
+            let toolHeight = toolbar.bounds.height * 0.5
             
             // setup scrollView
-            let scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: toolbar.bounds.width, height: toolbar.bounds.height))
-            scrollView.backgroundColor = .clear
+            let scrollView = UIScrollView(frame: CGRect(x: 0, y: toolbar.frame.midY, width: toolbar.bounds.width, height: toolHeight))
+            scrollView.backgroundColor = UIColor(named: "backgroundSecondColor")
             scrollView.showsHorizontalScrollIndicator = false
+            
+            // setup second scrollview for fonts
+            scrollView2 = UIScrollView(frame: CGRect(x: 0, y: toolbar.frame.minY, width: toolbar.bounds.width, height: toolHeight))
+            scrollView2.backgroundColor = UIColor(displayP3Red: 30/255, green: 30/255, blue: 30/255, alpha: 1.0)
+            scrollView2.showsHorizontalScrollIndicator = false
+            scrollView2.isHidden = fontScrollIsHidden
+            
+            // setup Done button
+            let width = toolbar.frame.width * 0.15
+            let doneButton = UIButton(type: .custom)
+            doneButton.setTitleColor(.white, for: .normal)
+            doneButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+            doneButton.setTitle("Done", for: .normal)
+            doneButton.tag = 0
+            doneButton.backgroundColor = .clear
+            doneButton.addTarget(self, action: #selector(datestampKeyboardToolBarTapped), for: .touchUpInside)
+            doneButton.frame = CGRect(x: toolbar.frame.maxX - width - 10, y: toolbar.frame.maxY, width: width, height: toolHeight)
+            doneButton.center = CGPoint(x: doneButton.frame.midX, y: toolbar.frame.maxY * 0.75)
 
-            toolBarFunction = ToolBarView.init(toolbarW: toolbar.frame.width, toolbarH: toolbar.frame.height)
+            toolBarFunction = ToolBarView.init(toolbarW: toolbar.frame.width, toolbarH: toolbar.frame.height * 0.5)
             
             for button in toolBarFunction.createButtonArray() {
-                button.center = CGPoint(x: button.frame.maxX, y: toolbar.frame.midY)
+                button.center = CGPoint(x: button.frame.midX, y: toolbar.frame.midY * 0.5)
                 button.addTarget(self, action: #selector(datestampKeyboardToolBarTapped), for: .touchUpInside)
                 scrollView.addSubview(button)
             }
             
+            toolbar.addSubview(scrollView2)
             toolbar.addSubview(scrollView)
+            toolbar.addSubview(doneButton)
  
             dateText.inputAccessoryView = toolbar
             
