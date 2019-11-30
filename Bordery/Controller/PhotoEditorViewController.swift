@@ -47,7 +47,7 @@ class PhotoEditorViewController: UIViewController {
     lazy var dateColourSelectorScrollView = UIScrollView()
     lazy var dateText = UITextField()
     lazy var counter = 0
-    lazy var allignmentArray: [NSTextAlignment] = [.center, .right, .left]
+    lazy var allignmentArray: [NSTextAlignment] = [.right, .left, .center]
     lazy var hasDateCounter = 0
     lazy var hasDateArray = [true, false]
     
@@ -91,7 +91,7 @@ class PhotoEditorViewController: UIViewController {
         setupColourSelector()
         setupRatioSelector()
         setupExportSelector()
-        setupDateColorSelector()
+        setupDatestampView()
         
         setupConstraint()
         setupDebug()
@@ -143,8 +143,7 @@ class PhotoEditorViewController: UIViewController {
                 for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options,
                 resultHandler: { image, _ in
                     guard let image = image else {
-                        self.progressBarOutlet.isHidden = true
-                        self.progressPercentageLabel.isHidden = true
+                        print("Attempt to request an invalid image! updateImage function.")
                         return
                     }
                     self.hide(progress: true, barItemOnEdit: nil, ui: false, slider: nil, colourSelector: nil, ratioSelector: nil)
@@ -186,7 +185,7 @@ class PhotoEditorViewController: UIViewController {
                     }
                     
                     // add a default timestamp
-                    self.datestamp = self.adjustDateStamp(datestamp: self.datestampEngine.datestamp())
+                    self.datestamp = self.adjustDateStamp(datestamp: self.datestampEngine.datestamp(), allignment: .right)
                     self.datestamp.tag = ViewTagReserved.datestamp.rawValue
                     self.imageViewTop.addSubview(self.datestamp)
                     self.datestamp.isHidden = true
@@ -310,7 +309,7 @@ class PhotoEditorViewController: UIViewController {
             effectsButtonHide(false)
             datestamp.textColor = datestampEngine.currentColour
             datestamp.isHidden = datestampEngine.isHidden
-            hasDate = !hasDate
+            hasDateCounter = (hasDateCounter + 1) % hasDateArray.count
             
         default:
             print("No execution detected! PhotoEditorVC cancelButtonTapped function")

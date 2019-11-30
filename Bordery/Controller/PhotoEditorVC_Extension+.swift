@@ -135,7 +135,7 @@ extension PhotoEditorViewController {
     }
     
     // datestamp
-    func setupDateColorSelector() {
+    func setupDatestampView() {
         datestampEngine = DatestampEngine(editorViewW: editorView.frame.width, editorViewH: editorView.frame.height, viewFrameH: view.frame.height, heightMultConst: VIEW_HEIGHTMULTIPLIER_CONSTANT)
         
         // add to subview
@@ -146,10 +146,10 @@ extension PhotoEditorViewController {
         let dateColourFunctionButtons = datestampEngine.createDateFunction()
         for button1 in dateColourFunctionButtons {
             switch button1.tag {
-            case 99, 100:
+            case 99, 100, 101:
                 button1.addTarget(self, action: #selector(datestampFunctionTapped), for: .touchUpInside)
             default:
-                print("Attempt to add a function to a non existing button tag. (setupDateColorSelector function)")
+                print("Attempt to add a function to a non existing button tag. (setupDatestampView function)")
             }
             dateColourSelectorScrollView.addSubview(button1)
         }
@@ -164,10 +164,18 @@ extension PhotoEditorViewController {
         dateColourSelectorScrollView.contentSize = CGSize(width: datestampEngine.buttonWidth * CGFloat(Double(datestampEngine.colourName.count + dateColourFunctionButtons.count) + 0.4), height: dateColourSelectorScrollView.frame.height)
     }
     
-    func adjustDateStamp(datestamp: UILabel) -> UILabel {
+    func adjustDateStamp(datestamp: UILabel, allignment: NSTextAlignment) -> UILabel {
         let imageFrameY = imageViewTop.contentClippingRect.maxY * 0.9
-        let imageFrameX = imageViewTop.contentClippingRect.maxX * 0.85
-        
+        var imageFrameX = imageViewTop.contentClippingRect.maxX * 0.85
+        switch allignment {
+        case .left:
+            imageFrameX = imageViewTop.contentClippingRect.maxX * 0.20
+        case .center:
+            imageFrameX = imageViewTop.contentClippingRect.midX
+        default:
+            break
+        }
+
         datestamp.center = CGPoint(x: imageFrameX, y: imageFrameY)
         
         return datestamp
@@ -663,6 +671,9 @@ extension PhotoEditorViewController {
             self.view.addSubview(dateText)
             dateText.becomeFirstResponder()
             
+        // font
+        case 101:
+            print("Attempt to summon a font menu.")
             
         // default would be when user tap on the colour selector.
         default:
@@ -758,7 +769,7 @@ extension PhotoEditorViewController {
             // adjust allignment
             datestampEngine.currentAllignment = allignmentArray[counter]
             
-            self.datestamp = self.adjustDateStamp(datestamp: self.datestampEngine.datestamp())
+            self.datestamp = self.adjustDateStamp(datestamp: self.datestampEngine.datestamp(), allignment: datestampEngine.currentAllignment)
             self.datestamp.tag = ViewTagReserved.datestamp.rawValue
             self.imageViewTop.addSubview(self.datestamp)
 

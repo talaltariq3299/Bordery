@@ -24,7 +24,7 @@ class DatestampEngine {
     let dateFont = UIFont(name: "DateStamp-Bold", size: 11)
     let dateGlowsize: CGFloat = 0
     
-    var currentAllignment: NSTextAlignment = .center
+    var currentAllignment: NSTextAlignment = .right
     
     let gapBetweenButtons: CGFloat = 10
     let colourName = [
@@ -37,7 +37,7 @@ class DatestampEngine {
         ["Yellow", "#F6EE54"],
         
     ]
-    let functionName = ["Hide/show \ndatestamp", "Edit text"]
+    let functionName = ["Hide/show \ndatestamp", "Edit text", "Font"]
     let functionIcon = ["hideshow-icon", "editText-icon"]
     
     init(editorViewW: CGFloat, editorViewH: CGFloat, viewFrameH: CGFloat, heightMultConst: CGFloat) {
@@ -193,7 +193,7 @@ class DatestampEngine {
         datestamp.text = dateText
         datestamp.font = dateFont
         datestamp.addCharacterSpacing(kernValue: 0.3)
-        datestamp.textAlignment = currentAllignment
+        datestamp.textAlignment = .center
         datestamp.numberOfLines = 0
         datestamp.textColor = currentColour
         
