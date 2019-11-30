@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		9E07E669238EB6BF0003D8EF /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E07E668238EB6BF0003D8EF /* Typography.swift */; };
 		9E0F84ED238E57BD00D174C2 /* ViewTagReserved.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E0F84EC238E57BD00D174C2 /* ViewTagReserved.swift */; };
+		9E33CF8D23920AD600F061FA /* ToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E33CF8C23920AD500F061FA /* ToolBarView.swift */; };
 		9E3641BB238659C70039F02B /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3641BA238659C70039F02B /* FirstViewController.swift */; };
 		9E39A74F238A70B0006774F2 /* MenuBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A74E238A70B0006774F2 /* MenuBarButton.swift */; };
 		9E39A753238A776C006774F2 /* MainButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E39A752238A776C006774F2 /* MainButton.swift */; };
@@ -46,6 +47,7 @@
 		000CFA715460F0D2328A1CCD /* Pods-Bordery.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bordery.release.xcconfig"; path = "Target Support Files/Pods-Bordery/Pods-Bordery.release.xcconfig"; sourceTree = "<group>"; };
 		9E07E668238EB6BF0003D8EF /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
 		9E0F84EC238E57BD00D174C2 /* ViewTagReserved.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTagReserved.swift; sourceTree = "<group>"; };
+		9E33CF8C23920AD500F061FA /* ToolBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarView.swift; sourceTree = "<group>"; };
 		9E3641BA238659C70039F02B /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		9E39A74E238A70B0006774F2 /* MenuBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarButton.swift; sourceTree = "<group>"; };
 		9E39A752238A776C006774F2 /* MainButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButton.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				9E39A76C238BE678006774F2 /* Effects.swift */,
 				9E0F84EC238E57BD00D174C2 /* ViewTagReserved.swift */,
 				9E07E668238EB6BF0003D8EF /* Typography.swift */,
+				9E33CF8C23920AD500F061FA /* ToolBarView.swift */,
 			);
 			path = Supporting;
 			sourceTree = "<group>";
@@ -352,6 +355,7 @@
 				9E40EEFC236E9D30000436C5 /* PhotoLibraryCollectionViewController.swift in Sources */,
 				9E40EEFE236EB40F000436C5 /* ClassExtension+.swift in Sources */,
 				9E39A75C238A9759006774F2 /* DatestampEngine.swift in Sources */,
+				9E33CF8D23920AD600F061FA /* ToolBarView.swift in Sources */,
 				9E40EEFB236E9D30000436C5 /* PhotoEditorVC_Extension+.swift in Sources */,
 				9EF0DB43236C148B00969F9F /* AlertService.swift in Sources */,
 				9EBF3AF523798303003F9BF3 /* ColourEngine.swift in Sources */,

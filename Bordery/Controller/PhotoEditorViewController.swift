@@ -50,6 +50,7 @@ class PhotoEditorViewController: UIViewController {
     lazy var allignmentArray: [NSTextAlignment] = [.right, .left, .center]
     lazy var hasDateCounter = 0
     lazy var hasDateArray = [true, false]
+    var toolBarFunction: ToolBarView!
     
     // barView Properties
     lazy var menuBarBackgroundView = UIView()

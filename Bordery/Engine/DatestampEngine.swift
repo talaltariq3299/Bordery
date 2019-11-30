@@ -25,6 +25,7 @@ class DatestampEngine {
     let dateGlowsize: CGFloat = 0
     
     var currentAllignment: NSTextAlignment = .right
+    var finalAllignment: NSTextAlignment = .right
     
     let gapBetweenButtons: CGFloat = 10
     let colourName = [
@@ -37,7 +38,7 @@ class DatestampEngine {
         ["Yellow", "#F6EE54"],
         
     ]
-    let functionName = ["Hide/show \ndatestamp", "Edit text", "Font"]
+    let functionName = ["Hide/show \ndatestamp", "Edit text"]
     let functionIcon = ["hideshow-icon", "editText-icon"]
     
     init(editorViewW: CGFloat, editorViewH: CGFloat, viewFrameH: CGFloat, heightMultConst: CGFloat) {
@@ -111,38 +112,38 @@ class DatestampEngine {
         // button property
         for i in 0 ..< functionName.count {
             itemCount += 1
-            let hideShowButton = UIButton(type: .custom)
-            hideShowButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
-            hideShowButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
-            hideShowButton.frame = CGRect(x: xCoord, y: yCoord, width: buttonWidth, height: buttonHeight)
-            hideShowButton.backgroundColor = .clear
-            hideShowButton.layer.borderColor = .none
-            hideShowButton.tag = itemCount
-            hideShowButton.clipsToBounds = true
-            hideShowButton.tintColor = .white
+            let datestampFunctionButton = UIButton(type: .custom)
+            datestampFunctionButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
+            datestampFunctionButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
+            datestampFunctionButton.frame = CGRect(x: xCoord, y: yCoord, width: buttonWidth, height: buttonHeight)
+            datestampFunctionButton.backgroundColor = .clear
+            datestampFunctionButton.layer.borderColor = .none
+            datestampFunctionButton.tag = itemCount
+            datestampFunctionButton.clipsToBounds = true
+            datestampFunctionButton.tintColor = .white
             
             if i < functionIcon.count {
                 let buttonImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
                 buttonImage.image = UIImage(named: functionIcon[i])?.withRenderingMode(.alwaysTemplate)
                 buttonImage.contentMode = .scaleAspectFit
-                buttonImage.center = CGPoint(x: hideShowButton.frame.size.width / 2, y: hideShowButton.frame.size.height * 0.35)
-                hideShowButton.addSubview(buttonImage)
+                buttonImage.center = CGPoint(x: datestampFunctionButton.frame.size.width / 2, y: datestampFunctionButton.frame.size.height * 0.35)
+                datestampFunctionButton.addSubview(buttonImage)
             }
 
             // create labels
-            let exportLabel = UILabel(frame: CGRect(x: hideShowButton.frame.width * xOffset, y: hideShowButton.frame.height * yOffset, width: 85, height: 20))
-            exportLabel.textAlignment = .center
-            exportLabel.numberOfLines = 0
-            exportLabel.text = functionName[i]
-            exportLabel.textColor = UIColor.white
-            exportLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
-            exportLabel.sizeToFit()
-            exportLabel.center = CGPoint(x: hideShowButton.frame.size.width / 2, y: hideShowButton.frame.size.height * 0.8)
+            let label = UILabel(frame: CGRect(x: datestampFunctionButton.frame.width * xOffset, y: datestampFunctionButton.frame.height * yOffset, width: 85, height: 20))
+            label.textAlignment = .center
+            label.numberOfLines = 0
+            label.text = functionName[i]
+            label.textColor = UIColor.white
+            label.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
+            label.sizeToFit()
+            label.center = CGPoint(x: datestampFunctionButton.frame.size.width / 2, y: datestampFunctionButton.frame.size.height * 0.8)
             
-            hideShowButton.addSubview(exportLabel)
+            datestampFunctionButton.addSubview(label)
             
             xCoord += buttonWidth + gapBetweenButtons
-            functionButtons.append(hideShowButton)
+            functionButtons.append(datestampFunctionButton)
         }
         
         let border = UIButton(type: .custom)

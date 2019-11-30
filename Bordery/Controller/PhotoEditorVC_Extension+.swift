@@ -146,7 +146,7 @@ extension PhotoEditorViewController {
         let dateColourFunctionButtons = datestampEngine.createDateFunction()
         for button1 in dateColourFunctionButtons {
             switch button1.tag {
-            case 99, 100, 101:
+            case 99, 100:
                 button1.addTarget(self, action: #selector(datestampFunctionTapped), for: .touchUpInside)
             default:
                 print("Attempt to add a function to a non existing button tag. (setupDatestampView function)")
@@ -650,30 +650,34 @@ extension PhotoEditorViewController {
             dateText.font = UIFont(name: "DateStamp-Bold", size: 25)
             dateText.textAlignment = datestampEngine.currentAllignment
             dateText.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width * 0.8, height: self.view.frame.size.height * 0.04)
-            dateText.center = CGPoint(x: self.view.frame.midX, y: self.view.frame.midY * 0.8)
+            dateText.center = CGPoint(x: self.view.frame.midX, y: self.view.frame.midY * 0.6)
             dateText.backgroundColor = .clear
             dateText.tag = ViewTagReserved.datestamp.rawValue
             
-            let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
-            doneToolbar.barStyle = .default
-            doneToolbar.backgroundColor = .clear
-            let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-            let done = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(datestampKeyboardToolBarTapped))
-            done.tag = 0
-            let allignment = UIBarButtonItem(title: "Allignment", style: .plain, target: self, action: #selector(datestampKeyboardToolBarTapped))
-            allignment.tag = 1
-            let items = [allignment, flexSpace, done]
-            doneToolbar.items = items
-            doneToolbar.sizeToFit()
-            dateText.inputAccessoryView = doneToolbar
+            // toolbar setup
+            let toolbar = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+            toolbar.backgroundColor = UIColor(named: "backgroundSecondColor")
+            
+            // setup scrollView
+            let scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: toolbar.bounds.width, height: toolbar.bounds.height))
+            scrollView.backgroundColor = .clear
+            scrollView.showsHorizontalScrollIndicator = false
+
+            toolBarFunction = ToolBarView.init(toolbarW: toolbar.frame.width, toolbarH: toolbar.frame.height)
+            
+            for button in toolBarFunction.createButtonArray() {
+                button.center = CGPoint(x: button.frame.maxX, y: toolbar.frame.midY)
+                button.addTarget(self, action: #selector(datestampKeyboardToolBarTapped), for: .touchUpInside)
+                scrollView.addSubview(button)
+            }
+            
+            toolbar.addSubview(scrollView)
+ 
+            dateText.inputAccessoryView = toolbar
             
             self.view.addSubview(backView)
             self.view.addSubview(dateText)
             dateText.becomeFirstResponder()
-            
-        // font
-        case 101:
-            print("Attempt to summon a font menu.")
             
         // default would be when user tap on the colour selector.
         default:
@@ -746,7 +750,7 @@ extension PhotoEditorViewController {
         menuBarHide(false)
     }
     
-    @objc func datestampKeyboardToolBarTapped(sender: UIBarButtonItem!) {
+    @objc func datestampKeyboardToolBarTapped(sender: UIButton!) {
         switch sender.tag {
         // done
         case 0:
@@ -777,6 +781,7 @@ extension PhotoEditorViewController {
         case 1:
             counter = (counter + 1) % allignmentArray.count
             dateText.textAlignment = allignmentArray[counter]
+            sender.setImage(toolBarFunction.allignmentViewImage[counter], for: .normal)
             
         default:
             break
@@ -786,7 +791,7 @@ extension PhotoEditorViewController {
     }
     
     @objc func datestampViewTapped() {
-        let a = UIBarButtonItem()
+        let a = UIButton()
         a.tag = 0
         datestampKeyboardToolBarTapped(sender: a)
     }
