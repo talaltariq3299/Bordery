@@ -15,11 +15,15 @@ class ToolBarView {
     let buttonWidth: CGFloat
     let buttonHeight: CGFloat
     
-    let gapBetweenButtons: CGFloat = 10
+    let gapBetweenButtons: CGFloat = 30
     
-    let functionName = ["allignment"]
+    let functionName = ["allignment", "font"]
     let allignmentViewImage: [UIImage] = [(UIImage(named: "right-align")?.withRenderingMode(.alwaysTemplate))!, (UIImage(named: "left-align")?.withRenderingMode(.alwaysTemplate))!, (UIImage(named: "center-align")?.withRenderingMode(.alwaysTemplate))!]
-    var counter = 0
+    
+    let functionIcon: [UIImage] = [
+                        (UIImage(named: "right-align")?.withRenderingMode(.alwaysTemplate))!,
+                        (UIImage(named: "changeFont-icon")?.withRenderingMode(.alwaysTemplate))!,
+                        ]
     
     init(toolbarW: CGFloat, toolbarH: CGFloat) {
         self.xCoord = toolbarW * 0.05
@@ -47,7 +51,7 @@ class ToolBarView {
             functionButton.tag = itemCount
             functionButton.clipsToBounds = true
             
-            functionButton.setImage(allignmentViewImage[0], for: .normal)
+            functionButton.setImage(functionIcon[i], for: .normal)
             functionButton.imageView?.contentMode = .scaleAspectFit
             
             xCoord += buttonWidth + gapBetweenButtons

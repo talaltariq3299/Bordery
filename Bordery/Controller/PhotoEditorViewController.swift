@@ -51,8 +51,8 @@ class PhotoEditorViewController: UIViewController {
     lazy var hasDateCounter = 0
     lazy var hasDateArray = [true, false]
     var toolBarFunction: ToolBarView!
-    var fontScrollIsHidden = true
-    lazy var scrollView2 = UIScrollView()
+    lazy var fontScrollIsHiddenCounter = 0
+    lazy var fontScrollView = UIScrollView()
     
     // barView Properties
     lazy var menuBarBackgroundView = UIView()

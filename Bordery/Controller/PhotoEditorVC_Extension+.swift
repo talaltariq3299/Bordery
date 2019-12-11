@@ -650,7 +650,7 @@ extension PhotoEditorViewController {
             dateText.font = UIFont(name: "DateStamp-Bold", size: 25)
             dateText.textAlignment = datestampEngine.currentAllignment
             dateText.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width * 0.8, height: self.view.frame.size.height * 0.04)
-            dateText.center = CGPoint(x: self.view.frame.midX, y: self.view.frame.midY * 0.6)
+            dateText.center = CGPoint(x: self.view.frame.midX, y: self.view.frame.midY * 0.65)
             dateText.backgroundColor = .clear
             dateText.tag = ViewTagReserved.datestamp.rawValue
             
@@ -661,15 +661,16 @@ extension PhotoEditorViewController {
             let toolHeight = toolbar.bounds.height * 0.5
             
             // setup scrollView
-            let scrollView = UIScrollView(frame: CGRect(x: 0, y: toolbar.frame.midY, width: toolbar.bounds.width, height: toolHeight))
-            scrollView.backgroundColor = UIColor(named: "backgroundSecondColor")
-            scrollView.showsHorizontalScrollIndicator = false
+            let toolScrollView = UIScrollView(frame: CGRect(x: 0, y: toolbar.frame.midY, width: toolbar.bounds.width, height: toolHeight))
+            toolScrollView.backgroundColor = UIColor(named: "backgroundSecondColor")
+            toolScrollView.showsHorizontalScrollIndicator = false
             
             // setup second scrollview for fonts
-            scrollView2 = UIScrollView(frame: CGRect(x: 0, y: toolbar.frame.minY, width: toolbar.bounds.width, height: toolHeight))
-            scrollView2.backgroundColor = UIColor(displayP3Red: 30/255, green: 30/255, blue: 30/255, alpha: 1.0)
-            scrollView2.showsHorizontalScrollIndicator = false
-            scrollView2.isHidden = fontScrollIsHidden
+            fontScrollView = UIScrollView(frame: CGRect(x: 0, y: toolbar.frame.minY, width: toolbar.bounds.width, height: toolHeight))
+            fontScrollView.backgroundColor = UIColor(displayP3Red: 30/255, green: 30/255, blue: 30/255, alpha: 1.0)
+            fontScrollView.showsHorizontalScrollIndicator = false
+            fontScrollView.isHidden = true
+            fontScrollView.roundCorners(cornerRadius: 10, cornerArray: [.layerMinXMinYCorner, .layerMaxXMinYCorner])
             
             // setup Done button
             let width = toolbar.frame.width * 0.15
@@ -688,11 +689,11 @@ extension PhotoEditorViewController {
             for button in toolBarFunction.createButtonArray() {
                 button.center = CGPoint(x: button.frame.midX, y: toolbar.frame.midY * 0.5)
                 button.addTarget(self, action: #selector(datestampKeyboardToolBarTapped), for: .touchUpInside)
-                scrollView.addSubview(button)
+                toolScrollView.addSubview(button)
             }
             
-            toolbar.addSubview(scrollView2)
-            toolbar.addSubview(scrollView)
+            toolbar.addSubview(fontScrollView)
+            toolbar.addSubview(toolScrollView)
             toolbar.addSubview(doneButton)
  
             dateText.inputAccessoryView = toolbar
@@ -773,6 +774,7 @@ extension PhotoEditorViewController {
     }
     
     @objc func datestampKeyboardToolBarTapped(sender: UIButton!) {
+        TapticEngine.lightTaptic()
         switch sender.tag {
         // done
         case 0:
@@ -804,6 +806,13 @@ extension PhotoEditorViewController {
             counter = (counter + 1) % allignmentArray.count
             dateText.textAlignment = allignmentArray[counter]
             sender.setImage(toolBarFunction.allignmentViewImage[counter], for: .normal)
+            
+        // change font
+        case 2:
+            print("Attempt to change font")
+            fontScrollIsHiddenCounter = (fontScrollIsHiddenCounter + 1) % hasDateArray.count
+            fontScrollView.isHidden = hasDateArray[fontScrollIsHiddenCounter]
+            
             
         default:
             break

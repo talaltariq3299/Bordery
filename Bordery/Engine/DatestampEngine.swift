@@ -21,7 +21,7 @@ class DatestampEngine {
     // datestamp properties
     // font from https://allbestfonts.com/date-stamp/
     var dateText = "09 01 '18"
-    let dateFont = UIFont(name: "DateStamp-Bold", size: 11)
+    let dateFont = UIFont(name: "DateStamp-Bold", size: 9)
     let dateGlowsize: CGFloat = 0
     
     var currentAllignment: NSTextAlignment = .right

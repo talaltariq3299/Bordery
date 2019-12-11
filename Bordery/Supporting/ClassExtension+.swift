@@ -132,6 +132,13 @@ extension UIView {
             return UIImage(cgImage: image!.cgImage!)
         }
     }
+    
+    // Functions to custom round the corner.
+    func roundCorners(cornerRadius: Double, cornerArray: CACornerMask) {
+        self.layer.cornerRadius = CGFloat(cornerRadius)
+        self.clipsToBounds = true
+        self.layer.maskedCorners = cornerArray
+    }
 }
 
 extension UIButton{
