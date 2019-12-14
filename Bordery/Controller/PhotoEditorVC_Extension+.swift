@@ -657,6 +657,7 @@ extension PhotoEditorViewController {
             // toolbar setup
             let toolbar = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 100))
             toolbar.backgroundColor = .clear
+            toolBarFunction = ToolBarView.init(toolbarW: toolbar.frame.width, toolbarH: toolbar.frame.height * 0.5)
             
             let toolHeight = toolbar.bounds.height * 0.5
             
@@ -672,6 +673,14 @@ extension PhotoEditorViewController {
             fontScrollView.isHidden = true
             fontScrollView.roundCorners(cornerRadius: 10, cornerArray: [.layerMinXMinYCorner, .layerMaxXMinYCorner])
             
+            
+            for button in toolBarFunction.createFontArray() {
+                button.center = CGPoint(x: button.frame.midX, y: toolbar.frame.midY * 0.5)
+                button.addTarget(self, action: #selector(datestampKeyboardToolBarTapped), for: .touchUpInside)
+                fontScrollView.addSubview(button)
+            }
+            fontScrollView.contentSize = CGSize(width: toolBarFunction.buttonWidth * 3 * CGFloat(toolBarFunction.fontNames.count) * 1.4, height: fontScrollView.frame.height)
+
             // setup Done button
             let width = toolbar.frame.width * 0.15
             let doneButton = UIButton(type: .custom)
@@ -684,7 +693,6 @@ extension PhotoEditorViewController {
             doneButton.frame = CGRect(x: toolbar.frame.maxX - width - 10, y: toolbar.frame.maxY, width: width, height: toolHeight)
             doneButton.center = CGPoint(x: doneButton.frame.midX, y: toolbar.frame.maxY * 0.75)
 
-            toolBarFunction = ToolBarView.init(toolbarW: toolbar.frame.width, toolbarH: toolbar.frame.height * 0.5)
             
             for button in toolBarFunction.createButtonArray() {
                 button.center = CGPoint(x: button.frame.midX, y: toolbar.frame.midY * 0.5)
@@ -809,10 +817,12 @@ extension PhotoEditorViewController {
             
         // change font
         case 2:
-            print("Attempt to change font")
             fontScrollIsHiddenCounter = (fontScrollIsHiddenCounter + 1) % hasDateArray.count
             fontScrollView.isHidden = hasDateArray[fontScrollIsHiddenCounter]
-            
+
+        // font is tapped
+        case 99:
+            dateText.font = sender.titleLabel?.font
             
         default:
             break
