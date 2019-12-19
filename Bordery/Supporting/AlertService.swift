@@ -20,4 +20,12 @@ struct AlertService {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         viewController.present(alert, animated: true, completion: nil)
     }
+    
+    static func alertAction(_ viewController: UIViewController, title: String, message: String?, actions: [UIAlertAction]) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        for action in actions {
+            alert.addAction(action)
+        }
+        viewController.present(alert, animated: true, completion: nil)
+    }
 }

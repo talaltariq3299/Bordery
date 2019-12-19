@@ -276,7 +276,17 @@ class PhotoEditorViewController: UIViewController {
     
     // MARK: - Selector functions
     @objc func cancelAction() {
-        self.dismiss(animated: true, completion: nil)
+        var actions: [UIAlertAction] = []
+        
+        let okAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { (action) in
+            self.dismiss(animated: true, completion: nil)
+        }
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        actions.append(okAction)
+        actions.append(cancelAction)
+        
+        AlertService.alertAction(self, title: "", message: "Would you like to go back to camera library?", actions: actions)
+        
     }
     
     // function for barItem on Edit
@@ -363,3 +373,4 @@ class PhotoEditorViewController: UIViewController {
     }
     
 } // end of class
+
