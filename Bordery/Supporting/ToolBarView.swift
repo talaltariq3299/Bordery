@@ -16,7 +16,7 @@ class ToolBarView {
     let buttonWidth: CGFloat
     let buttonHeight: CGFloat
     
-    let gapBetweenButtons: CGFloat = 30
+    let gapBetweenButtons: CGFloat = 25
     
     let functionName = ["allignment", "font"]
     let allignmentViewImage: [UIImage] = [(UIImage(named: "right-align")?.withRenderingMode(.alwaysTemplate))!, (UIImage(named: "left-align")?.withRenderingMode(.alwaysTemplate))!, (UIImage(named: "center-align")?.withRenderingMode(.alwaysTemplate))!]

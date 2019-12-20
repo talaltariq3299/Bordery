@@ -175,8 +175,8 @@ class FirstViewController: UIViewController {
         a = a.uppercased()
         let style = StringStyle(
             .color(.white),
-            .font(UIFont.systemFont(ofSize: 13, weight: .regular)),
-            .tracking(.point(0.3))
+            .font(UIFont.systemFont(ofSize: 13, weight: .regular))
+//            .tracking(.point(0.3))
         )
         permissionButton.setAttributedTitle(a.styled(with: style), for: .normal)
         permissionButton.backgroundColor = .clear
@@ -194,8 +194,8 @@ class FirstViewController: UIViewController {
         a = a.uppercased()
         let style = StringStyle(
             .color(.black),
-            .font(UIFont(name: "NewYorkMedium-Semibold", size: 14)!),
-            .tracking(.point(0.3))
+            .font(UIFont(name: "NewYorkMedium-Semibold", size: 14)!)
+//            .tracking(.point(0.3))
         )
         nextButton.setAttributedTitle(a.styled(with: style), for: .normal)
         

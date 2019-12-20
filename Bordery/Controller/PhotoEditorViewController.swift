@@ -324,6 +324,9 @@ class PhotoEditorViewController: UIViewController {
             datestamp.isHidden = datestampEngine.isHidden
             hasDateCounter = (hasDateCounter + 1) % hasDateArray.count
             
+            // datestamp font
+            self.datestamp.font = datestampEngine.dateFont
+            
         default:
             print("No execution detected! PhotoEditorVC cancelButtonTapped function")
         }
@@ -365,6 +368,9 @@ class PhotoEditorViewController: UIViewController {
             effectsButtonHide(false)
             datestampEngine.currentColour = datestamp.textColor
             datestampEngine.isHidden = datestamp.isHidden
+            
+            //datestamp font
+            datestampEngine.dateFont = self.datestamp.font
             
         default:
             fatalError("No execution detected! PhotoEditorVC checkButtonTapped function")
