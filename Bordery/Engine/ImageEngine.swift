@@ -12,7 +12,7 @@ import UIKit
 /**
  Struct class responsible with creating the border, and resizing the image.
  */
-struct BorderEngine {
+struct ImageEngine {
     var imgSizeMultiplier: CGFloat = 0.0
     let adjustmentName:[String] = ["Size", "Colour", "Ratio"]
     var sliderCurrentValue: Float = 0.0

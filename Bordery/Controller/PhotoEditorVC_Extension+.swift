@@ -20,17 +20,17 @@ extension PhotoEditorViewController {
         let colourIcon = UIImage(named: "colour-icon")!.withRenderingMode(.alwaysTemplate)
         let ratioIcon = UIImage(named: "ratio-icon")!.withRenderingMode(.alwaysTemplate)
         
-        sizeButton = MainButton.createButton(buttonIcon: sizeIcon, buttonName: borderEngine.adjustmentName[0], buttonTag: 0)
+        sizeButton = MainButton.createButton(buttonIcon: sizeIcon, buttonName: imageEngine.adjustmentName[0], buttonTag: 0)
         sizeButton.addTarget(self, action: #selector(mainButtonTapped), for: .touchUpInside)
         sizeButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
         sizeButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
         
-        colourButton = MainButton.createButton(buttonIcon: colourIcon, buttonName: borderEngine.adjustmentName[1], buttonTag: 1)
+        colourButton = MainButton.createButton(buttonIcon: colourIcon, buttonName: imageEngine.adjustmentName[1], buttonTag: 1)
         colourButton.addTarget(self, action: #selector(mainButtonTapped), for: .touchUpInside)
         colourButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
         colourButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
         
-        ratioButton = MainButton.createButton(buttonIcon: ratioIcon, buttonName: borderEngine.adjustmentName[2], buttonTag: 2)
+        ratioButton = MainButton.createButton(buttonIcon: ratioIcon, buttonName: imageEngine.adjustmentName[2], buttonTag: 2)
         ratioButton.addTarget(self, action: #selector(mainButtonTapped), for: .touchUpInside)
         ratioButton.addTarget(self, action: #selector(buttonHighlighted), for: .touchDown)
         ratioButton.addTarget(self, action: #selector(buttonNormal), for: .touchDragExit)
@@ -496,21 +496,21 @@ extension PhotoEditorViewController {
         // border
         case 0:
             sender.tintColor = .white
-            adjustmentNameLabel.text = borderEngine.adjustmentName[0]
+            adjustmentNameLabel.text = imageEngine.adjustmentName[0]
             mainButtonHide(true)
             menuBarHide(true)
             hide(progress: nil, barItemOnEdit: false, ui: nil, slider: false, colourSelector: nil, ratioSelector: nil)
         // colour
         case 1:
             sender.tintColor = .white
-            adjustmentNameLabel.text = borderEngine.adjustmentName[1]
+            adjustmentNameLabel.text = imageEngine.adjustmentName[1]
             mainButtonHide(true)
             menuBarHide(true)
             hide(progress: nil, barItemOnEdit: false, ui: nil, slider: nil, colourSelector: false, ratioSelector: nil)
         // ratio
         case 2:
             sender.tintColor = .white
-            adjustmentNameLabel.text = borderEngine.adjustmentName[2]
+            adjustmentNameLabel.text = imageEngine.adjustmentName[2]
             mainButtonHide(true)
             menuBarHide(true)
             noticeLabel.isHidden = false
@@ -544,10 +544,20 @@ extension PhotoEditorViewController {
     
     @objc func exportTapped(sender: UIButton) {
         sender.tintColor = .white
-        let finalImageData = borderEngine.blendImages(backgroundImg: borderView.asImage(), foregroundImg: imageViewTop.image!)!
-        guard let finalImage = UIImage(data: finalImageData) else {
+        let finalImageData = imageEngine.blendImages(backgroundImg: borderView.asImage(), foregroundImg: imageViewTop.image!)!
+        guard var finalImage = UIImage(data: finalImageData) else {
             AlertService.alert(self, title: "oof!", message: "It appears that the export engine is not working. Try again later or submit a bug report!")
             return
+        }
+        
+        // blend datestamp
+        if !datestamp.isHidden {
+            let finalImageData2 = imageEngine.blendImages(backgroundImg: finalImage, foregroundImg: datestamp.asImage())!
+            guard let finalImage2 = UIImage(data: finalImageData2) else {
+                AlertService.alert(self, title: "oof!", message: "It appears that the export engine is not working. Try again later or submit a bug report!")
+                return
+            }
+            finalImage = finalImage2
         }
         
         switch sender.tag {
@@ -737,7 +747,7 @@ extension PhotoEditorViewController {
         case 0:
             imageViewTop.image = oriImage
             borderView.frame = imageViewTop.contentClippingRect
-            let renderImage = borderEngine.createRenderImage(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
+            let renderImage = imageEngine.createRenderImage(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
             imageViewTop.image = renderImage
             
         case 1:
@@ -755,7 +765,7 @@ extension PhotoEditorViewController {
             // scale accordingly.
             // square portrait or square square
             if oriImage.size.width < oriImage.size.height || oriImage.size.width == oriImage.size.height {
-                let renderImage = borderEngine.createRenderImageSquare(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
+                let renderImage = imageEngine.createRenderImageSquare(foregroundImage: oriImage, backgroundImageFrame: borderView.frame)
                 imageViewTop.image = renderImage
             }
             

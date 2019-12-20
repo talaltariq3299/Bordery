@@ -29,7 +29,7 @@
 		9E9C0F992382694000D5E33E /* CustomPhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C0F982382694000D5E33E /* CustomPhotoAlbum.swift */; };
 		9EADAEF52379305B00B50C11 /* RangeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EADAEF42379305B00B50C11 /* RangeConverter.swift */; };
 		9EB17EAB238D16760020AB2C /* DateStamp.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9EB17EA7238D16750020AB2C /* DateStamp.otf */; };
-		9EB21E852370043200D764A0 /* BorderEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB21E842370043200D764A0 /* BorderEngine.swift */; };
+		9EB21E852370043200D764A0 /* ImageEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB21E842370043200D764A0 /* ImageEngine.swift */; };
 		9EBF3AF523798303003F9BF3 /* ColourEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EBF3AF423798303003F9BF3 /* ColourEngine.swift */; };
 		9EC118A8238164F500B1272A /* ExportEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC118A7238164F500B1272A /* ExportEngine.swift */; };
 		9ED7D74E237A460E00735D9A /* TapticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED7D74D237A460E00735D9A /* TapticEngine.swift */; };
@@ -67,7 +67,7 @@
 		9E9C0F982382694000D5E33E /* CustomPhotoAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPhotoAlbum.swift; sourceTree = "<group>"; };
 		9EADAEF42379305B00B50C11 /* RangeConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeConverter.swift; sourceTree = "<group>"; };
 		9EB17EA7238D16750020AB2C /* DateStamp.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DateStamp.otf; sourceTree = "<group>"; };
-		9EB21E842370043200D764A0 /* BorderEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderEngine.swift; sourceTree = "<group>"; };
+		9EB21E842370043200D764A0 /* ImageEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEngine.swift; sourceTree = "<group>"; };
 		9EBF3AF423798303003F9BF3 /* ColourEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColourEngine.swift; sourceTree = "<group>"; };
 		9EC118A7238164F500B1272A /* ExportEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportEngine.swift; sourceTree = "<group>"; };
 		9ED7D74D237A460E00735D9A /* TapticEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapticEngine.swift; sourceTree = "<group>"; };
@@ -109,7 +109,7 @@
 			children = (
 				9EADAEF42379305B00B50C11 /* RangeConverter.swift */,
 				9ED7D74D237A460E00735D9A /* TapticEngine.swift */,
-				9EB21E842370043200D764A0 /* BorderEngine.swift */,
+				9EB21E842370043200D764A0 /* ImageEngine.swift */,
 				9EBF3AF423798303003F9BF3 /* ColourEngine.swift */,
 				9E61B7CC237A9F43004E0A95 /* RatioEngine.swift */,
 				9EC118A7238164F500B1272A /* ExportEngine.swift */,
@@ -351,7 +351,7 @@
 				9EADAEF52379305B00B50C11 /* RangeConverter.swift in Sources */,
 				9E3641BB238659C70039F02B /* FirstViewController.swift in Sources */,
 				9E39A74F238A70B0006774F2 /* MenuBarButton.swift in Sources */,
-				9EB21E852370043200D764A0 /* BorderEngine.swift in Sources */,
+				9EB21E852370043200D764A0 /* ImageEngine.swift in Sources */,
 				9E40EEFC236E9D30000436C5 /* PhotoLibraryCollectionViewController.swift in Sources */,
 				9E40EEFE236EB40F000436C5 /* ClassExtension+.swift in Sources */,
 				9E39A75C238A9759006774F2 /* DatestampEngine.swift in Sources */,

@@ -20,7 +20,7 @@ class PhotoEditorViewController: UIViewController {
         let scale = UIScreen.main.scale
         return CGSize(width: imageView.bounds.width * scale, height: imageView.bounds.height * scale)
     }
-    var borderEngine = BorderEngine()
+    var imageEngine = ImageEngine()
     var colourSelector: ColourEngine!
     var ratioSelector: RatioEngine!
     var oriImage: UIImage!
@@ -156,15 +156,15 @@ class PhotoEditorViewController: UIViewController {
                     self.oriImage = image
                     
                     // final rendering
-                    self.imageViewTop.image = self.borderEngine.createRenderImage(foregroundImage: self.imageViewTop.image!, backgroundImageFrame: self.imageViewTop.contentClippingRect)
+                    self.imageViewTop.image = self.imageEngine.createRenderImage(foregroundImage: self.imageViewTop.image!, backgroundImageFrame: self.imageViewTop.contentClippingRect)
                     self.borderView.frame = self.imageViewTop.contentClippingRect
                     
                     // the borderView or the border color view.
                     self.borderView.backgroundColor = self.colourSelector.currentColour
                     self.imageView.addSubview(self.borderView)
                     
-                    self.borderEngine.imgSizeMultiplier = 0.0
-                    self.borderEngine.sliderCurrentValue = 0.0
+                    self.imageEngine.imgSizeMultiplier = 0.0
+                    self.imageEngine.sliderCurrentValue = 0.0
                     
                     if image.size.width == image.size.height {
                         let a = UIButton()
@@ -192,6 +192,7 @@ class PhotoEditorViewController: UIViewController {
                     self.datestamp.tag = ViewTagReserved.datestamp.rawValue
                     self.imageViewTop.addSubview(self.datestamp)
                     self.datestamp.isHidden = true
+                    self.datestamp.backgroundColor = .red
             })
         }
     }
@@ -296,23 +297,23 @@ class PhotoEditorViewController: UIViewController {
         sender.setTitleColor(.white, for: .normal)
         
         switch adjustmentNameLabel.text {
-        case borderEngine.adjustmentName[0]:
+        case imageEngine.adjustmentName[0]:
             mainButtonHide(false)
             hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true, colourSelector: nil, ratioSelector: nil)
             
             // reset the configuration back to its previous state
-            adjustmentSliderOutlet.value = borderEngine.sliderCurrentValue
-            sliderValueLabel.text = "\(borderEngine.sliderCurrentValueRatio) pts"
-            imageViewTop.transform = CGAffineTransform(scaleX: borderEngine.imgSizeMultiplierCurrent, y: borderEngine.imgSizeMultiplierCurrent)
+            adjustmentSliderOutlet.value = imageEngine.sliderCurrentValue
+            sliderValueLabel.text = "\(imageEngine.sliderCurrentValueRatio) pts"
+            imageViewTop.transform = CGAffineTransform(scaleX: imageEngine.imgSizeMultiplierCurrent, y: imageEngine.imgSizeMultiplierCurrent)
             
-        case borderEngine.adjustmentName[1]:
+        case imageEngine.adjustmentName[1]:
             mainButtonHide(false)
             hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: true, ratioSelector: nil)
             
             // reset the configuration back to it previous state
             borderView.backgroundColor = colourSelector.currentColour
             
-        case borderEngine.adjustmentName[2]:
+        case imageEngine.adjustmentName[2]:
             mainButtonHide(false)
             hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: nil, ratioSelector: true)
             
@@ -338,27 +339,27 @@ class PhotoEditorViewController: UIViewController {
         sender.setTitleColor(.white, for: .normal)
         
         switch adjustmentNameLabel.text {
-        case borderEngine.adjustmentName[0]:
+        case imageEngine.adjustmentName[0]:
             mainButtonHide(false)
             hide(progress: nil, barItemOnEdit: true, ui: nil, slider: true, colourSelector: nil, ratioSelector: nil)
             
             // convert to 0 - 0.5 range for blending
             var ratioConverter = RangeConverter(oldMax: adjustmentSliderOutlet.maximumValue, oldMin: adjustmentSliderOutlet.minimumValue, newMax: 0.5, newMin: 0, oldValue: adjustmentSliderOutlet.value)
-            borderEngine.imgSizeMultiplier = CGFloat(ratioConverter.getNewValueFloat())
-            borderEngine.sliderCurrentValue = adjustmentSliderOutlet.value
+            imageEngine.imgSizeMultiplier = CGFloat(ratioConverter.getNewValueFloat())
+            imageEngine.sliderCurrentValue = adjustmentSliderOutlet.value
             
             // convert to 0 - 10 range and store current value for future undo.
             var ratioConverter2 = RangeConverter(oldMax: adjustmentSliderOutlet.maximumValue, oldMin: adjustmentSliderOutlet.minimumValue, newMax: 10, newMin: 0, oldValue: adjustmentSliderOutlet.value)
-            borderEngine.sliderCurrentValueRatio = ratioConverter2.getNewValueStr(decimalPlace: 1)
-            borderEngine.imgSizeMultiplierCurrent = imageViewTop.transform.a
+            imageEngine.sliderCurrentValueRatio = ratioConverter2.getNewValueStr(decimalPlace: 1)
+            imageEngine.imgSizeMultiplierCurrent = imageViewTop.transform.a
             
-        case borderEngine.adjustmentName[1]:
+        case imageEngine.adjustmentName[1]:
             mainButtonHide(false)
             hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: true, ratioSelector: nil)
             colourSelector.currentColour = borderView.backgroundColor!
             
             
-        case borderEngine.adjustmentName[2]:
+        case imageEngine.adjustmentName[2]:
             mainButtonHide(false)
             hide(progress: nil, barItemOnEdit: true, ui: nil, slider: nil, colourSelector: nil, ratioSelector: true)
             
