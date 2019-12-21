@@ -161,9 +161,6 @@
 			children = (
 				9EF0DB22236C0F6E00969F9F /* AppDelegate.swift */,
 				9EF0DB24236C0F6E00969F9F /* SceneDelegate.swift */,
-				9EF0DB2B236C0F6F00969F9F /* Assets.xcassets */,
-				9EF0DB2D236C0F6F00969F9F /* LaunchScreen.storyboard */,
-				9EF0DB30236C0F6F00969F9F /* Info.plist */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -243,11 +240,14 @@
 		9EF0DB21236C0F6E00969F9F /* Bordery */ = {
 			isa = PBXGroup;
 			children = (
-				9E568EA923AE4AEC00AD328F /* Utilities */,
-				9E568EA623AE4A8000AD328F /* System */,
+				9EF0DB37236C0FB000969F9F /* View */,
 				9E568EA223AE4A4C00AD328F /* App */,
 				9E39A754238A7962006774F2 /* Engine */,
-				9EF0DB37236C0FB000969F9F /* View */,
+				9E568EA923AE4AEC00AD328F /* Utilities */,
+				9E568EA623AE4A8000AD328F /* System */,
+				9EF0DB2B236C0F6F00969F9F /* Assets.xcassets */,
+				9EF0DB2D236C0F6F00969F9F /* LaunchScreen.storyboard */,
+				9EF0DB30236C0F6F00969F9F /* Info.plist */,
 			);
 			path = Bordery;
 			sourceTree = "<group>";
